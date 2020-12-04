@@ -4,6 +4,8 @@ import fr.clic1prof.serverapp.dao.UserDAO;
 import fr.clic1prof.serverapp.model.SimpleUser;
 import fr.clic1prof.serverapp.model.Role;
 import fr.clic1prof.serverapp.model.registration.Registration;
+import fr.clic1prof.serverapp.model.teacher.Description;
+import fr.clic1prof.serverapp.model.teacher.StudyLevel;
 import fr.clic1prof.serverapp.model.user.Email;
 import fr.clic1prof.serverapp.model.user.Name;
 import fr.clic1prof.serverapp.model.user.Password;
@@ -81,6 +83,30 @@ public class UserDAOImpl implements UserDAO {
         String query = "UPDATE utilisateur SET user_nom = ? WHERE user_email = ?;";
 
         return this.template.update(query, name.getValue(), email.getValue()) == 1;
+    }
+
+    @Override
+    public boolean updateDescription(Email email, Description description) {
+
+        String query = "UPDATE utilisateur SET user_descriptionProfil = ? WHERE user_email = ?;";
+
+        return this.template.update(query, description.getValue(), email.getValue()) == 1;
+    }
+
+    @Override
+    public boolean updateStudyLevel(Email email, StudyLevel studyLevel) {
+
+        String query = "UPDATE utilisateur SET user_niveauEtude = ? WHERE user_email = ?;";
+
+        return this.template.update(query, studyLevel.getValue(), email.getValue()) == 1;
+    }
+
+    @Override
+    public boolean updateRole(Email email, Role role) {
+
+        String query = "UPDATE utilisateur SET user_role = ? WHERE user_email = ?;";
+
+        return this.template.update(query, role.name(), email.getValue()) == 1;
     }
 
     private RowMapper<SimpleUser> getSimpleUserMapper() {
