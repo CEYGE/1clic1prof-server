@@ -50,12 +50,12 @@ public class UserDAOTest implements UserDAO {
     }
 
     @Override
-    public boolean updateDescription(Email email, Description description) {
+    public boolean updatePicture(Email email, String picture) {
         return false;
     }
 
     @Override
-    public boolean updateStudyLevel(Email email, StudyLevel studyLevel) {
+    public boolean updateNotification(Email email, boolean flag) {
         return false;
     }
 }

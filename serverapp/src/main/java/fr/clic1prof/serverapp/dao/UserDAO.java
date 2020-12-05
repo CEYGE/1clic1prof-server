@@ -25,7 +25,7 @@ public interface UserDAO {
 
     boolean updateRole(Email email, Role name);
 
-    boolean updateDescription(Email email, Description description);
+    boolean updatePicture(Email email, String picture);
 
-    boolean updateStudyLevel(Email email, StudyLevel studyLevel);
+    boolean updateNotification(Email email, boolean flag);
 }

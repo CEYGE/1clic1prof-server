@@ -21,7 +21,7 @@ import java.util.Optional;
 public class UserDAOImpl implements UserDAO {
 
     @Autowired
-    private JdbcTemplate template;
+    protected JdbcTemplate template;
 
     @Override
     public Optional<SimpleUser> findByUsername(String username) {
@@ -86,27 +86,21 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean updateDescription(Email email, Description description) {
-
-        String query = "UPDATE utilisateur SET user_descriptionProfil = ? WHERE user_email = ?;";
-
-        return this.template.update(query, description.getValue(), email.getValue()) == 1;
-    }
-
-    @Override
-    public boolean updateStudyLevel(Email email, StudyLevel studyLevel) {
-
-        String query = "UPDATE utilisateur SET user_niveauEtude = ? WHERE user_email = ?;";
-
-        return this.template.update(query, studyLevel.getValue(), email.getValue()) == 1;
-    }
-
-    @Override
     public boolean updateRole(Email email, Role role) {
 
         String query = "UPDATE utilisateur SET user_role = ? WHERE user_email = ?;";
 
         return this.template.update(query, role.name(), email.getValue()) == 1;
+    }
+
+    @Override
+    public boolean updatePicture(Email email, String picture) {
+        return false;
+    }
+
+    @Override
+    public boolean updateNotification(Email email, boolean flag) {
+        return false;
     }
 
     private RowMapper<SimpleUser> getSimpleUserMapper() {

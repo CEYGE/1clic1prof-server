@@ -1,5 +1,8 @@
 package fr.clic1prof.serverapp.model;
 
+import fr.clic1prof.serverapp.model.user.Notification;
+import fr.clic1prof.serverapp.model.user.Picture;
+
 public class SimpleUser {
 
     private final String username, password;
@@ -22,4 +25,5 @@ public class SimpleUser {
     public Role getRole() {
         return this.role;
     }
+
 }
