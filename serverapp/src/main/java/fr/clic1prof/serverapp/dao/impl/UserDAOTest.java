@@ -4,6 +4,8 @@ import fr.clic1prof.serverapp.dao.UserDAO;
 import fr.clic1prof.serverapp.model.SimpleUser;
 import fr.clic1prof.serverapp.model.Role;
 import fr.clic1prof.serverapp.model.registration.Registration;
+import fr.clic1prof.serverapp.model.teacher.Description;
+import fr.clic1prof.serverapp.model.teacher.StudyLevel;
 import fr.clic1prof.serverapp.model.user.Email;
 import fr.clic1prof.serverapp.model.user.Name;
 import fr.clic1prof.serverapp.model.user.Password;
@@ -39,6 +41,21 @@ public class UserDAOTest implements UserDAO {
 
     @Override
     public boolean updateLastName(Email email, Name name) {
+        return false;
+    }
+
+    @Override
+    public boolean updateRole(Email email, Role name) {
+        return false;
+    }
+
+    @Override
+    public boolean updatePicture(Email email, String picture) {
+        return false;
+    }
+
+    @Override
+    public boolean updateNotification(Email email, boolean flag) {
         return false;
     }
 }

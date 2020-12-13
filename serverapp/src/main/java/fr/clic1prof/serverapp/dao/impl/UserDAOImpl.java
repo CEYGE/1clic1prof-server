@@ -4,6 +4,8 @@ import fr.clic1prof.serverapp.dao.UserDAO;
 import fr.clic1prof.serverapp.model.SimpleUser;
 import fr.clic1prof.serverapp.model.Role;
 import fr.clic1prof.serverapp.model.registration.Registration;
+import fr.clic1prof.serverapp.model.teacher.Description;
+import fr.clic1prof.serverapp.model.teacher.StudyLevel;
 import fr.clic1prof.serverapp.model.user.Email;
 import fr.clic1prof.serverapp.model.user.Name;
 import fr.clic1prof.serverapp.model.user.Password;
@@ -19,7 +21,7 @@ import java.util.Optional;
 public class UserDAOImpl implements UserDAO {
 
     @Autowired
-    private JdbcTemplate template;
+    protected JdbcTemplate template;
 
     @Override
     public Optional<SimpleUser> findByUsername(String username) {
@@ -81,6 +83,24 @@ public class UserDAOImpl implements UserDAO {
         String query = "UPDATE utilisateur SET user_nom = ? WHERE user_email = ?;";
 
         return this.template.update(query, name.getValue(), email.getValue()) == 1;
+    }
+
+    @Override
+    public boolean updateRole(Email email, Role role) {
+
+        String query = "UPDATE utilisateur SET user_role = ? WHERE user_email = ?;";
+
+        return this.template.update(query, role.name(), email.getValue()) == 1;
+    }
+
+    @Override
+    public boolean updatePicture(Email email, String picture) {
+        return false;
+    }
+
+    @Override
+    public boolean updateNotification(Email email, boolean flag) {
+        return false;
     }
 
     private RowMapper<SimpleUser> getSimpleUserMapper() {

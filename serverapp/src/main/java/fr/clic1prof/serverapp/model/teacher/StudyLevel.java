@@ -4,16 +4,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class StudyLevel {
-
     @NotNull
-    @Size(min = 2, max = 64)
-    private String level;
+    private int level;
 
-    public StudyLevel(String name) {
-        this.level = name;
+    public StudyLevel(int level) {
+        this.level = level;
     }
 
-    public String getValue() {
+    public int getValue() {
         return this.level;
     }
 }
