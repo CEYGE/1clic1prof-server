@@ -1,8 +1,7 @@
 package fr.clic1prof.serverapp.dao.profile;
 
-import fr.clic1prof.serverapp.model.user.Email;
-import fr.clic1prof.serverapp.model.user.Name;
-import fr.clic1prof.serverapp.model.user.Password;
+import fr.clic1prof.serverapp.model.user.attributes.Name;
+import fr.clic1prof.serverapp.model.user.attributes.Password;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,36 +15,36 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     protected JdbcTemplate template;
 
     @Override
-    public boolean updatePassword(Email email, Password password) {
+    public boolean updatePassword(int id, Password password) {
 
-        String query = "UPDATE auth_user SET user_pass = ? WHERE user_email = ?;";
+        String query = "UPDATE auth_user SET user_pass = ? WHERE user_id = ?;";
 
-        return this.template.update(query, password.getHashed(), email.getValue()) == 1;
+        return this.template.update(query, password.getHashed(), id) > 0;
     }
 
     @Override
-    public boolean updateFirstName(Email email, Name name) {
+    public boolean updateFirstName(int id, Name name) {
 
-        String query = "UPDATE utilisateur SET user_prenom = ? WHERE user_email = ?;";
+        String query = "UPDATE utilisateur SET user_prenom = ? WHERE user_id = ?;";
 
-        return this.template.update(query, name.getValue(), email.getValue()) == 1;
+        return this.template.update(query, name.getValue(), id) > 0;
     }
 
     @Override
-    public boolean updateLastName(Email email, Name name) {
+    public boolean updateLastName(int id, Name name) {
 
-        String query = "UPDATE utilisateur SET user_nom = ? WHERE user_email = ?;";
+        String query = "UPDATE utilisateur SET user_nom = ? WHERE user_id = ?;";
 
-        return this.template.update(query, name.getValue(), email.getValue()) == 1;
+        return this.template.update(query, name.getValue(), id) > 0;
     }
 
     @Override
-    public boolean updatePicture(Email email, Path picture) {
+    public boolean updatePicture(int id, Path picture) {
         return false;
     }
 
     @Override
-    public boolean updateNotificationState(Email email, boolean flag) {
+    public boolean updateNotificationState(int id, boolean flag) {
         return false;
     }
 }

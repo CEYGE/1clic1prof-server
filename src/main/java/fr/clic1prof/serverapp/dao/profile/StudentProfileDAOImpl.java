@@ -1,15 +1,17 @@
 package fr.clic1prof.serverapp.dao.profile;
 
-import fr.clic1prof.serverapp.model.student.SchoolLevel;
-import fr.clic1prof.serverapp.model.user.Email;
+import fr.clic1prof.serverapp.model.profile.SchoolLevel;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
 
+@Repository("StudentProfileDAOImpl")
 public class StudentProfileDAOImpl extends UserProfileDAOImpl implements StudentProfileDAO {
 
     @Override
-    public boolean updateSchoolLevel(Email email, SchoolLevel schoolLevel) {
+    public boolean updateSchoolLevel(int id, SchoolLevel schoolLevel) {
 
-        String query = "UPDATE utilisateur SET user_niveauScolaire = ? WHERE user_email = ?;";
+        String query = "UPDATE utilisateur SET user_niveauScolaire = ? WHERE user_id = ?;";
 
-        return this.template.update(query, schoolLevel.getValue(), email.getValue()) > 0;
+        return this.template.update(query, schoolLevel.getValue(), id) > 0;
     }
 }

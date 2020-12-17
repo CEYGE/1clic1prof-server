@@ -1,9 +1,8 @@
 package fr.clic1prof.serverapp.dao.profile;
 
-import fr.clic1prof.serverapp.model.student.SchoolLevel;
-import fr.clic1prof.serverapp.model.user.Email;
+import fr.clic1prof.serverapp.model.profile.SchoolLevel;
 
-public interface StudentProfileDAO {
+public interface StudentProfileDAO extends UserProfileDAO {
 
-    boolean updateSchoolLevel(Email email, SchoolLevel schoolLevel);
+    boolean updateSchoolLevel(int id, SchoolLevel schoolLevel);
 }

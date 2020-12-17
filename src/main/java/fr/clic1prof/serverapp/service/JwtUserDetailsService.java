@@ -1,20 +1,21 @@
 package fr.clic1prof.serverapp.service;
 
 import fr.clic1prof.serverapp.dao.UserDAO;
-import fr.clic1prof.serverapp.model.SimpleUser;
+import fr.clic1prof.serverapp.model.user.attributes.Role;
+import fr.clic1prof.serverapp.model.ServerUserDetails;
+import fr.clic1prof.serverapp.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -26,21 +27,25 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override // Spring will call automatically this method to load a user.
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Optional<SimpleUser> optional = this.dao.findByUsername(username);
+        Optional<User> optional = this.dao.findByUsername(username);
 
         if(!optional.isPresent())
             throw new UsernameNotFoundException("User not found.");
 
-        SimpleUser user = optional.get();
+        User user = optional.get();
 
-        List<GrantedAuthority> authorities = this.getAuthorities(user.getRole().name());
+        List<GrantedAuthority> authorities = this.getAuthorities(user.getRoles());
 
         // Return a user handled by Spring.
         // Using an empty list for permissions because the system does not use roles.
-        return new User(user.getUsername(), user.getPassword(), authorities);
+        return new ServerUserDetails.Builder(user.getId(), user.getEmail(), user.getPassword())
+                .authorities(authorities)
+                .build();
     }
 
-    private List<GrantedAuthority> getAuthorities(String role) {
-        return Collections.singletonList(new SimpleGrantedAuthority(role));
+    private List<GrantedAuthority> getAuthorities(List<Role> roles) {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
     }
 }

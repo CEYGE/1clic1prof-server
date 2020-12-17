@@ -6,6 +6,7 @@ import fr.clic1prof.serverapp.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configurers.provisioning.UserDetailsManagerConfigurer;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@Component
+@Component // It filters only one time for each request.
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -54,7 +55,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if(token.isValid(details)) {
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                authentication.setDetails(details);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

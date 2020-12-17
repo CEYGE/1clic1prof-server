@@ -1,15 +1,14 @@
 package fr.clic1prof.serverapp.dao.profile;
 
-import fr.clic1prof.serverapp.model.teacher.Description;
-import fr.clic1prof.serverapp.model.teacher.Speciality;
-import fr.clic1prof.serverapp.model.teacher.StudyLevel;
-import fr.clic1prof.serverapp.model.user.Email;
+import fr.clic1prof.serverapp.model.modifier.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.Description;
+import fr.clic1prof.serverapp.model.profile.StudyLevel;
 
-public interface TeacherProfileDAO {
+public interface TeacherProfileDAO extends UserProfileDAO {
 
-    boolean updateDescription(Email email, Description description);
+    boolean updateDescription(int id, Description description);
 
-    boolean updateSpeciality(Email email, Speciality speciality);
+    boolean updateSpeciality(int id, SpecialityModifier modifier);
 
-    boolean updateStudyLevel(Email email, StudyLevel studyLevel);
+    boolean updateStudyLevel(int id, StudyLevel studyLevel);
 }

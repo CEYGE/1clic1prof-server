@@ -1,16 +1,18 @@
 package fr.clic1prof.serverapp.dao;
 
-import fr.clic1prof.serverapp.model.Role;
-import fr.clic1prof.serverapp.model.SimpleUser;
+import fr.clic1prof.serverapp.model.user.attributes.Role;
+import fr.clic1prof.serverapp.model.user.SimpleUser;
+import fr.clic1prof.serverapp.model.user.User;
 import fr.clic1prof.serverapp.model.registration.Registration;
-import fr.clic1prof.serverapp.model.user.Email;
-import fr.clic1prof.serverapp.model.user.Password;
+import fr.clic1prof.serverapp.model.user.attributes.Email;
+import fr.clic1prof.serverapp.model.user.attributes.Password;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +23,13 @@ public class UserDAOImpl implements UserDAO {
     protected JdbcTemplate template;
 
     @Override
-    public Optional<SimpleUser> findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
 
-        String query = "select auth.user_email, auth.user_pass, user_role from utilisateur " +
-                "join (select id, user_email, user_pass from auth_user as auth where user_email = ?) as auth " +
-                "on utilisateur.user_id = auth.id;";
+        String query = "SELECT " +
+                "auth.id, auth.user_email, auth.user_pass, user_role " +
+                "FROM utilisateur " +
+                "JOIN (SELECT id, user_email, user_pass from auth_user AS auth WHERE user_email = ?) AS auth " +
+                "ON utilisateur.user_id = auth.id;";
 
         RowMapper<SimpleUser> mapper = this.getSimpleUserMapper();
 
@@ -64,13 +68,14 @@ public class UserDAOImpl implements UserDAO {
     private RowMapper<SimpleUser> getSimpleUserMapper() {
         return (rs, i) -> {
 
+            int id = rs.getInt("id");
             String username = rs.getString("user_email");
             String password = rs.getString("user_pass");
             String role = rs.getString("user_role");
 
             Role userRole = Role.valueOf(role);
 
-            return new SimpleUser(username, password, userRole);
+            return new SimpleUser(id, username, password, Collections.singletonList(userRole));
         };
     }
 }

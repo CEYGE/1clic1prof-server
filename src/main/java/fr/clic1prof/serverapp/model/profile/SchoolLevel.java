@@ -1,4 +1,4 @@
-package fr.clic1prof.serverapp.model.student;
+package fr.clic1prof.serverapp.model.profile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

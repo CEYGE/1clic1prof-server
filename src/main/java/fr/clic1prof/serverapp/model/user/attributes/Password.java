@@ -1,5 +1,7 @@
-package fr.clic1prof.serverapp.model.user;
+package fr.clic1prof.serverapp.model.user.attributes;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotNull;
@@ -14,9 +16,11 @@ public class Password {
     @Size(min = 8, max = 32)
     // Required : 8 chars with 1 min, 1 maj, 1 special char and 1 number.
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,32}$")
+    @JsonProperty("password")
     private String password;
 
-    public Password() {} // Used by JSON.
+    @JsonCreator // Used by Jackson for deserialization.
+    private Password() {} // Used by JSON.
 
     public Password(String password) {
         this.password = password;
