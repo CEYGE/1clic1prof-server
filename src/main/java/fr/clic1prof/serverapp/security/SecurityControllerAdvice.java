@@ -1,7 +1,5 @@
 package fr.clic1prof.serverapp.security;
 
-import fr.clic1prof.serverapp.model.ServerUserDetails;
-import fr.clic1prof.serverapp.model.user.SimpleUserBase;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,10 +15,9 @@ public class SecurityControllerAdvice {
 
         Object object = authentication.getDetails();
 
-        if(!(object instanceof ServerUserDetails)) return null;
+        if(!(object instanceof UserBase))
+            throw new IllegalStateException("UserDetails not an instance of UserBase.");
 
-        ServerUserDetails details = (ServerUserDetails) authentication.getDetails();
-
-        return new SimpleUserBase(details.getId());
+        return (UserBase) authentication.getDetails();
     }
 }

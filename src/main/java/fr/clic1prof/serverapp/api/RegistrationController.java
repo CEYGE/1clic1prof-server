@@ -2,7 +2,7 @@ package fr.clic1prof.serverapp.api;
 
 import fr.clic1prof.serverapp.model.registration.Registration;
 import fr.clic1prof.serverapp.security.jwt.token.TokenProvider;
-import fr.clic1prof.serverapp.service.SimpleUserService;
+import fr.clic1prof.serverapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 public class RegistrationController {
 
     @Autowired
-    private SimpleUserService service;
+    private UserService service;
 
     @Autowired
     private TokenProvider provider;

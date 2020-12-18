@@ -1,7 +1,6 @@
 package fr.clic1prof.serverapp.api.profile;
 
 import fr.clic1prof.serverapp.model.user.attributes.Role;
-import fr.clic1prof.serverapp.security.jwt.token.TokenProvider;
 import fr.clic1prof.serverapp.service.profile.StudentProfileService;
 import fr.clic1prof.serverapp.service.profile.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class StudentProfileController extends UserProfileController {
 
     @Autowired
-    public StudentProfileController(@Qualifier("StudentProfileService") UserProfileService service, TokenProvider provider) {
-        super(service, provider);
+    public StudentProfileController(@Qualifier("StudentProfileService") UserProfileService service) {
+        super(service);
     }
 
     @Override

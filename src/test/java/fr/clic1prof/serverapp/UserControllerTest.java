@@ -23,7 +23,6 @@ public class UserControllerTest {
     @Qualifier("UserDAOImpl")
     private UserDAO dao;
 
-    @Test
     public void testLogin() {
 
         RestTemplate template = new RestTemplateBuilder()

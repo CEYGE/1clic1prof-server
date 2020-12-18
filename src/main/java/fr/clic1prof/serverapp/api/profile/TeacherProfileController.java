@@ -1,10 +1,9 @@
 package fr.clic1prof.serverapp.api.profile;
 
 import fr.clic1prof.serverapp.model.modifier.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.Description;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.model.user.attributes.Role;
-import fr.clic1prof.serverapp.model.profile.Description;
-import fr.clic1prof.serverapp.security.jwt.token.TokenProvider;
 import fr.clic1prof.serverapp.service.profile.TeacherProfileService;
 import fr.clic1prof.serverapp.service.profile.UserProfileService;
 import fr.clic1prof.serverapp.util.HttpRequestProcessor;
@@ -26,8 +25,8 @@ import java.util.function.Supplier;
 public class TeacherProfileController extends UserProfileController {
 
     @Autowired
-    public TeacherProfileController(@Qualifier("TeacherProfileService") UserProfileService service, TokenProvider provider) {
-        super(service, provider);
+    public TeacherProfileController(@Qualifier("TeacherProfileService") UserProfileService service) {
+        super(service);
     }
 
     @PutMapping("/description")

@@ -1,6 +1,5 @@
 package fr.clic1prof.serverapp.api.profile;
 
-import fr.clic1prof.serverapp.model.user.User;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.model.user.attributes.Name;
 import fr.clic1prof.serverapp.model.user.attributes.Password;
@@ -25,8 +24,8 @@ import java.util.function.Supplier;
 public class SimpleUserProfileController extends UserProfileController {
 
     @Autowired
-    public SimpleUserProfileController(@Qualifier("SimpleUserProfileService") UserProfileService service, TokenProvider provider) {
-        super(service, provider);
+    public SimpleUserProfileController(@Qualifier("SimpleUserProfileService") UserProfileService service) {
+        super(service);
     }
 
     @PutMapping("/password")
