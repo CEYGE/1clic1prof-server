@@ -49,9 +49,8 @@ public class UserDAO implements IUserDAO {
         String query1 = "INSERT INTO auth_user (user_pass, user_email) VALUES (?,?);";
 
         Email email = registration.getEmail();
-        Password password = registration.getPassword();
 
-        int rows = this.template.update(query1, password.getHashed(), email.getValue());
+        int rows = this.template.update(query1, registration.getEncodedPassword(), email.getValue());
 
         if(rows == 0) return false; // If no row has been affected, return false.
 
@@ -78,8 +77,6 @@ public class UserDAO implements IUserDAO {
             Optional<Role> optional = Role.getByEnumName(role);
 
             if(!optional.isPresent()) return builder.build();
-
-            System.out.println(optional.get());
 
             return builder.roles(Collections.singletonList(optional.get())).build();
         };
