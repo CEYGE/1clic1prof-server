@@ -1,8 +1,8 @@
 package fr.clic1prof.serverapp.dao.profile;
 
-import fr.clic1prof.serverapp.model.modifier.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.review.SpecialityModifier;
 import fr.clic1prof.serverapp.model.profile.Description;
-import fr.clic1prof.serverapp.model.profile.StudyLevel;
+import fr.clic1prof.serverapp.model.profile.Studies;
 import org.springframework.stereotype.Repository;
 
 @Repository("TeacherProfileDAO")
@@ -22,10 +22,10 @@ public class TeacherProfileDAO extends UserProfileDAO implements ITeacherProfile
     }
 
     @Override
-    public boolean updateStudyLevel(int id, StudyLevel studyLevel) {
+    public boolean updateStudies(int id, Studies level) {
 
         String query = "UPDATE utilisateur SET user_niveauEtude = ? WHERE user_id = ?;";
 
-        return this.template.update(query, studyLevel.getValue(), id) > 0;
+        return this.template.update(query, level.getValue(), id) > 0;
     }
 }

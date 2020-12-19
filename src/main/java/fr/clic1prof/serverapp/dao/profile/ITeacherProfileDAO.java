@@ -1,8 +1,8 @@
 package fr.clic1prof.serverapp.dao.profile;
 
-import fr.clic1prof.serverapp.model.modifier.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.review.SpecialityModifier;
 import fr.clic1prof.serverapp.model.profile.Description;
-import fr.clic1prof.serverapp.model.profile.StudyLevel;
+import fr.clic1prof.serverapp.model.profile.Studies;
 
 public interface ITeacherProfileDAO extends IUserProfileDAO {
 
@@ -10,5 +10,5 @@ public interface ITeacherProfileDAO extends IUserProfileDAO {
 
     boolean updateSpeciality(int id, SpecialityModifier modifier);
 
-    boolean updateStudyLevel(int id, StudyLevel studyLevel);
+    boolean updateStudies(int id, Studies studies);
 }
