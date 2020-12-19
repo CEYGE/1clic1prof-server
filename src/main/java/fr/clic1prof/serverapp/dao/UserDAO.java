@@ -3,9 +3,8 @@ package fr.clic1prof.serverapp.dao;
 import fr.clic1prof.serverapp.model.registration.Registration;
 import fr.clic1prof.serverapp.model.user.User;
 import fr.clic1prof.serverapp.model.user.UserModel;
-import fr.clic1prof.serverapp.model.user.attributes.Email;
-import fr.clic1prof.serverapp.model.user.attributes.Password;
-import fr.clic1prof.serverapp.model.user.attributes.Role;
+import fr.clic1prof.serverapp.model.profile.Email;
+import fr.clic1prof.serverapp.model.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -74,7 +73,7 @@ public class UserDAO implements IUserDAO {
 
             User.Builder builder = new User.Builder(id, username, password);
 
-            Optional<Role> optional = Role.getByEnumName(role);
+            Optional<UserRole> optional = UserRole.getByEnumName(role);
 
             if(!optional.isPresent()) return builder.build();
 
