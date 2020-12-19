@@ -32,6 +32,8 @@ public class Registration {
     @NotNull
     private RegistrationType type;
 
+    private String encodedPassword;
+
     public Name getFirstName() {
         return this.firstName;
     }
@@ -50,6 +52,14 @@ public class Registration {
 
     public RegistrationType getType() {
         return this.type;
+    }
+
+    public String getEncodedPassword() {
+        return this.encodedPassword;
+    }
+
+    public void setEncodedPassword(String encodedPassword) {
+        this.encodedPassword = encodedPassword;
     }
 
     public static class RegistrationDeserializer extends JsonDeserializer<Registration> {
