@@ -5,7 +5,7 @@ import fr.clic1prof.serverapp.model.user.attributes.Password;
 
 import java.nio.file.Path;
 
-public interface UserProfileDAO {
+public interface IUserProfileDAO {
 
     boolean updatePassword(int id, Password password);
 

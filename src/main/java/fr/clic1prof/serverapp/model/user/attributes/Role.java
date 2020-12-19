@@ -17,12 +17,12 @@ public enum Role {
         return this.name;
     }
 
-    public static Optional<Role> getByName(String name) {
+    public static Optional<Role> getByEnumName(String name) {
 
         String nameInUpperCase = name.toUpperCase();
 
         return Arrays.stream(Role.values())
-                .filter(role -> role.getName().equals(nameInUpperCase))
+                .filter(role -> role.name().equals(nameInUpperCase))
                 .findFirst();
     }
 
@@ -30,7 +30,7 @@ public enum Role {
     // in annotations like RolesAllowed for example.
     public static class Names {
 
-        public static final String TEACHER = "TEACHER";
-        public static final String STUDENT = "STUDENT";
+        public static final String TEACHER = "ROLE_TEACHER";
+        public static final String STUDENT = "ROLE_STUDENT";
     }
 }

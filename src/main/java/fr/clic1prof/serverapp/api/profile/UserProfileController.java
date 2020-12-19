@@ -1,16 +1,58 @@
 package fr.clic1prof.serverapp.api.profile;
 
-import fr.clic1prof.serverapp.service.profile.UserProfileService;
+import fr.clic1prof.serverapp.model.user.UserBase;
+import fr.clic1prof.serverapp.model.user.attributes.Name;
+import fr.clic1prof.serverapp.model.user.attributes.Password;
+import fr.clic1prof.serverapp.service.profile.IUserProfileService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-public abstract class UserProfileController {
+import javax.validation.Valid;
 
-    private final UserProfileService service;
+public abstract class UserProfileController implements IUserProfileController {
 
-    public UserProfileController(UserProfileService service) {
+    private IUserProfileService service;
+
+    public UserProfileController(IUserProfileService service) {
         this.service = service;
     }
 
-    public UserProfileService getService() {
+    @Override
+    @PutMapping("/password")
+    public ResponseEntity<?> updatePassword(UserBase user, @Valid @RequestBody Password password) {
+
+        boolean updated = this.getService().updatePassword(user, password);
+
+        HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
+
+        return ResponseEntity.status(status).build();
+    }
+
+    @Override
+    @PutMapping("/first-name")
+    public ResponseEntity<?> updateFirstName(UserBase user, @Valid @RequestBody Name name) {
+
+        boolean updated = this.getService().updateFirstName(user, name);
+
+        HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
+
+        return ResponseEntity.status(status).build();
+    }
+
+    @Override
+    @PutMapping("/last-name")
+    public ResponseEntity<?> updateLastName(UserBase user, @Valid @RequestBody Name name) {
+
+        boolean updated = this.getService().updateLastName(user, name);
+
+        HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
+
+        return ResponseEntity.status(status).build();
+    }
+
+    public IUserProfileService getService() {
         return this.service;
     }
 }

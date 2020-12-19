@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.nio.file.Path;
 
-@Repository("UserProfileDAOImpl")
-public class UserProfileDAOImpl implements UserProfileDAO {
+@Repository("UserProfileDAO")
+public class ProfileDAOImpl implements IUserProfileDAO {
 
     @Autowired
     protected JdbcTemplate template;

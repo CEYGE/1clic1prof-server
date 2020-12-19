@@ -1,10 +1,12 @@
 package fr.clic1prof.serverapp.api;
 
+import fr.clic1prof.serverapp.model.registration.Registration;
 import fr.clic1prof.serverapp.security.jwt.JwtRequest;
 import fr.clic1prof.serverapp.security.jwt.JwtResponse;
 import fr.clic1prof.serverapp.security.jwt.token.Token;
 import fr.clic1prof.serverapp.security.jwt.token.TokenProvider;
 import fr.clic1prof.serverapp.service.JwtUserDetailsService;
+import fr.clic1prof.serverapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,30 +14,33 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
-public class AuthenticationController {
+public class UserController implements IUserController {
 
     @Autowired
     private AuthenticationManager manager;
 
     @Autowired
-    private JwtUserDetailsService service;
+    private JwtUserDetailsService jwtService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private TokenProvider provider;
 
-    @PostMapping(value="/login")
-    public ResponseEntity<?> login(@RequestBody JwtRequest request) {
+    @Override
+    public ResponseEntity<?> login(@Valid JwtRequest request) {
 
         try { this.authenticate(request);
         } catch (Exception e) { return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); }
 
         // Retrieving user data from database.
-        UserDetails details = this.service.loadUserByUsername(request.getUsername());
+        UserDetails details = this.jwtService.loadUserByUsername(request.getUsername());
 
         // Generating token.
         Token jwt = this.provider.generateToken(details);
@@ -43,6 +48,18 @@ public class AuthenticationController {
 
         // Sending the token to the client.
         return ResponseEntity.ok(new JwtResponse(token));
+    }
+
+    @Override
+    public ResponseEntity<?> register(@Valid Registration registration) {
+
+        boolean registered = this.userService.register(registration);
+
+        if(!registered) // Unable to register the user.
+            return ResponseEntity.unprocessableEntity().build();
+
+        // Successful request but no data to return.
+        return ResponseEntity.noContent().build();
     }
 
     private void authenticate(JwtRequest request) throws Exception {

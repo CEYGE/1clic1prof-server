@@ -1,9 +1,8 @@
 package fr.clic1prof.serverapp;
 
-import fr.clic1prof.serverapp.dao.UserDAO;
+import fr.clic1prof.serverapp.dao.IUserDAO;
 import fr.clic1prof.serverapp.security.jwt.JwtRequest;
 import fr.clic1prof.serverapp.security.jwt.JwtResponse;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,8 +19,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class UserControllerTest {
 
     @Autowired
-    @Qualifier("UserDAOImpl")
-    private UserDAO dao;
+    @Qualifier("UserDAO")
+    private IUserDAO dao;
 
     public void testLogin() {
 

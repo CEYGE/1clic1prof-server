@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class User implements UserModel {
@@ -26,9 +27,14 @@ public class User implements UserModel {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
+
+        List<? extends GrantedAuthority> authorities = this.roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
+
+        authorities.forEach(authority -> System.out.println(authority.getAuthority()));
+
+        return authorities;
     }
 
     @Override
@@ -95,6 +101,7 @@ public class User implements UserModel {
 
         public Builder roles(Collection<Role> roles) {
             this.roles = roles;
+            roles.forEach(role -> System.out.println(role));
             return this;
         }
 

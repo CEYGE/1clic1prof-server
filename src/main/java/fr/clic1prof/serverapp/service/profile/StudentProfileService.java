@@ -1,21 +1,21 @@
 package fr.clic1prof.serverapp.service.profile;
 
-import fr.clic1prof.serverapp.dao.profile.StudentProfileDAO;
-import fr.clic1prof.serverapp.dao.profile.UserProfileDAO;
+import fr.clic1prof.serverapp.dao.profile.IStudentProfileDAO;
+import fr.clic1prof.serverapp.dao.profile.IUserProfileDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service("StudentProfileService")
-public class StudentProfileService extends UserProfileService {
+public class StudentProfileService extends UserProfileService implements IStudentProfileService {
 
     @Autowired
-    public StudentProfileService(@Qualifier("StudentProfileDAOImpl") UserProfileDAO dao) {
+    public StudentProfileService(@Qualifier("StudentProfileDAO") IUserProfileDAO dao) {
         super(dao);
     }
 
     @Override
-    public StudentProfileDAO getDao() {
-        return (StudentProfileDAO) super.getDao();
+    public IStudentProfileDAO getUserDAO() {
+        return (IStudentProfileDAO) super.getUserDAO();
     }
 }
