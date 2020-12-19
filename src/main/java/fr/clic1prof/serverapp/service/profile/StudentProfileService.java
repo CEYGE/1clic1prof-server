@@ -4,14 +4,15 @@ import fr.clic1prof.serverapp.dao.profile.IStudentProfileDAO;
 import fr.clic1prof.serverapp.dao.profile.IUserProfileDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service("StudentProfileService")
 public class StudentProfileService extends UserProfileService implements IStudentProfileService {
 
     @Autowired
-    public StudentProfileService(@Qualifier("StudentProfileDAO") IUserProfileDAO dao) {
-        super(dao);
+    public StudentProfileService(@Qualifier("StudentProfileDAO") IUserProfileDAO dao, PasswordEncoder encoder) {
+        super(dao, encoder);
     }
 
     @Override
