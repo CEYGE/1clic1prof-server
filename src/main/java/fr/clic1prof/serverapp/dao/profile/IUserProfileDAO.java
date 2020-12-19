@@ -7,13 +7,15 @@ import java.nio.file.Path;
 
 public interface IUserProfileDAO {
 
-    boolean updatePassword(int id, Password password);
+    boolean updatePassword(int id, String password);
 
-    boolean updateFirstName(int id, Name name);
+    boolean updateFirstName(int id, String firstName);
 
-    boolean updateLastName(int id, Name name);
+    boolean updateLastName(int id, String lastName);
 
-    boolean updatePicture(int id, Path picture);
+    // boolean updatePicture(int id, Path picture);
 
     boolean updateNotificationState(int id, boolean flag);
+
+    String getPassword(int id);
 }

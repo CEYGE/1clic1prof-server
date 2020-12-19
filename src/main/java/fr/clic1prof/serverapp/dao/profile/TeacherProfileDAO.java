@@ -6,7 +6,7 @@ import fr.clic1prof.serverapp.model.profile.StudyLevel;
 import org.springframework.stereotype.Repository;
 
 @Repository("TeacherProfileDAO")
-public class TeacherProfileDAO extends ProfileDAOImpl implements ITeacherProfileDAO {
+public class TeacherProfileDAO extends UserProfileDAO implements ITeacherProfileDAO {
 
     @Override
     public boolean updateDescription(int id, Description description) {

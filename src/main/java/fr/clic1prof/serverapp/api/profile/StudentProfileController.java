@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.api.profile;
 
+import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.model.user.attributes.Name;
 import fr.clic1prof.serverapp.model.user.attributes.Password;
@@ -25,6 +26,11 @@ public class StudentProfileController extends UserProfileController implements I
     }
 
     @Override
+    public ResponseEntity<?> updatePassword(UserBase user, @Valid PasswordModifier modifier) {
+        return super.updatePassword(user, modifier);
+    }
+
+    @Override
     public ResponseEntity<?> updateFirstName(UserBase user, @Valid Name name) {
         return super.updateFirstName(user, name);
     }
@@ -32,11 +38,6 @@ public class StudentProfileController extends UserProfileController implements I
     @Override
     public ResponseEntity<?> updateLastName(UserBase user, @Valid Name name) {
         return super.updateLastName(user, name);
-    }
-
-    @Override
-    public ResponseEntity<?> updatePassword(UserBase user, @Valid Password password) {
-        return super.updatePassword(user, password);
     }
 
     @Override

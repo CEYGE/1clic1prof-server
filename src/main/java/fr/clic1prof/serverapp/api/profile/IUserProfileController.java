@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.api.profile;
 
+import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.model.user.attributes.Name;
 import fr.clic1prof.serverapp.model.user.attributes.Password;
@@ -12,7 +13,7 @@ import javax.validation.Valid;
 public interface IUserProfileController {
 
     @PutMapping("/password")
-    ResponseEntity<?> updatePassword(UserBase user, @Valid @RequestBody Password password);
+    ResponseEntity<?> updatePassword(UserBase user, @Valid @RequestBody PasswordModifier modifier);
 
     @PutMapping("/first-name")
     ResponseEntity<?> updateFirstName(UserBase user, @Valid @RequestBody Name name);

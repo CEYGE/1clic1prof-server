@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.api.profile;
 
+import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.model.user.attributes.Name;
 import fr.clic1prof.serverapp.model.user.attributes.Password;
@@ -21,9 +22,9 @@ public abstract class UserProfileController implements IUserProfileController {
 
     @Override
     @PutMapping("/password")
-    public ResponseEntity<?> updatePassword(UserBase user, @Valid @RequestBody Password password) {
+    public ResponseEntity<?> updatePassword(UserBase user, @Valid @RequestBody PasswordModifier modifier) {
 
-        boolean updated = this.getService().updatePassword(user, password);
+        boolean updated = this.getService().updatePassword(user, modifier);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 

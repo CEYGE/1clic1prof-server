@@ -4,7 +4,7 @@ import fr.clic1prof.serverapp.model.profile.SchoolLevel;
 import org.springframework.stereotype.Repository;
 
 @Repository("StudentProfileDAO")
-public class StudentProfileDAO extends ProfileDAOImpl implements IStudentProfileDAO {
+public class StudentProfileDAO extends UserProfileDAO implements IStudentProfileDAO {
 
     @Override
     public boolean updateSchoolLevel(int id, SchoolLevel schoolLevel) {
