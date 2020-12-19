@@ -35,11 +35,6 @@ public class UserProfileDAO implements IUserProfileDAO {
     }
 
     @Override
-    public boolean updateNotificationState(int id, boolean flag) {
-        return false;
-    }
-
-    @Override
     public String getPassword(int id) {
 
         String query = "SELECT user_pass FROM auth_user WHERE id = ?;";

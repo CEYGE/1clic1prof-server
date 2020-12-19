@@ -15,7 +15,5 @@ public interface IUserProfileDAO {
 
     // boolean updatePicture(int id, Path picture);
 
-    boolean updateNotificationState(int id, boolean flag);
-
     String getPassword(int id);
 }
