@@ -27,14 +27,9 @@ public class User implements UserModel {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        List<? extends GrantedAuthority> authorities = this.roles.stream()
+        return this.roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
-
-        authorities.forEach(authority -> System.out.println(authority.getAuthority()));
-
-        return authorities;
     }
 
     @Override
@@ -101,7 +96,6 @@ public class User implements UserModel {
 
         public Builder roles(Collection<Role> roles) {
             this.roles = roles;
-            roles.forEach(role -> System.out.println(role));
             return this;
         }
 
