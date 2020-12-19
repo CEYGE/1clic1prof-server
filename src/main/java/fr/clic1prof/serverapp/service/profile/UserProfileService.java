@@ -10,12 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public abstract class UserProfileService implements IUserProfileService {
 
     private IUserProfileDAO dao;
-
-    @Autowired
     private PasswordEncoder encoder;
 
-    public UserProfileService(IUserProfileDAO dao) {
+    @Autowired
+    public UserProfileService(IUserProfileDAO dao, PasswordEncoder encoder) {
         this.dao = dao;
+        this.encoder = encoder;
     }
 
     @Override
