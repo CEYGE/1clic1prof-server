@@ -1,4 +1,4 @@
-package fr.clic1prof.serverapp.model.modifier;
+package fr.clic1prof.serverapp.model.profile.review;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
