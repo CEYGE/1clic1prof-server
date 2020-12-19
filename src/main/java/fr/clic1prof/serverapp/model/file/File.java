@@ -7,6 +7,7 @@ import fr.clic1prof.serverapp.util.FileEncoderDecoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +17,7 @@ import java.util.List;
 public abstract class File {
 
     @NotNull @NotBlank
+    @Size(min = 2, max = 64)
     @JsonProperty("name")
     private String name;
 
