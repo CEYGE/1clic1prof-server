@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import fr.clic1prof.serverapp.model.user.attributes.Email;
-import fr.clic1prof.serverapp.model.user.attributes.Name;
-import fr.clic1prof.serverapp.model.user.attributes.Password;
+import fr.clic1prof.serverapp.model.profile.Email;
+import fr.clic1prof.serverapp.model.profile.Name;
+import fr.clic1prof.serverapp.model.profile.Password;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

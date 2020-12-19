@@ -3,7 +3,7 @@ package fr.clic1prof.serverapp.service.profile;
 import fr.clic1prof.serverapp.dao.profile.IUserProfileDAO;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
-import fr.clic1prof.serverapp.model.user.attributes.Name;
+import fr.clic1prof.serverapp.model.profile.Name;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

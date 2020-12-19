@@ -2,7 +2,8 @@ package fr.clic1prof.serverapp.service.profile;
 
 import fr.clic1prof.serverapp.dao.profile.ITeacherProfileDAO;
 import fr.clic1prof.serverapp.dao.profile.IUserProfileDAO;
-import fr.clic1prof.serverapp.model.modifier.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.Studies;
+import fr.clic1prof.serverapp.model.profile.review.SpecialityModifier;
 import fr.clic1prof.serverapp.model.profile.Description;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,11 @@ public class TeacherProfileService extends UserProfileService implements ITeache
     @Override
     public boolean updateSpeciality(UserBase user, SpecialityModifier modifier) {
         return false;
+    }
+
+    @Override
+    public boolean updateStudies(UserBase user, Studies studies) {
+        return this.getUserDAO().updateStudies(user.getId(), studies);
     }
 
     @Override

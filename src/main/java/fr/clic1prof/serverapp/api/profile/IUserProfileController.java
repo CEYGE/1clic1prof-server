@@ -2,8 +2,8 @@ package fr.clic1prof.serverapp.api.profile;
 
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
-import fr.clic1prof.serverapp.model.user.attributes.Name;
-import fr.clic1prof.serverapp.model.user.attributes.Password;
+import fr.clic1prof.serverapp.model.profile.Name;
+import fr.clic1prof.serverapp.model.file.Picture;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,4 +20,7 @@ public interface IUserProfileController {
 
     @PutMapping("/last-name")
     ResponseEntity<?> updateLastName(UserBase user, @Valid @RequestBody Name name);
+
+    @PutMapping("/picture")
+    ResponseEntity<?> updatePicture(UserBase base, @RequestBody Picture picture);
 }

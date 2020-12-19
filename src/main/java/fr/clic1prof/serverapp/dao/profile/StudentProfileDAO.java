@@ -1,6 +1,6 @@
 package fr.clic1prof.serverapp.dao.profile;
 
-import fr.clic1prof.serverapp.model.profile.SchoolLevel;
+import fr.clic1prof.serverapp.model.profile.review.SchoolLevel;
 import org.springframework.stereotype.Repository;
 
 @Repository("StudentProfileDAO")

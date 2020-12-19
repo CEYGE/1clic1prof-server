@@ -2,10 +2,10 @@ package fr.clic1prof.serverapp.api.profile;
 
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
-import fr.clic1prof.serverapp.model.user.attributes.Name;
-import fr.clic1prof.serverapp.model.user.attributes.Password;
-import fr.clic1prof.serverapp.model.user.attributes.Role;
+import fr.clic1prof.serverapp.model.profile.Name;
+import fr.clic1prof.serverapp.model.user.UserRole;
 import fr.clic1prof.serverapp.service.profile.IUserProfileService;
+import fr.clic1prof.serverapp.model.file.Picture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/student/profile")
-@Secured(Role.Names.STUDENT)
+@Secured(UserRole.Names.STUDENT)
 public class StudentProfileController extends UserProfileController implements IStudentProfileController {
 
     @Autowired
@@ -38,6 +38,11 @@ public class StudentProfileController extends UserProfileController implements I
     @Override
     public ResponseEntity<?> updateLastName(UserBase user, @Valid Name name) {
         return super.updateLastName(user, name);
+    }
+
+    @Override
+    public ResponseEntity<?> updatePicture(UserBase base, Picture picture) {
+        return super.updatePicture(base, picture);
     }
 
     @Override

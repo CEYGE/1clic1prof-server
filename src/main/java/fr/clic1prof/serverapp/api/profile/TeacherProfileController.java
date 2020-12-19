@@ -1,12 +1,12 @@
 package fr.clic1prof.serverapp.api.profile;
 
-import fr.clic1prof.serverapp.model.modifier.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.Studies;
+import fr.clic1prof.serverapp.model.profile.review.SpecialityModifier;
 import fr.clic1prof.serverapp.model.profile.Description;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
-import fr.clic1prof.serverapp.model.user.attributes.Name;
-import fr.clic1prof.serverapp.model.user.attributes.Password;
-import fr.clic1prof.serverapp.model.user.attributes.Role;
+import fr.clic1prof.serverapp.model.profile.Name;
+import fr.clic1prof.serverapp.model.user.UserRole;
 import fr.clic1prof.serverapp.service.profile.ITeacherProfileService;
 import fr.clic1prof.serverapp.service.profile.IUserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/teacher/profile")
-@Secured(Role.Names.TEACHER)
+@Secured(UserRole.Names.TEACHER)
 public class TeacherProfileController extends UserProfileController implements ITeacherProfileController {
 
     @Autowired
@@ -46,7 +46,6 @@ public class TeacherProfileController extends UserProfileController implements I
     }
 
     @Override
-    @PutMapping("/description")
     public ResponseEntity<?> updateDescription(UserBase user, @Valid Description description) {
 
         boolean updated = this.getService().updateDescription(user, description);
@@ -57,7 +56,6 @@ public class TeacherProfileController extends UserProfileController implements I
     }
 
     @Override
-    @PutMapping("/speciality")
     public ResponseEntity<?> updateSpeciality(UserBase user, @Valid SpecialityModifier modifier) {
 
         boolean updated = this.getService().updateSpeciality(user, modifier);
@@ -65,6 +63,11 @@ public class TeacherProfileController extends UserProfileController implements I
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 
         return ResponseEntity.status(status).build();
+    }
+
+    @Override
+    public ResponseEntity<?> updateStudies(UserBase user, @Valid Studies studies) {
+        return null;
     }
 
     @Override

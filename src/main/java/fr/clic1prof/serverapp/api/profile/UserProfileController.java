@@ -2,12 +2,11 @@ package fr.clic1prof.serverapp.api.profile;
 
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
-import fr.clic1prof.serverapp.model.user.attributes.Name;
-import fr.clic1prof.serverapp.model.user.attributes.Password;
+import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.service.profile.IUserProfileService;
+import fr.clic1prof.serverapp.model.file.Picture;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
@@ -21,7 +20,6 @@ public abstract class UserProfileController implements IUserProfileController {
     }
 
     @Override
-    @PutMapping("/password")
     public ResponseEntity<?> updatePassword(UserBase user, @Valid @RequestBody PasswordModifier modifier) {
 
         boolean updated = this.getService().updatePassword(user, modifier);
@@ -32,7 +30,6 @@ public abstract class UserProfileController implements IUserProfileController {
     }
 
     @Override
-    @PutMapping("/first-name")
     public ResponseEntity<?> updateFirstName(UserBase user, @Valid @RequestBody Name name) {
 
         boolean updated = this.getService().updateFirstName(user, name);
@@ -43,7 +40,6 @@ public abstract class UserProfileController implements IUserProfileController {
     }
 
     @Override
-    @PutMapping("/last-name")
     public ResponseEntity<?> updateLastName(UserBase user, @Valid @RequestBody Name name) {
 
         boolean updated = this.getService().updateLastName(user, name);
@@ -51,6 +47,11 @@ public abstract class UserProfileController implements IUserProfileController {
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 
         return ResponseEntity.status(status).build();
+    }
+
+    @Override
+    public ResponseEntity<?> updatePicture(UserBase base, @Valid @RequestBody Picture picture) {
+        return ResponseEntity.noContent().build();
     }
 
     public IUserProfileService getService() {

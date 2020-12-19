@@ -1,4 +1,4 @@
-package fr.clic1prof.serverapp.model.user.attributes;
+package fr.clic1prof.serverapp.model.profile;
 
 import javax.validation.constraints.NotNull;
 

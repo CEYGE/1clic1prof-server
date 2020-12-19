@@ -1,15 +1,15 @@
-package fr.clic1prof.serverapp.model.user.attributes;
+package fr.clic1prof.serverapp.model.user;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-public enum Role {
+public enum UserRole {
 
     TEACHER(Names.TEACHER), STUDENT(Names.STUDENT);
 
     private String name;
 
-    Role(String name) {
+    UserRole(String name) {
         this.name = name;
     }
 
@@ -17,11 +17,11 @@ public enum Role {
         return this.name;
     }
 
-    public static Optional<Role> getByEnumName(String name) {
+    public static Optional<UserRole> getByEnumName(String name) {
 
         String nameInUpperCase = name.toUpperCase();
 
-        return Arrays.stream(Role.values())
+        return Arrays.stream(UserRole.values())
                 .filter(role -> role.name().equals(nameInUpperCase))
                 .findFirst();
     }

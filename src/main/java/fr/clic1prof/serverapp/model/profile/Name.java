@@ -1,4 +1,4 @@
-package fr.clic1prof.serverapp.model.user.attributes;
+package fr.clic1prof.serverapp.model.profile;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

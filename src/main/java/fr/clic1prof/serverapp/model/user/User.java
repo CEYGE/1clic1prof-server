@@ -1,12 +1,10 @@
 package fr.clic1prof.serverapp.model.user;
 
-import fr.clic1prof.serverapp.model.user.attributes.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class User implements UserModel {
@@ -15,7 +13,7 @@ public class User implements UserModel {
     private String username;
     private String password;
     private boolean locked, enabled;
-    private Collection<Role> roles;
+    private Collection<UserRole> roles;
 
     // Used by Builder.
     private User() {}
@@ -63,7 +61,7 @@ public class User implements UserModel {
     }
 
     @Override
-    public Collection<Role> getRoles() {
+    public Collection<UserRole> getRoles() {
         return this.roles;
     }
 
@@ -73,7 +71,7 @@ public class User implements UserModel {
         private final String username, password;
 
         private boolean locked, enabled;
-        private Collection<Role> roles;
+        private Collection<UserRole> roles;
 
         public Builder(int id, String username, String password) {
 
@@ -94,7 +92,7 @@ public class User implements UserModel {
             this.enabled = true;
         }
 
-        public Builder roles(Collection<Role> roles) {
+        public Builder roles(Collection<UserRole> roles) {
             this.roles = roles;
             return this;
         }

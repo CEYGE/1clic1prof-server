@@ -1,6 +1,7 @@
 package fr.clic1prof.serverapp.api.profile;
 
-import fr.clic1prof.serverapp.model.modifier.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.Studies;
+import fr.clic1prof.serverapp.model.profile.review.SpecialityModifier;
 import fr.clic1prof.serverapp.model.profile.Description;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import org.springframework.http.ResponseEntity;
@@ -15,5 +16,8 @@ public interface ITeacherProfileController extends IUserProfileController {
     ResponseEntity<?> updateDescription(UserBase user, @Valid @RequestBody Description description);
 
     @PutMapping("/speciality")
-    ResponseEntity<?> updateSpeciality(UserBase user, @Valid SpecialityModifier modifier);
+    ResponseEntity<?> updateSpeciality(UserBase user, @Valid @RequestBody SpecialityModifier modifier);
+
+    @PutMapping("/studies")
+    ResponseEntity<?> updateStudies(UserBase user, @Valid @RequestBody Studies studies);
 }
