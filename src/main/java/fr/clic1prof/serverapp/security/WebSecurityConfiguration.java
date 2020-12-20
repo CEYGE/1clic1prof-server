@@ -29,10 +29,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private AuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Autowired
-    private JwtRequestFilter filter;
+    private PasswordEncoder encoder;
 
     @Autowired
-    public PasswordEncoder encoder;
+    private JwtRequestFilter filter;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
