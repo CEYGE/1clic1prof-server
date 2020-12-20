@@ -9,7 +9,7 @@ public class StudentProfileDAO extends UserProfileDAO implements IStudentProfile
     @Override
     public boolean updateSchoolLevel(int id, SchoolLevel schoolLevel) {
 
-        String query = "UPDATE utilisateur SET user_niveauScolaire = ? WHERE user_id = ?;";
+        String query = "UPDATE student SET user_student_scholar_level_id = ? WHERE user_id = ?;";
 
         return this.template.update(query, schoolLevel.getValue(), id) > 0;
     }

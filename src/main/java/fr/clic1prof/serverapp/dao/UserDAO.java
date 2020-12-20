@@ -25,10 +25,10 @@ public class UserDAO implements IUserDAO {
     public Optional<UserModel> findByUsername(String username) {
 
         String query = "SELECT " +
-                "auth.id, auth.user_email, auth.user_pass, user_role " +
-                "FROM utilisateur " +
-                "JOIN (SELECT id, user_email, user_pass from auth_user AS auth WHERE user_email = ?) AS auth " +
-                "ON utilisateur.user_id = auth.id;";
+                "auth.id, auth.email, auth.password, user.user_role " +
+                "FROM user " +
+                "JOIN (SELECT id, email, password from auth_user WHERE email = ?) AS auth " +
+                "ON user.user_id = auth.id;";
 
         RowMapper<UserModel> mapper = this.getSimpleUserMapper();
 
@@ -45,20 +45,26 @@ public class UserDAO implements IUserDAO {
     @Transactional // If a request fails, restoring the previous state.
     public boolean register(Registration registration) {
 
-        String query1 = "INSERT INTO auth_user (user_pass, user_email) VALUES (?,?);";
+        String query1 = "INSERT INTO auth_user (email, password) VALUES (?,?);";
+        String query2 = "SELECT id FROM auth_user WHERE email = ?;";
+        String query3 = "UPDATE user SET user_first_name = ?, user_last_name = ?, user_role = ? WHERE user_id = ?;";
 
-        Email email = registration.getEmail();
+        int rows = this.template.update(query1,
+                registration.getEmail().getValue(),
+                registration.getEncodedPassword());
 
-        int rows = this.template.update(query1, registration.getEncodedPassword(), email.getValue());
+        // If no row has been affected, return false.
+        if(rows == 0) return false;
 
-        if(rows == 0) return false; // If no row has been affected, return false.
+        Integer id = this.template.queryForObject(query2, Integer.class, registration.getEmail().getValue());
 
-        String query2 = "UPDATE utilisateur SET user_nom = ?, user_prenom = ?, user_role = ?;";
+        if(id == null) return false;
 
-        rows = this.template.update(query2,
+        rows = this.template.update(query3,
                 registration.getFirstName().getValue(),
                 registration.getLastName().getValue(),
-                registration.getType().name());
+                registration.getType().name(),
+                id);
 
         return rows > 0; // If one row has been affected, return true.
     }
@@ -67,8 +73,8 @@ public class UserDAO implements IUserDAO {
         return (rs, i) -> {
 
             int id = rs.getInt("id");
-            String username = rs.getString("user_email");
-            String password = rs.getString("user_pass");
+            String username = rs.getString("email");
+            String password = rs.getString("password");
             String role = rs.getString("user_role");
 
             User.Builder builder = new User.Builder(id, username, password);
