@@ -41,11 +41,6 @@ public class StudentProfileController extends UserProfileController implements I
     }
 
     @Override
-    public ResponseEntity<?> updatePicture(UserBase base, Picture picture) {
-        return super.updatePicture(base, picture);
-    }
-
-    @Override
     public IUserProfileService getService() {
         return super.getService();
     }

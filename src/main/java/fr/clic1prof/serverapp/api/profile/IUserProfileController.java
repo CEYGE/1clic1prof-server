@@ -3,10 +3,12 @@ package fr.clic1prof.serverapp.api.profile;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.model.profile.Name;
-import fr.clic1prof.serverapp.model.file.Picture;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -22,5 +24,8 @@ public interface IUserProfileController {
     ResponseEntity<?> updateLastName(UserBase user, @Valid @RequestBody Name name);
 
     @PutMapping("/picture")
-    ResponseEntity<?> updatePicture(UserBase base, @RequestBody Picture picture);
+    ResponseEntity<?> updatePicture(UserBase base, @RequestPart("picture") MultipartFile file);
+
+    @DeleteMapping("/picture")
+    ResponseEntity<?> deletePicture(UserBase base);
 }

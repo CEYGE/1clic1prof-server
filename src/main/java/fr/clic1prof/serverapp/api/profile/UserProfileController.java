@@ -1,15 +1,18 @@
 package fr.clic1prof.serverapp.api.profile;
 
+import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
-import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.service.profile.IUserProfileService;
-import fr.clic1prof.serverapp.model.file.Picture;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 public abstract class UserProfileController implements IUserProfileController {
 
@@ -18,6 +21,9 @@ public abstract class UserProfileController implements IUserProfileController {
     public UserProfileController(IUserProfileService service) {
         this.service = service;
     }
+
+    // Récupérer plusieurs fichiers : @RequestParam("files") MultipartFile[] files
+    // Json + Fichiers : @RequestPart("files") MultipartFile[] files, @RequestPart("name") Name name
 
     @Override
     public ResponseEntity<?> updatePassword(UserBase user, @Valid @RequestBody PasswordModifier modifier) {
@@ -50,8 +56,29 @@ public abstract class UserProfileController implements IUserProfileController {
     }
 
     @Override
-    public ResponseEntity<?> updatePicture(UserBase base, @Valid @RequestBody Picture picture) {
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> updatePicture(UserBase base, MultipartFile file) {
+
+        boolean updated = false;
+
+        try { updated = this.service.updatePicture(base, file);
+        } catch (IOException ignored) {}
+
+        HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
+
+        return ResponseEntity.status(status).build();
+    }
+
+    @Override
+    public ResponseEntity<?> deletePicture(UserBase base) {
+
+        boolean updated = false;
+
+        try { updated = this.service.deletePicture(base);
+        } catch (IOException ignored) {}
+
+        HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
+
+        return ResponseEntity.status(status).build();
     }
 
     public IUserProfileService getService() {
