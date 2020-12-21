@@ -51,6 +51,11 @@ public class StudentProfileController extends UserProfileController implements I
     }
 
     @Override
+    public ResponseEntity<?> deletePicture(UserBase base) {
+        return super.deletePicture(base);
+    }
+
+    @Override
     public ResponseEntity<?> updateSchoolLevel(UserBase base, SchoolLevelIdMapper mapper) {
 
         boolean updated = this.getService().updateSchoolLevel(base, mapper);

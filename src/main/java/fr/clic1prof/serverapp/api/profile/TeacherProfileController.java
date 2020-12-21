@@ -51,6 +51,11 @@ public class TeacherProfileController extends UserProfileController implements I
     }
 
     @Override
+    public ResponseEntity<?> deletePicture(UserBase base) {
+        return super.deletePicture(base);
+    }
+
+    @Override
     public ResponseEntity<?> updateDescription(UserBase user, @Valid Description description) {
 
         boolean updated = this.getService().updateDescription(user, description);
