@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -42,6 +43,11 @@ public class TeacherProfileController extends UserProfileController implements I
     @Override
     public ResponseEntity<?> updateFirstName(UserBase user, @Valid Name name) {
         return super.updateFirstName(user, name);
+    }
+
+    @Override
+    public ResponseEntity<?> updatePicture(UserBase base, MultipartFile file) {
+        return super.updatePicture(base, file);
     }
 
     @Override

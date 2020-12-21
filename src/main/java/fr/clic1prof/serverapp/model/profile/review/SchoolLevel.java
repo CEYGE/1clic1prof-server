@@ -1,19 +1,20 @@
 package fr.clic1prof.serverapp.model.profile.review;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 public class SchoolLevel {
 
-    @NotNull
-    @Size(min = 2, max = 64)
-    private String level;
+    private int id;
+    private String label;
 
-    public SchoolLevel(String name) {
-        this.level = name;
+    public SchoolLevel(int id, String label) {
+        this.id = id;
+        this.label = label;
     }
 
-    public String getValue() {
-        return this.level;
+    public int getId() {
+        return this.id;
+    }
+
+    public String getLabel() {
+        return this.label;
     }
 }

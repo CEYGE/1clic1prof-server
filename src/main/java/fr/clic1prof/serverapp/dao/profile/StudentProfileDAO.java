@@ -1,16 +1,15 @@
 package fr.clic1prof.serverapp.dao.profile;
 
-import fr.clic1prof.serverapp.model.profile.review.SchoolLevel;
 import org.springframework.stereotype.Repository;
 
 @Repository("StudentProfileDAO")
 public class StudentProfileDAO extends UserProfileDAO implements IStudentProfileDAO {
 
     @Override
-    public boolean updateSchoolLevel(int id, SchoolLevel schoolLevel) {
+    public boolean updateSchoolLevel(int id, int schoolLevelId) {
 
-        String query = "UPDATE student SET user_student_scholar_level_id = ? WHERE user_id = ?;";
+        String query = "UPDATE student SET student_scholar_level_id = ? WHERE student_id = ?;";
 
-        return this.template.update(query, schoolLevel.getValue(), id) > 0;
+        return this.template.update(query, schoolLevelId, id) > 0;
     }
 }
