@@ -1,11 +1,11 @@
 package fr.clic1prof.serverapp.api.profile;
 
+import fr.clic1prof.serverapp.model.profile.Description;
+import fr.clic1prof.serverapp.model.profile.Name;
+import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.Studies;
 import fr.clic1prof.serverapp.model.profile.review.SpecialityModifier;
-import fr.clic1prof.serverapp.model.profile.Description;
-import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
-import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.user.UserRole;
 import fr.clic1prof.serverapp.service.profile.ITeacherProfileService;
 import fr.clic1prof.serverapp.service.profile.IUserProfileService;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -67,7 +66,12 @@ public class TeacherProfileController extends UserProfileController implements I
 
     @Override
     public ResponseEntity<?> updateStudies(UserBase user, @Valid Studies studies) {
-        return null;
+
+        boolean updated = this.getService().updateStudies(user, studies);
+
+        HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
+
+        return ResponseEntity.status(status).build();
     }
 
     @Override

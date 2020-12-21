@@ -24,7 +24,7 @@ public class TeacherProfileDAO extends UserProfileDAO implements ITeacherProfile
     @Override
     public boolean updateStudies(int id, Studies level) {
 
-        String query = "UPDATE teacher SET user_study_level = ? WHERE teacher_id = ?;";
+        String query = "UPDATE teacher SET teacher_study_level = ? WHERE teacher_id = ?;";
 
         return this.template.update(query, level.getValue(), id) > 0;
     }
