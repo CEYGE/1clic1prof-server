@@ -4,7 +4,7 @@ import fr.clic1prof.serverapp.model.profile.Description;
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.Studies;
-import fr.clic1prof.serverapp.model.profile.review.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.SpecialityModifier;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.model.user.UserRole;
 import fr.clic1prof.serverapp.service.profile.ITeacherProfileService;
@@ -28,6 +28,11 @@ public class TeacherProfileController extends UserProfileController implements I
     @Autowired
     public TeacherProfileController(@Qualifier("TeacherProfileService") IUserProfileService service) {
         super(service);
+    }
+
+    @Override
+    public ResponseEntity<?> getProfile(UserBase base) {
+        return super.getProfile(base);
     }
 
     @Override

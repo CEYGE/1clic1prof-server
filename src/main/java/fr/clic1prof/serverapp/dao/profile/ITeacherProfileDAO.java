@@ -1,6 +1,6 @@
 package fr.clic1prof.serverapp.dao.profile;
 
-import fr.clic1prof.serverapp.model.profile.review.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.SpecialityModifier;
 import fr.clic1prof.serverapp.model.profile.Description;
 import fr.clic1prof.serverapp.model.profile.Studies;
 

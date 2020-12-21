@@ -1,7 +1,6 @@
 package fr.clic1prof.serverapp.dao.profile;
 
-import fr.clic1prof.serverapp.model.file.Picture;
-import org.springframework.web.multipart.MultipartFile;
+import fr.clic1prof.serverapp.model.profile.model.Profile;
 
 import java.util.UUID;
 
@@ -18,4 +17,6 @@ public interface IUserProfileDAO {
     UUID deletePicture(int id);
 
     String getPassword(int id);
+
+    Profile getProfile(int id);
 }

@@ -1,6 +1,6 @@
 package fr.clic1prof.serverapp.service.profile;
 
-import fr.clic1prof.serverapp.dao.IStudentSchoolLevelDAO;
+import fr.clic1prof.serverapp.dao.other.IStudentSchoolLevelDAO;
 import fr.clic1prof.serverapp.dao.profile.IStudentProfileDAO;
 import fr.clic1prof.serverapp.dao.profile.IUserProfileDAO;
 import fr.clic1prof.serverapp.model.profile.SchoolLevelIdMapper;

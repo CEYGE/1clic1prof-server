@@ -1,4 +1,4 @@
-package fr.clic1prof.serverapp.dao;
+package fr.clic1prof.serverapp.dao.other;
 
 import fr.clic1prof.serverapp.model.profile.SchoolLevel;
 import org.springframework.beans.factory.annotation.Autowired;

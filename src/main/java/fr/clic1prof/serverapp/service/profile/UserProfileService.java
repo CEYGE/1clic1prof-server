@@ -6,6 +6,7 @@ import fr.clic1prof.serverapp.file.exceptions.FileStorageException;
 import fr.clic1prof.serverapp.model.file.Picture;
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
+import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -76,6 +77,11 @@ public abstract class UserProfileService implements IUserProfileService {
         this.storage.delete(uuid);
 
         return true;
+    }
+
+    @Override
+    public Profile getProfile(UserBase base) {
+        return this.dao.getProfile(base.getId());
     }
 
     public IUserProfileDAO getUserDAO() {

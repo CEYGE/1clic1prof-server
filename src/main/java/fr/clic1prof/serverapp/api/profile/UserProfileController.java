@@ -2,6 +2,7 @@ package fr.clic1prof.serverapp.api.profile;
 
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
+import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.service.profile.IUserProfileService;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,17 @@ public abstract class UserProfileController implements IUserProfileController {
 
     // Récupérer plusieurs fichiers : @RequestParam("files") MultipartFile[] files
     // Json + Fichiers : @RequestPart("files") MultipartFile[] files, @RequestPart("name") Name name
+
+    @Override
+    public ResponseEntity<?> getProfile(UserBase base) {
+
+        Profile profile = this.service.getProfile(base);
+
+        if(profile == null)
+            return ResponseEntity.unprocessableEntity().build();
+
+        return ResponseEntity.ok(profile);
+    }
 
     @Override
     public ResponseEntity<?> updatePassword(UserBase user, @Valid @RequestBody PasswordModifier modifier) {

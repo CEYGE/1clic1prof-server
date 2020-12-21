@@ -31,6 +31,11 @@ public class StudentProfileController extends UserProfileController implements I
     }
 
     @Override
+    public ResponseEntity<?> getProfile(UserBase base) {
+        return super.getProfile(base);
+    }
+
+    @Override
     public ResponseEntity<?> updatePassword(UserBase user, @Valid PasswordModifier modifier) {
         return super.updatePassword(user, modifier);
     }

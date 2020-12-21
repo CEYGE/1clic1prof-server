@@ -1,7 +1,7 @@
 package fr.clic1prof.serverapp.service.profile;
 
 import fr.clic1prof.serverapp.model.profile.Studies;
-import fr.clic1prof.serverapp.model.profile.review.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.SpecialityModifier;
 import fr.clic1prof.serverapp.model.profile.Description;
 import fr.clic1prof.serverapp.model.user.UserBase;
 

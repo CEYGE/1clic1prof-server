@@ -2,6 +2,7 @@ package fr.clic1prof.serverapp.service.profile;
 
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
+import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,4 +19,6 @@ public interface IUserProfileService {
     boolean updatePicture(UserBase base, MultipartFile file) throws IOException;
 
     boolean deletePicture(UserBase base) throws IOException;
+
+    Profile getProfile(UserBase base);
 }
