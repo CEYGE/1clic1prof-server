@@ -1,6 +1,5 @@
-package fr.clic1prof.serverapp.file.dao.storage;
+package fr.clic1prof.serverapp.file.storage;
 
-import fr.clic1prof.serverapp.file.exceptions.FileStorageException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -23,34 +22,34 @@ public abstract class AbstractFileStorage implements FileStorage {
     private String root;
 
     @Override
-    public UUID store(MultipartFile file) throws IOException {
+    public String store(MultipartFile file) throws IOException {
 
-        UUID uuid = UUID.randomUUID();
-        Path path = this.getPath(uuid);
+        String id = UUID.randomUUID().toString();
+        Path path = this.getPath(id);
 
         // Ensure that two paths cannot have the same UUID.
         // It is improbable but not impossible so it's better to do a check.
         while(Files.exists(path)) {
-            uuid = UUID.randomUUID();
-            path = this.getPath(uuid);
+            id = UUID.randomUUID().toString();
+            path = this.getPath(id);
         }
 
         Files.createDirectories(path.getParent());
         Files.write(path, file.getBytes());
 
-        return uuid;
+        return id;
     }
 
     @Override
-    public void delete(UUID uuid) throws IOException {
-        Path path = this.getPath(uuid);
+    public void delete(String id) throws IOException {
+        Path path = this.getPath(id);
         Files.deleteIfExists(path);
     }
 
     @Override
-    public Resource get(UUID uuid) {
+    public Resource get(String id) {
 
-        Path path = this.getPath(uuid);
+        Path path = this.getPath(id);
 
         FileSystemResource resource = new FileSystemResource(path);
 
@@ -63,28 +62,26 @@ public abstract class AbstractFileStorage implements FileStorage {
     }
 
     // Get a relative path with the UUID and the parent directory.
-    private Path getPath(UUID uuid) {
+    private Path getPath(String id) {
 
-        String path = this.getStringPath(uuid);
+        String path = this.getStringPath(id);
         Path folder = this.getDirectory();
 
         return Paths.get(folder.toString(), path);
     }
 
     // Get a relative path only using the UUID.
-    private String getStringPath(UUID uuid) {
-
-        String uuidToString = uuid.toString();
+    private String getStringPath(String id) {
 
         StringBuilder sb = new StringBuilder();
 
         for(int i = 0; i < TREE_LEVEL * HEXA_DIGIT_NBR; i += HEXA_DIGIT_NBR) {
 
-            for(int j = 0; j < HEXA_DIGIT_NBR; j++) sb.append(uuidToString.charAt(i + j));
+            for(int j = 0; j < HEXA_DIGIT_NBR; j++) sb.append(id.charAt(i + j));
 
             sb.append("/");
         }
-        sb.append(uuidToString);
+        sb.append(id);
 
         return sb.toString();
     }
