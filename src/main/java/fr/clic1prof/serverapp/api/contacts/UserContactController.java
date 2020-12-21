@@ -18,7 +18,7 @@ public class UserContactController implements ContactController {
     @Override
     public ResponseEntity<?> getContacts(UserBase base) {
 
-        Collection<ContactModel> contacts = this.service.getContacts();
+        Collection<ContactModel> contacts = this.service.getContacts(base);
 
         if(contacts == null) return ResponseEntity.unprocessableEntity().build();
 

@@ -43,16 +43,16 @@ public class UserProfileDAO implements IUserProfileDAO {
     }
 
     @Override
-    public boolean updatePicture(int id, UUID uuid) {
+    public boolean updatePicture(int id, String pictureId) {
 
         String query = "UPDATE user SET user_picture = ? WHERE user_id = ?;";
 
-        return this.template.update(query, uuid.toString(), id) > 0;
+        return this.template.update(query, pictureId, id) > 0;
     }
 
     @Override
     @Transactional
-    public UUID deletePicture(int id) {
+    public String deletePicture(int id) {
 
         String select = "SELECT user_picture FROM user WHERE user_id = ?;";
 
@@ -64,7 +64,7 @@ public class UserProfileDAO implements IUserProfileDAO {
 
         boolean deleted = this.template.update(delete, id) > 0;
 
-        return deleted ? UUID.fromString(uuid) : null;
+        return deleted ? uuid : null;
     }
 
     @Override

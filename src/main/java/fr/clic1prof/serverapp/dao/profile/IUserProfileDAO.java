@@ -12,9 +12,9 @@ public interface IUserProfileDAO {
 
     boolean updateLastName(int id, String lastName);
 
-    boolean updatePicture(int id, UUID uuid);
+    boolean updatePicture(int id, String pictureId);
 
-    UUID deletePicture(int id);
+    String deletePicture(int id);
 
     String getPassword(int id);
 

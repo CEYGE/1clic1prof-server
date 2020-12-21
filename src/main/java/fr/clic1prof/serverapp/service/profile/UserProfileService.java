@@ -1,9 +1,8 @@
 package fr.clic1prof.serverapp.service.profile;
 
 import fr.clic1prof.serverapp.dao.profile.IUserProfileDAO;
-import fr.clic1prof.serverapp.file.dao.storage.FileStorage;
 import fr.clic1prof.serverapp.file.exceptions.FileStorageException;
-import fr.clic1prof.serverapp.model.file.Picture;
+import fr.clic1prof.serverapp.file.storage.FileStorage;
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.UUID;
 
 public abstract class UserProfileService implements IUserProfileService {
 
@@ -22,7 +20,7 @@ public abstract class UserProfileService implements IUserProfileService {
     private PasswordEncoder encoder;
 
     @Autowired
-    @Qualifier("ProfileStorage")
+    @Qualifier("ProfileFileStorage")
     private FileStorage storage;
 
     @Autowired
@@ -57,26 +55,34 @@ public abstract class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public boolean updatePicture(UserBase base, MultipartFile file) throws IOException {
+    public boolean updatePicture(UserBase base, MultipartFile file) {
 
         if(!this.storage.isSupported(file))
             throw new FileStorageException("File not supported.");
 
-        UUID uuid = this.storage.store(file);
+        String id = null;
 
-        return this.dao.updatePicture(base.getId(), uuid);
+        try { id = this.storage.store(file);
+        } catch (IOException e) { e.printStackTrace(); }
+
+        if(id == null) return false;
+
+        return this.dao.updatePicture(base.getId(), id);
     }
 
     @Override
-    public boolean deletePicture(UserBase base) throws IOException {
+    public boolean deletePicture(UserBase base) {
 
-        UUID uuid = this.dao.deletePicture(base.getId());
+        String id = this.dao.deletePicture(base.getId());
 
-        if(uuid == null) return false;
+        if(id == null) return false;
 
-        this.storage.delete(uuid);
+        boolean updated = true;
 
-        return true;
+        try { this.storage.delete(id);
+        } catch (IOException e) { updated = false; e.printStackTrace(); }
+
+        return updated;
     }
 
     @Override
