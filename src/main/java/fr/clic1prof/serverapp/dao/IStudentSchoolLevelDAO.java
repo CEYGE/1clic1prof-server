@@ -1,6 +1,6 @@
 package fr.clic1prof.serverapp.dao;
 
-import fr.clic1prof.serverapp.model.profile.review.SchoolLevel;
+import fr.clic1prof.serverapp.model.profile.SchoolLevel;
 
 import java.util.Collection;
 

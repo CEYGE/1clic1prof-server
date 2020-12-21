@@ -1,16 +1,12 @@
 package fr.clic1prof.serverapp.dao;
 
-import fr.clic1prof.serverapp.model.profile.review.SchoolLevel;
+import fr.clic1prof.serverapp.model.profile.SchoolLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @Repository("StudentSchoolLevelDAO")
 public class StudentSchoolLevelDAO implements IStudentSchoolLevelDAO {

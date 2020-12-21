@@ -1,4 +1,4 @@
-package fr.clic1prof.serverapp.model.profile.review;
+package fr.clic1prof.serverapp.model.profile;
 
 public class SchoolLevel {
 
