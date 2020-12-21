@@ -1,20 +1,22 @@
 package fr.clic1prof.serverapp.file.service;
 
+import fr.clic1prof.serverapp.file.model.Document;
 import fr.clic1prof.serverapp.file.model.DomainType;
-import fr.clic1prof.serverapp.file.exceptions.FileStorageException;
-import fr.clic1prof.serverapp.file.model.ResourceFile;
 import fr.clic1prof.serverapp.model.user.UserBase;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 
 public interface IFileService {
 
-    void storeResource(UserBase owner, DomainType type, MultipartFile file) throws FileStorageException;
+    boolean storeResource(UserBase owner, DomainType type, MultipartFile file);
 
-    void deleteResource(UserBase owner, DomainType type, int id) throws FileStorageException;
+    boolean deleteResource(UserBase owner, DomainType type, int id);
 
-    ResourceFile getResource(DomainType type, int id) throws FileStorageException;
+    Resource getResource(DomainType type, int id);
 
-    Collection<ResourceFile> getResources(DomainType type, int... id) throws FileStorageException;
+    Document getDocument(int id);
+
+    Collection<Document> getResources(int... ids);
 }

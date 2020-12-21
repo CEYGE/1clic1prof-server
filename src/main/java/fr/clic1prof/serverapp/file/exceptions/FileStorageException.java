@@ -1,8 +1,6 @@
 package fr.clic1prof.serverapp.file.exceptions;
 
-import java.io.IOException;
-
-public class FileStorageException extends IOException {
+public class FileStorageException extends RuntimeException {
 
     public FileStorageException(String message) {
         super(message);

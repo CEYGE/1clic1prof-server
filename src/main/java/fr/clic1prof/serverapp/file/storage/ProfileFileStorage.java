@@ -1,4 +1,4 @@
-package fr.clic1prof.serverapp.file.dao.storage;
+package fr.clic1prof.serverapp.file.storage;
 
 import fr.clic1prof.serverapp.file.model.DomainType;
 import fr.clic1prof.serverapp.file.validation.FileValidator;
@@ -14,8 +14,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-@Component("ProfileStorage")
-public class ProfileStorage extends AbstractFileStorage {
+@Component("ProfileFileStorage")
+public class ProfileFileStorage extends AbstractFileStorage {
 
     private static final List<MediaType> SUPPORTED_TYPES = Arrays.asList(MediaType.IMAGE_PNG, MediaType.IMAGE_JPEG);
 
@@ -25,7 +25,7 @@ public class ProfileStorage extends AbstractFileStorage {
     private FileValidator validator;
 
     @Autowired
-    public ProfileStorage(@Qualifier("ProfilePictureValidator") FileValidator validator) {
+    public ProfileFileStorage(@Qualifier("ProfileFileValidator") FileValidator validator) {
         this.validator = validator;
     }
 

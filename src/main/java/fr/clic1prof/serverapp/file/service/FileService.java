@@ -1,75 +1,103 @@
 package fr.clic1prof.serverapp.file.service;
 
-import fr.clic1prof.serverapp.file.model.DomainType;
+import fr.clic1prof.serverapp.file.dao.IDocumentDAO;
 import fr.clic1prof.serverapp.file.exceptions.FileStorageException;
-import fr.clic1prof.serverapp.file.model.ResourceFile;
-import fr.clic1prof.serverapp.file.dao.storage.FileStorage;
+import fr.clic1prof.serverapp.file.model.DomainType;
+import fr.clic1prof.serverapp.file.storage.FileStorage;
+import fr.clic1prof.serverapp.file.model.Document;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
+@Service("FileService")
 public class FileService implements IFileService {
 
+    private IDocumentDAO dao;
+    private List<FileStorage> storages;
+
     @Autowired
-    public List<FileStorage> storages;
+    public FileService(@Qualifier("DocumentDAO") IDocumentDAO dao, List<FileStorage> storages) {
+        this.dao = dao;
+        this.storages = storages;
+    }
 
     @Override
-    public void storeResource(UserBase owner, DomainType type, MultipartFile file) throws FileStorageException {
+    public boolean storeResource(UserBase owner, DomainType type, MultipartFile file) {
 
-        Optional<FileStorage> optional = this.findByDomain(type);
-
-        if(!optional.isPresent())
-            throw new FileStorageException("Storage not found.");
-
-        FileStorage storage = optional.get();
+        FileStorage storage = this.getFileStorage(type);
 
         if(!storage.isSupported(file))
             throw new FileStorageException("File not supported.");
 
-        // UUID uuid = storage.store(file);
+        String id;
+
+        try { id = storage.store(file);
+        } catch (IOException e) { return false; }
+
+        Document document = new Document.Builder(file.getOriginalFilename(), id, owner.getId()).build();
+
+        return this.dao.addDocument(document);
     }
 
     @Override
-    public void deleteResource(UserBase owner, DomainType type, int id) throws FileStorageException {
+    public boolean deleteResource(UserBase owner, DomainType type, int id) {
 
-        Optional<FileStorage> optional = this.findByDomain(type);
+        Document document = this.dao.getDocument(id);
 
-        if(!optional.isPresent())
-            throw new FileStorageException("Storage not found.");
+        if(document == null) return false;
 
-        FileStorage storage = optional.get();
+        FileStorage storage = this.getFileStorage(type);
+
+        boolean deleted = false;
+
+        try {
+            storage.delete(document.getPath());
+            deleted = this.dao.deleteDocument(id);
+        } catch (IOException e) { e.printStackTrace(); }
+
+        return deleted;
     }
 
     @Override
-    public ResourceFile getResource(DomainType type, int id) throws FileStorageException {
+    public Resource getResource(DomainType type, int id) {
 
-        Optional<FileStorage> optional = this.findByDomain(type);
+        Document document = this.getDocument(id);
+        FileStorage storage = this.getFileStorage(type);
 
-        if(!optional.isPresent())
-            throw new FileStorageException("Storage not found.");
-
-        return null;
+        return storage.get(document.getPath());
     }
 
     @Override
-    public Collection<ResourceFile> getResources(DomainType type, int... id) throws FileStorageException {
+    public Document getDocument(int id) {
+        return this.dao.getDocument(id);
+    }
 
-        Optional<FileStorage> optional = this.findByDomain(type);
-
-        if(!optional.isPresent())
-            throw new FileStorageException("Storage not found.");
-
-        return null;
+    @Override
+    public Collection<Document> getResources(int... ids) {
+        return this.dao.getDocuments(ids);
     }
 
     private Optional<FileStorage> findByDomain(DomainType type) {
         return this.storages.stream()
                 .filter(storage -> storage.getDomainType().equals(type))
                 .findFirst();
+    }
+
+    private FileStorage getFileStorage(DomainType type) {
+
+        Optional<FileStorage> optional = this.findByDomain(type);
+
+        if(!optional.isPresent())
+            throw new FileStorageException("Storage not found.");
+
+        return optional.get();
     }
 }
