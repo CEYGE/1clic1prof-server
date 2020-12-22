@@ -1,5 +1,7 @@
 package fr.clic1prof.serverapp.model.contacts;
 
+import java.util.Objects;
+
 public class Contact implements ContactModel {
 
     private String firstName, lastName;
@@ -17,5 +19,17 @@ public class Contact implements ContactModel {
     @Override
     public String getLastName() {
         return this.lastName;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+
+        if (this == object) return true;
+
+        if (!(object instanceof Contact)) return false;
+
+        Contact contact = (Contact) object;
+
+        return getFirstName().equals(contact.getFirstName()) && getLastName().equals(contact.getLastName());
     }
 }

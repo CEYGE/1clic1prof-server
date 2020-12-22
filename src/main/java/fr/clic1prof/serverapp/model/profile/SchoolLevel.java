@@ -1,5 +1,7 @@
 package fr.clic1prof.serverapp.model.profile;
 
+import java.util.Objects;
+
 public class SchoolLevel {
 
     private int id;
@@ -16,5 +18,17 @@ public class SchoolLevel {
 
     public String getLabel() {
         return this.label;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+
+        if (this == object) return true;
+
+        if (!(object instanceof SchoolLevel)) return false;
+
+        SchoolLevel level = (SchoolLevel) object;
+
+        return getId() == level.getId() && Objects.equals(getLabel(), level.getLabel());
     }
 }
