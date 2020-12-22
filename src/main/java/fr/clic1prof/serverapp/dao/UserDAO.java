@@ -46,8 +46,7 @@ public class UserDAO implements IUserDAO {
     public boolean register(Registration registration) {
 
         String query1 = "INSERT INTO auth_user (email, password) VALUES (?,?);";
-        String query2 = "SELECT id FROM auth_user WHERE email = ?;";
-        String query3 = "UPDATE user SET user_first_name = ?, user_last_name = ?, user_role = ? WHERE user_id = ?;";
+        String query3 = "UPDATE user SET user_first_name = ?, user_last_name = ?, user_role = ? WHERE user_id = (SELECT id FROM auth_user WHERE email = ?);";
 
         int rows = this.template.update(query1,
                 registration.getEmail().getValue(),
@@ -56,15 +55,11 @@ public class UserDAO implements IUserDAO {
         // If no row has been affected, return false.
         if(rows == 0) return false;
 
-        Integer id = this.template.queryForObject(query2, Integer.class, registration.getEmail().getValue());
-
-        if(id == null) return false;
-
         rows = this.template.update(query3,
                 registration.getFirstName().getValue(),
                 registration.getLastName().getValue(),
                 registration.getType().name(),
-                id);
+                registration.getEmail().getValue());
 
         return rows > 0; // If one row has been affected, return true.
     }
