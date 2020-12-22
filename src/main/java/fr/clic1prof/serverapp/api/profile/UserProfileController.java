@@ -27,6 +27,7 @@ public abstract class UserProfileController implements IUserProfileController {
     @Override
     public ResponseEntity<?> getProfile(UserBase base) {
 
+        // TODO complete profile by adding picture in http request body.
         Profile profile = this.service.getProfile(base);
 
         if(profile == null)
