@@ -34,6 +34,17 @@ public class Registration {
 
     private String encodedPassword;
 
+    // Used by JSON deserializer.
+    private Registration() {}
+
+    public Registration(Name firstName, Name lastName, Email email, Password password, RegistrationType type) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.type = type;
+    }
+
     public Name getFirstName() {
         return this.firstName;
     }
