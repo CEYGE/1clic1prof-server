@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class Name {
 
     @NotNull @NotBlank
-    @Size(min = 2, max = 64)
+    @Size(min = 2, max = 32)
     @JsonProperty("name")
     private String name;
 
