@@ -5,8 +5,8 @@ import fr.clic1prof.serverapp.security.jwt.JwtRequest;
 import fr.clic1prof.serverapp.security.jwt.JwtResponse;
 import fr.clic1prof.serverapp.security.jwt.token.Token;
 import fr.clic1prof.serverapp.security.jwt.token.TokenProvider;
+import fr.clic1prof.serverapp.service.IUserService;
 import fr.clic1prof.serverapp.service.JwtUserDetailsService;
-import fr.clic1prof.serverapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class UserController implements IUserController {
     private JwtUserDetailsService jwtService;
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @Autowired
     private TokenProvider provider;
