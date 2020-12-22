@@ -6,13 +6,13 @@ public class Email {
 
     @NotNull
     @javax.validation.constraints.Email
-    private String username;
+    private String email;
 
-    public Email(String username) {
-        this.username = username;
+    public Email(String email) {
+        this.email = email;
     }
 
-    public String getValue() {
-        return this.username;
+    public String getEmail() {
+        return this.email;
     }
 }
