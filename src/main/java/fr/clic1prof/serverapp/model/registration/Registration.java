@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.model.registration;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -106,7 +107,7 @@ public class Registration {
         }
 
         private Optional<String> isJsonValid(JsonNode node) {
-            return Arrays.stream(FIELDS).filter(field -> !node.has(field)).findFirst();
+            return Arrays.stream(FIELDS).filter(field -> !node.has(field) || node.get(field).isNull()).findFirst();
         }
     }
 }
