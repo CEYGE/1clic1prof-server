@@ -11,7 +11,7 @@ import javax.validation.Valid;
 public interface IUserController {
 
     @PostMapping("/login")
-    ResponseEntity<?> login(@RequestBody JwtRequest request);
+    ResponseEntity<?> login(@Valid @RequestBody JwtRequest request);
 
     @PostMapping("/register")
     ResponseEntity<?> register(@Valid @RequestBody Registration registration);

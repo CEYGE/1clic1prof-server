@@ -1,13 +1,14 @@
 package fr.clic1prof.serverapp.security.jwt;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class JwtResponse implements Serializable {
+public class JwtResponse {
 
-    private static final long serialVersionUID = 3721452015956508786L;
-
+    @JsonProperty("token")
     private final String token;
 
+    @JsonCreator
     public JwtResponse(String token) {
         this.token = token;
     }

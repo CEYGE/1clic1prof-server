@@ -1,11 +1,11 @@
 package fr.clic1prof.serverapp.security.jwt;
 
-import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-public class JwtRequest implements Serializable {
+public class JwtRequest {
 
-    private static final long serialVersionUID = 1996437970603380085L;
-
+    @NotNull @NotBlank
     private String username, password;
 
     public JwtRequest(String username, String password) {
