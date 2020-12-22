@@ -1,23 +1,31 @@
 package fr.clic1prof.serverapp.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.clic1prof.serverapp.model.registration.Registration;
+import fr.clic1prof.serverapp.model.registration.RegistrationType;
 import fr.clic1prof.serverapp.security.jwt.JwtRequest;
 import fr.clic1prof.serverapp.security.jwt.JwtResponse;
+import io.jsonwebtoken.lang.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.util.Assert;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestPropertySource(locations="classpath:application-test.properties")
 public class UserControllerTest {
 
     @Autowired
@@ -27,158 +35,154 @@ public class UserControllerTest {
     private ObjectMapper mapper;
 
     @Test
-    public void test_successLogin() throws Exception {
+    public void test_successStudentLogin() throws Exception {
 
-        JwtRequest request = new JwtRequest("test.student@test.com", "UnRenard60**");
-
-        MvcResult result = this.mvc.perform(MockMvcRequestBuilders.post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
+        MvcResult result = this.mvc.perform(this.getLoginBuilder("test1.student@test.com", "UnRenard60**"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
-        String content = result.getResponse().getContentAsString();
-
-        JwtResponse response = this.mapper.readValue(content, JwtResponse.class);
+        JwtResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), JwtResponse.class);
 
         Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getToken());
+        Assert.hasText(response.getToken(), "Empty token.");
+    }
+
+    @Test
+    public void test_successTeacherLogin() throws Exception {
+
+        MvcResult result = this.mvc.perform(this.getLoginBuilder("test1.teacher@test.com", "UnRenard60**"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        JwtResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), JwtResponse.class);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getToken());
         Assert.hasText(response.getToken(), "Empty token.");
     }
 
     @Test
     public void test_errorLoginPartialCredentials() throws Exception {
 
-        // Without credentials.
-        this.mvc.perform(MockMvcRequestBuilders.post("/login")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        this.mvc.perform(this.getLoginBuilder(null, "UnRenard60**"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        // With email only.
-        JwtRequest missingEmailRequest = new JwtRequest(null, "UnRenard60**");
+        this.mvc.perform(this.getLoginBuilder("test1.student@test.com", null))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        this.mvc.perform(MockMvcRequestBuilders.post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(missingEmailRequest)))
-                .andExpect(status().isBadRequest());
+        this.mvc.perform(this.getLoginBuilder(null, null))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        // With password only.
-        JwtRequest missingPasswordRequest = new JwtRequest("InvalidEmail", null);
-
-        this.mvc.perform(MockMvcRequestBuilders.post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(missingPasswordRequest)))
-                .andExpect(status().isBadRequest());
-
-        // Without email and password.
-        JwtRequest missingAll = new JwtRequest(null, null);
-
-        this.mvc.perform(MockMvcRequestBuilders.post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(missingAll)))
-                .andExpect(status().isBadRequest());
+        this.mvc.perform(this.getLoginBuilder("", ""))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     public void test_errorLoginInvalidCredentials() throws Exception {
 
-        // With bad email.
-        JwtRequest request1 = new JwtRequest("InvalidEmail", "UnRenard60**");
+        this.mvc.perform(this.getLoginBuilder("invalid_user", "UnRenard60**"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
-        this.mvc.perform(MockMvcRequestBuilders.post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(request1)))
-                .andExpect(status().isUnauthorized());
+        this.mvc.perform(this.getLoginBuilder("test1.student@test.com", "invalid_password"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
-        // With bad password.
-        JwtRequest request2 = new JwtRequest("test.student@", "RandomPassword");
-
-        this.mvc.perform(MockMvcRequestBuilders.post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(request2)))
-                .andExpect(status().isUnauthorized());
+        this.mvc.perform(this.getLoginBuilder("invalid_user", "invalid_password"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
     public void test_successRegistration() throws Exception {
 
-        RegistrationTest registration = new RegistrationTest("james.bond@mi6.uk", "JamesBond007**", "James", "Bond", "STUDENT");
-
-        this.mvc.perform(MockMvcRequestBuilders.post("/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(registration)))
-                .andExpect(status().isNoContent());
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@mi6.uk", "JamesBond007**", RegistrationType.STUDENT.name()))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
     @Test
     public void test_errorRegistration() throws Exception {
 
-        RegistrationTest registration;
+        // Missing first name.
+        this.mvc.perform(this.getRegistrationBuilder(null, "Bond", "james.bond@mi6.uk", "JamesBond007**", RegistrationType.STUDENT.name()))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        // Invalid email
-        this.performBadRegistration(new RegistrationTest("james.bond", "JamesBond007**", "James", "Bond", "STUDENT"));
-        this.performBadRegistration(new RegistrationTest("james.bond@", "JamesBond007**", "James", "Bond", "STUDENT"));
-        this.performBadRegistration(new RegistrationTest("james.bond@mi6", "JamesBond007**", "James", "Bond", "STUDENT"));
+        // Missing last name.
+        this.mvc.perform(this.getRegistrationBuilder("James", null, "james.bond@mi6.uk", "JamesBond007**", RegistrationType.STUDENT.name()))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        // Invalid password
-        // A passwords need at least 1 lowercase, 1 uppercase, one digit and one special char.
-        // It length must be at least 8 chars.
+        // Missing email.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", null, "JamesBond007**", RegistrationType.STUDENT.name()))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        // With lowercase only.
-        this.performBadRegistration(new RegistrationTest("james.bond@mi6.uk", "james", "James", "Bond", "STUDENT"));
+        // Missing password.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@mi6.uk", null, RegistrationType.STUDENT.name()))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        // With uppercase only.
-        this.performBadRegistration(new RegistrationTest("james.bond@mi6.uk", "JAMES", "James", "Bond", "STUDENT"));
+        // Missing registration type.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@mi6.uk", "JamesBond007**", null))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        // With uppercase and lowercase.
-        this.performBadRegistration(new RegistrationTest("james.bond@mi6.uk", "JAMES", "James", "Bond", "STUDENT"));
+        // Bad first name.
+        this.mvc.perform(this.getRegistrationBuilder("J", "Bond", "james.bond@mi6.uk", "JamesBond007**", "STUDENT"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        // With uppercase, lowercase and digits.
-        this.performBadRegistration(new RegistrationTest("james.bond@mi6.uk", "JAmes007", "James", "Bond", "STUDENT"));
+        // Bad last name.
+        this.mvc.perform(this.getRegistrationBuilder("James", "B", "james.bond@mi6.uk", "JamesBond007**", "STUDENT"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        // With uppercase
-        this.performBadRegistration(new RegistrationTest("james.bond@mi6.uk", "JAMES", "James", "Bond", "STUDENT"));
+        // Bad email 1.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond", "JamesBond007**", "STUDENT"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        // Bad email 2.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@", "JamesBond007**", "STUDENT"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        // Bad email 3.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.uk", "JamesBond007**", "STUDENT"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        // Bad password 1.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@mi6.uk", "james", "STUDENT"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        // Bad password 2.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@mi6.uk", "jamesBond", "STUDENT"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        // Bad password 3.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@mi6.uk", "jamesBond007", "STUDENT"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        // Bad password 4.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@mi6.uk", "jamesBond**", "STUDENT"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        // Bad registration type.
+        this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@mi6.uk", "JamesBond007**", "TEACHER"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-    private void performBadRegistration(RegistrationTest registration) throws Exception {
+    private MockHttpServletRequestBuilder getLoginBuilder(String email, String password) throws JsonProcessingException {
 
-        this.mvc.perform(MockMvcRequestBuilders.post("/register")
+        JwtRequest request = new JwtRequest(email, password);
+
+        return MockMvcRequestBuilders.post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(registration)))
-                .andExpect(status().isBadRequest());
+                .content(this.mapper.writeValueAsString(request));
     }
 
-    private static class RegistrationTest {
+    private MockHttpServletRequestBuilder getRegistrationBuilder(String firstName, String lastName, String email, String password, String type) throws JsonProcessingException {
 
-        private String email, password;
-        private String firstName, lastName;
-        private String type;
+        ObjectNode node = this.mapper.createObjectNode();
 
-        public RegistrationTest(String email, String password, String firstName, String lastName, String type) {
-            this.email = email;
-            this.password = password;
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.type = type;
-        }
+        node.put("firstName", firstName);
+        node.put("lastName", lastName);
+        node.put("email", email);
+        node.put("password", password);
+        node.put("type", type);
 
-        public String getEmail() {
-            return this.email;
-        }
-
-        public String getPassword() {
-            return this.password;
-        }
-
-        public String getFirstName() {
-            return this.firstName;
-        }
-
-        public String getLastName() {
-            return this.lastName;
-        }
-
-        public String getType() {
-            return this.type;
-        }
+        return MockMvcRequestBuilders.post("/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.mapper.writeValueAsString(node));
     }
 }
