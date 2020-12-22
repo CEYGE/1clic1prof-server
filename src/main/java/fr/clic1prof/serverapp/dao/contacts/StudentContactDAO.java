@@ -25,10 +25,10 @@ public class StudentContactDAO implements ContactDAO {
     @Override
     public Collection<ContactModel> getContacts(int id) {
 
-        String query = "SELECT user_first_name, user_last_name, teacher_study_level " +
+        String query = "SELECT DISTINCT user_first_name, user_last_name, teacher_study_level " +
                 "FROM teaching JOIN user ON teaching_teacher_id = user_id " +
-                "JOIN teacher ON teacher_id = teaching_teacher__id " +
-                "WHERE teaching_student_id = ?";
+                "JOIN teacher ON teacher_id = teaching_teacher_id " +
+                "WHERE teaching_student_id = ?;";
 
         RowMapper<ContactModel> mapper = (result, i) -> {
 
@@ -38,6 +38,6 @@ public class StudentContactDAO implements ContactDAO {
 
             return new TeacherContact(firstName, lastName, studyLevel);
         };
-        return this.template.query(query, mapper, ContactModel.class, id);
+        return this.template.query(query, mapper, id);
     }
 }
