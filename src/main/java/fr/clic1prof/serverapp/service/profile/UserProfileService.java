@@ -46,12 +46,12 @@ public abstract class UserProfileService implements IUserProfileService {
 
     @Override
     public boolean updateFirstName(UserBase user, Name firstName) {
-        return this.getUserDAO().updateFirstName(user.getId(), firstName.getValue());
+        return this.getUserDAO().updateFirstName(user.getId(), firstName.getName());
     }
 
     @Override
     public boolean updateLastName(UserBase user, Name lastName) {
-        return this.getUserDAO().updateLastName(user.getId(), lastName.getValue());
+        return this.getUserDAO().updateLastName(user.getId(), lastName.getName());
     }
 
     @Override

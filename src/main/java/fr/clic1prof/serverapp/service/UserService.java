@@ -36,6 +36,6 @@ public class UserService implements IUserService {
 
     @Override
     public boolean isRegistered(Email email) {
-        return this.dao.findByUsername(email.getValue()).isPresent();
+        return this.dao.findByUsername(email.getEmail()).isPresent();
     }
 }

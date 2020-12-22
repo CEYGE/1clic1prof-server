@@ -3,7 +3,6 @@ package fr.clic1prof.serverapp.dao;
 import fr.clic1prof.serverapp.model.registration.Registration;
 import fr.clic1prof.serverapp.model.user.User;
 import fr.clic1prof.serverapp.model.user.UserModel;
-import fr.clic1prof.serverapp.model.profile.Email;
 import fr.clic1prof.serverapp.model.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -49,17 +48,17 @@ public class UserDAO implements IUserDAO {
         String query3 = "UPDATE user SET user_first_name = ?, user_last_name = ?, user_role = ? WHERE user_id = (SELECT id FROM auth_user WHERE email = ?);";
 
         int rows = this.template.update(query1,
-                registration.getEmail().getValue(),
+                registration.getEmail().getEmail(),
                 registration.getEncodedPassword());
 
         // If no row has been affected, return false.
         if(rows == 0) return false;
 
         rows = this.template.update(query3,
-                registration.getFirstName().getValue(),
-                registration.getLastName().getValue(),
+                registration.getFirstName().getName(),
+                registration.getLastName().getName(),
                 registration.getType().name(),
-                registration.getEmail().getValue());
+                registration.getEmail().getEmail());
 
         return rows > 0; // If one row has been affected, return true.
     }
