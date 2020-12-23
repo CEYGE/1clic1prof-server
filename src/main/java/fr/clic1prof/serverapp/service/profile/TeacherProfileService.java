@@ -36,9 +36,7 @@ public class TeacherProfileService extends UserProfileService implements ITeache
     @Override
     public boolean updateSpeciality(UserBase user, SpecialityModifier modifier) {
 
-        boolean exists = this.specialityDAO.exists(modifier.getToReplace(), modifier.getReplaceWith());
-
-        if(!exists) return false;
+        if(!this.isValid(user, modifier)) return false;
 
         return this.getUserDAO().updateSpeciality(user.getId(), modifier);
     }
@@ -51,5 +49,25 @@ public class TeacherProfileService extends UserProfileService implements ITeache
     @Override
     public ITeacherProfileDAO getUserDAO() {
         return (ITeacherProfileDAO) super.getUserDAO();
+    }
+
+    private boolean isValid(UserBase base, SpecialityModifier modifier) {
+
+        Collection<Speciality> owned = this.specialityDAO.getSpecialities(base.getId());
+
+        // Checking that the user own the speciality he wants to replace.
+        boolean isReplaceWithOwned = owned.stream()
+                .anyMatch(speciality -> speciality.getId() == modifier.getToReplace());
+
+        if(!isReplaceWithOwned) return false;
+
+        // Checking that the user doesn't own the speciality he wants to replace with.
+        boolean isToReplaceValid = owned.stream()
+                .noneMatch(speciality -> speciality.getId() == modifier.getReplaceWith());
+
+        if(!isToReplaceValid) return false;
+
+        // Checking that the speciality he wants to replace with exists.
+        return this.specialityDAO.exists(modifier.getReplaceWith());
     }
 }
