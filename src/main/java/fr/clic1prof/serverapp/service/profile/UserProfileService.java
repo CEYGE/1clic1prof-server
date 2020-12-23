@@ -57,8 +57,7 @@ public abstract class UserProfileService implements IUserProfileService {
     @Override
     public boolean updatePicture(UserBase base, MultipartFile file) {
 
-        if(!this.storage.isSupported(file))
-            throw new FileStorageException("File not supported.");
+        if(!this.storage.isSupported(file)) return false;
 
         String id = null;
 
