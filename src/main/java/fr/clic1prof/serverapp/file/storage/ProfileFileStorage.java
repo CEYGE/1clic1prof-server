@@ -9,6 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -46,6 +49,27 @@ public class ProfileFileStorage extends AbstractFileStorage {
 
     @Override
     public boolean isSupported(MultipartFile file) {
+        return this.checkContentBasedType(file) && this.checkProvidedType(file);
+    }
+
+    private boolean checkContentBasedType(MultipartFile file) {
+
+        boolean supported = false;
+
+        try {
+
+            String contentBasedType = URLConnection.guessContentTypeFromStream(file.getInputStream());
+
+            if(contentBasedType == null) return false;
+
+            supported = SUPPORTED_TYPES.contains(MediaType.parseMediaType(contentBasedType));
+
+        } catch (IOException e) { e.printStackTrace(); }
+
+        return supported;
+    }
+
+    private boolean checkProvidedType(MultipartFile file) {
 
         if(file.getContentType() == null) return false;
 
