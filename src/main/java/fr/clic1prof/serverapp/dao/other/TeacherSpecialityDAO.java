@@ -33,10 +33,10 @@ public class TeacherSpecialityDAO implements ITeacherSpecialityDAO {
     public Collection<Speciality> getSpecialities(int id) {
 
         String query = "SELECT subject_id, subject_name FROM subject " +
-                "JOIN teachable_subject ON teachable_subject_id = subject_id" +
+                "JOIN teachable_subject ON teachable_subject_id = subject_id " +
                 "WHERE teachable_user_id = ?";
 
-        return this.template.query(query, this.getSpecialityMapper(), Speciality.class);
+        return this.template.query(query, this.getSpecialityMapper(), id);
     }
 
     @Override
@@ -44,14 +44,14 @@ public class TeacherSpecialityDAO implements ITeacherSpecialityDAO {
 
         String query = "SELECT * FROM subject;";
 
-        return this.template.query(query, this.getSpecialityMapper(), Speciality.class);
+        return this.template.query(query, this.getSpecialityMapper());
     }
 
     private RowMapper<Speciality> getSpecialityMapper() {
         return (result, i) -> {
 
             int id = result.getInt("subject_id");
-            String label = result.getString("subject_label");
+            String label = result.getString("subject_name");
 
             return new Speciality(id, label);
         };
