@@ -4,9 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.clic1prof.serverapp.model.profile.Name;
-import fr.clic1prof.serverapp.security.jwt.JwtRequest;
-import fr.clic1prof.serverapp.security.jwt.JwtResponse;
-import org.junit.jupiter.api.Test;
+import fr.clic1prof.serverapp.security.jwt.authentication.AuthenticationRequest;
+import fr.clic1prof.serverapp.security.jwt.authentication.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -36,7 +35,7 @@ public class UserProfileControllerTest {
 
     public void login(String email, String password) throws Exception {
 
-        JwtRequest request = new JwtRequest(email, password);
+        AuthenticationRequest request = new AuthenticationRequest(email, password);
 
         MvcResult result = this.mvc.perform(MockMvcRequestBuilders.post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -46,7 +45,7 @@ public class UserProfileControllerTest {
 
         String content = result.getResponse().getContentAsString();
 
-        this.token = this.mapper.readValue(content, JwtResponse.class).getToken();
+        this.token = this.mapper.readValue(content, AuthenticationResponse.class).getToken();
     }
 
     public void test_updateFirstName(String baseURI) throws Exception {

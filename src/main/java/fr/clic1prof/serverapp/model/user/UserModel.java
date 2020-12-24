@@ -6,5 +6,5 @@ import java.util.Collection;
 
 public interface UserModel extends UserBase, UserDetails {
 
-    Collection<UserRole> getRoles();
+    UserRole getRole();
 }

@@ -86,6 +86,9 @@ public abstract class UserProfileService implements IUserProfileService {
 
     @Override
     public Profile getProfile(UserBase base) {
+
+        Profile profile = this.dao.getProfile(base.getId());
+
         return this.dao.getProfile(base.getId());
     }
 

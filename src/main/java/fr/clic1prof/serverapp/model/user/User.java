@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class User implements UserModel {
@@ -13,7 +14,7 @@ public class User implements UserModel {
     private String username;
     private String password;
     private boolean locked, enabled;
-    private Collection<UserRole> roles;
+    private UserRole role;
 
     // Used by Builder.
     private User() {}
@@ -25,9 +26,7 @@ public class User implements UserModel {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
+        return Collections.singletonList(new SimpleGrantedAuthority(this.role.getName()));
     }
 
     @Override
@@ -61,8 +60,8 @@ public class User implements UserModel {
     }
 
     @Override
-    public Collection<UserRole> getRoles() {
-        return this.roles;
+    public UserRole getRole() {
+        return this.role;
     }
 
     public static class Builder {
@@ -71,7 +70,7 @@ public class User implements UserModel {
         private final String username, password;
 
         private boolean locked, enabled;
-        private Collection<UserRole> roles;
+        private UserRole role;
 
         public Builder(int id, String username, String password) {
 
@@ -87,13 +86,12 @@ public class User implements UserModel {
             this.id = id;
             this.username = username;
             this.password = password;
-            this.roles = new ArrayList<>();
             this.locked = false;
             this.enabled = true;
         }
 
-        public Builder roles(Collection<UserRole> roles) {
-            this.roles = roles;
+        public Builder role(UserRole role) {
+            this.role = role;
             return this;
         }
 
@@ -116,7 +114,7 @@ public class User implements UserModel {
             user.password = this.password;
             user.locked = this.locked;
             user.enabled = this.enabled;
-            user.roles = this.roles;
+            user.role = this.role;
 
             return user;
         }

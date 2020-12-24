@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.clic1prof.serverapp.model.contacts.ContactModel;
 import fr.clic1prof.serverapp.model.contacts.TeacherContact;
-import fr.clic1prof.serverapp.security.jwt.JwtRequest;
-import fr.clic1prof.serverapp.security.jwt.JwtResponse;
+import fr.clic1prof.serverapp.security.jwt.authentication.AuthenticationRequest;
+import fr.clic1prof.serverapp.security.jwt.authentication.AuthenticationResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class StudentContactControllerTest {
     @Autowired
     public void login() throws Exception {
 
-        JwtRequest request = new JwtRequest("test1.student@test.com", "UnRenard60**");
+        AuthenticationRequest request = new AuthenticationRequest("test1.student@test.com", "UnRenard60**");
 
         MvcResult result = this.mvc.perform(MockMvcRequestBuilders.post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -48,7 +48,7 @@ public class StudentContactControllerTest {
 
         String content = result.getResponse().getContentAsString();
 
-        this.token = this.mapper.readValue(content, JwtResponse.class).getToken();
+        this.token = this.mapper.readValue(content, AuthenticationResponse.class).getToken();
     }
 
     @Test

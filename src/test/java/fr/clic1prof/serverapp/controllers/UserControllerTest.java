@@ -1,13 +1,12 @@
 package fr.clic1prof.serverapp.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import fr.clic1prof.serverapp.model.registration.Registration;
 import fr.clic1prof.serverapp.model.registration.RegistrationType;
-import fr.clic1prof.serverapp.security.jwt.JwtRequest;
-import fr.clic1prof.serverapp.security.jwt.JwtResponse;
+import fr.clic1prof.serverapp.model.user.UserRole;
+import fr.clic1prof.serverapp.security.jwt.authentication.AuthenticationRequest;
+import fr.clic1prof.serverapp.security.jwt.authentication.AuthenticationResponse;
 import io.jsonwebtoken.lang.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -41,10 +39,11 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
-        JwtResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), JwtResponse.class);
+        AuthenticationResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), AuthenticationResponse.class);
 
         Assertions.assertNotNull(response);
         Assertions.assertNotNull(response.getToken());
+        Assertions.assertEquals(UserRole.STUDENT, response.getRole());
         Assert.hasText(response.getToken(), "Empty token.");
     }
 
@@ -55,10 +54,11 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
-        JwtResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), JwtResponse.class);
+        AuthenticationResponse response = this.mapper.readValue(result.getResponse().getContentAsString(), AuthenticationResponse.class);
 
         Assertions.assertNotNull(response);
         Assertions.assertNotNull(response.getToken());
+        Assertions.assertEquals(UserRole.TEACHER, response.getRole());
         Assert.hasText(response.getToken(), "Empty token.");
     }
 
@@ -164,7 +164,7 @@ public class UserControllerTest {
 
     private MockHttpServletRequestBuilder getLoginBuilder(String email, String password) throws JsonProcessingException {
 
-        JwtRequest request = new JwtRequest(email, password);
+        AuthenticationRequest request = new AuthenticationRequest(email, password);
 
         return MockMvcRequestBuilders.post("/login")
                 .contentType(MediaType.APPLICATION_JSON)

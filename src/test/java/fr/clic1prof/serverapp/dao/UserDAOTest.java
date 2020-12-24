@@ -58,7 +58,7 @@ public class UserDAOTest {
         Assertions.assertEquals(model1.getPassword(), "$2a$10$0JtkkLPPoC9hcEDFRFQViOqjPe/6JYNv30DnvHHS9iYVYiqjRbLGm");
         Assertions.assertEquals(model2.getPassword(), "$2a$10$0JtkkLPPoC9hcEDFRFQViOqjPe/6JYNv30DnvHHS9iYVYiqjRbLGm");
 
-        Assertions.assertEquals(model1.getRoles(), Collections.singletonList(UserRole.STUDENT));
-        Assertions.assertEquals(model2.getRoles(), Collections.singletonList(UserRole.TEACHER));
+        Assertions.assertEquals(model1.getRole(), UserRole.STUDENT);
+        Assertions.assertEquals(model2.getRole(), UserRole.TEACHER);
     }
 }

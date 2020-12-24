@@ -19,7 +19,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     private IUserDAO dao;
 
     @Override // Spring will call automatically this method to load a user.
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserModel loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Optional<UserModel> optional = this.dao.findByUsername(username);
 

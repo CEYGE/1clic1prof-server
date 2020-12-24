@@ -1,8 +1,9 @@
 package fr.clic1prof.serverapp.api;
 
 import fr.clic1prof.serverapp.model.registration.Registration;
-import fr.clic1prof.serverapp.security.jwt.JwtRequest;
-import fr.clic1prof.serverapp.security.jwt.JwtResponse;
+import fr.clic1prof.serverapp.model.user.UserModel;
+import fr.clic1prof.serverapp.security.jwt.authentication.AuthenticationRequest;
+import fr.clic1prof.serverapp.security.jwt.authentication.AuthenticationResponse;
 import fr.clic1prof.serverapp.security.jwt.token.Token;
 import fr.clic1prof.serverapp.security.jwt.token.TokenProvider;
 import fr.clic1prof.serverapp.service.IUserService;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -34,20 +34,22 @@ public class UserController implements IUserController {
     private TokenProvider provider;
 
     @Override
-    public ResponseEntity<?> login(@Valid JwtRequest request) {
+    public ResponseEntity<?> login(@Valid AuthenticationRequest request) {
 
         try { this.authenticate(request);
         } catch (Exception e) { return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); }
 
         // Retrieving user data from database.
-        UserDetails details = this.jwtService.loadUserByUsername(request.getUsername());
+        UserModel details = this.jwtService.loadUserByUsername(request.getUsername());
 
         // Generating token.
         Token jwt = this.provider.generateToken(details);
         String token = this.provider.getToken(jwt);
 
+        AuthenticationResponse response = new AuthenticationResponse(token, details.getRole());
+
         // Sending the token to the client.
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class UserController implements IUserController {
         return ResponseEntity.noContent().build();
     }
 
-    private void authenticate(JwtRequest request) throws Exception {
+    private void authenticate(AuthenticationRequest request) throws Exception {
 
         String username = request.getUsername();
         String password = request.getPassword();
