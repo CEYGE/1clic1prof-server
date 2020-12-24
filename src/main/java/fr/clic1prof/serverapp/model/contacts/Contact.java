@@ -1,7 +1,5 @@
 package fr.clic1prof.serverapp.model.contacts;
 
-import java.util.Objects;
-
 public class Contact implements ContactModel {
 
     private String firstName, lastName;
