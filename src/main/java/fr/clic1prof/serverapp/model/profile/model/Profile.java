@@ -5,4 +5,6 @@ public interface Profile {
     String getFirstName();
 
     String getLastName();
+
+    String getPictureUrl();
 }

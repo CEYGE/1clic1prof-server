@@ -3,10 +3,12 @@ package fr.clic1prof.serverapp.model.profile.model;
 public class UserProfile implements Profile {
 
     private String firstName, lastName;
+    private String pictureUrl;
 
-    public UserProfile(String firstName, String lastName) {
+    public UserProfile(String firstName, String lastName, String pictureUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.pictureUrl = pictureUrl;
     }
 
     @Override
@@ -17,5 +19,10 @@ public class UserProfile implements Profile {
     @Override
     public String getLastName() {
         return this.lastName;
+    }
+
+    @Override
+    public String getPictureUrl() {
+        return this.pictureUrl;
     }
 }
