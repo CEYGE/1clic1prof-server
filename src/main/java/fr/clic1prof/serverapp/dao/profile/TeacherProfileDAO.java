@@ -45,8 +45,9 @@ public class TeacherProfileDAO extends UserProfileDAO implements ITeacherProfile
 
             String firstName = result.getString("user_first_name");
             String lastName = result.getString("user_last_name");
+            String pictureUrl = result.getString("user_picture");
 
-            return new UserProfile(firstName, lastName);
+            return new UserProfile(firstName, lastName, pictureUrl);
         };
         return this.template.queryForObject(query, mapper, id);
     }

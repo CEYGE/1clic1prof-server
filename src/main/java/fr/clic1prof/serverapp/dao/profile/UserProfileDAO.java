@@ -78,14 +78,15 @@ public class UserProfileDAO implements IUserProfileDAO {
     @Override
     public Profile getProfile(int id) {
 
-        String query = "SELECT user_first_name, user_last_name FROM user WHERE user_id = ?";
+        String query = "SELECT user_first_name, user_last_name, user_picture FROM user WHERE user_id = ?";
 
         RowMapper<Profile> mapper = (result, i) -> {
 
             String firstName = result.getString("user_first_name");
             String lastName = result.getString("user_last_name");
+            String pictureUrl = result.getString("user_picture");
 
-            return new UserProfile(firstName, lastName);
+            return new UserProfile(firstName, lastName, pictureUrl);
         };
         return this.template.queryForObject(query, mapper, id);
     }
