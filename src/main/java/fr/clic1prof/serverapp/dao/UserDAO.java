@@ -77,7 +77,7 @@ public class UserDAO implements IUserDAO {
 
             if(!optional.isPresent()) return builder.build();
 
-            return builder.roles(Collections.singletonList(optional.get())).build();
+            return builder.role(optional.get()).build();
         };
     }
 }
