@@ -1,0 +1,6 @@
+package fr.clic1prof.serverapp.model.agenda;
+
+public enum EventReminder {
+
+    TEN_MINUTES_BEFORE, FIFTEEN_MINUTES_BEFORE, THIRTY_MINUTES_BEFORE, ONE_HOUR_BEFORE, TWO_HOURS_BEFORE, ONE_DAY_BEFORE, TWO_DAYS_BEFORE;
+}
