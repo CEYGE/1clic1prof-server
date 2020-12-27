@@ -190,11 +190,11 @@ public class TeacherProfileControllerTest {
         Assertions.assertNotNull(profile);
         Assertions.assertEquals("Harry", profile.getFirstName());
         Assertions.assertEquals("Potter", profile.getLastName());
-        Assertions.assertEquals("Un sorcier très puissant", profile.getDescription());
+        Assertions.assertEquals("Un sorcier puissant.", profile.getDescription());
         Assertions.assertEquals("Poudlard", profile.getStudies());
 
         List<Speciality> specialities = Arrays.asList(
-                new Speciality(1, "Mathématiques"),
+                new Speciality(2, "Physique"),
                 new Speciality(4, "SVT")
         );
 
