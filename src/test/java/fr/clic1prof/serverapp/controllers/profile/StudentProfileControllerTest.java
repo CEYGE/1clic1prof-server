@@ -2,6 +2,11 @@ package fr.clic1prof.serverapp.controllers.profile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.clic1prof.serverapp.model.profile.SchoolLevel;
+import fr.clic1prof.serverapp.model.profile.Speciality;
+import fr.clic1prof.serverapp.model.profile.model.StudentProfile;
+import fr.clic1prof.serverapp.model.profile.model.TeacherProfile;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,7 +14,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -77,5 +87,47 @@ public class StudentProfileControllerTest {
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void test_getProfileComplete() throws Exception {
+
+        String uri = "/student/profile";
+        String token = this.controller.login("test11.student@test.com", "UnRenard60**");
+
+        MvcResult result = this.mvc.perform(MockMvcRequestBuilders.get(uri)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        StudentProfile profile = this.mapper.readValue(content, StudentProfile.class);
+
+        Assertions.assertNotNull(profile);
+        Assertions.assertEquals("Leonardo", profile.getFirstName());
+        Assertions.assertEquals("Davinci", profile.getLastName());
+        Assertions.assertEquals("", profile.getPictureUrl());
+        Assertions.assertEquals(new SchoolLevel(12, "Terminale"), profile.getLevel());
+    }
+
+    @Test
+    public void test_getProfilePartial() throws Exception {
+
+        String uri = "/student/profile";
+        String token = this.controller.login("test13.student@test.com", "UnRenard60**");
+
+        MvcResult result = this.mvc.perform(MockMvcRequestBuilders.get(uri)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        StudentProfile profile = this.mapper.readValue(content, StudentProfile.class);
+
+        Assertions.assertNotNull(profile);
+        Assertions.assertEquals("Asuna", profile.getFirstName());
+        Assertions.assertEquals("Yuki", profile.getLastName());
+        Assertions.assertEquals("", profile.getPictureUrl());
+        Assertions.assertNull(profile.getLevel());
     }
 }
