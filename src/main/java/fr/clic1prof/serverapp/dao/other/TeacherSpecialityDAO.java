@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Repository("TeacherSpecialityDAO")
 public class TeacherSpecialityDAO implements ITeacherSpecialityDAO {
@@ -30,7 +31,7 @@ public class TeacherSpecialityDAO implements ITeacherSpecialityDAO {
     }
 
     @Override
-    public Collection<Speciality> getSpecialities(int id) {
+    public List<Speciality> getSpecialities(int id) {
 
         String query = "SELECT subject_id, subject_name FROM subject " +
                 "JOIN teachable_subject ON teachable_subject_id = subject_id " +
@@ -40,7 +41,7 @@ public class TeacherSpecialityDAO implements ITeacherSpecialityDAO {
     }
 
     @Override
-    public Collection<Speciality> getSpecialities() {
+    public List<Speciality> getSpecialities() {
 
         String query = "SELECT * FROM subject;";
 
