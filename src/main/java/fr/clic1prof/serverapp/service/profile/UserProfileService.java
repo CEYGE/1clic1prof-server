@@ -1,7 +1,6 @@
 package fr.clic1prof.serverapp.service.profile;
 
 import fr.clic1prof.serverapp.dao.profile.IUserProfileDAO;
-import fr.clic1prof.serverapp.file.exceptions.FileStorageException;
 import fr.clic1prof.serverapp.file.storage.FileStorage;
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
@@ -61,7 +60,7 @@ public abstract class UserProfileService implements IUserProfileService {
 
         String id = null;
 
-        try { id = this.storage.store(file);
+        try { id = this.storage.storeFile(file);
         } catch (IOException e) { e.printStackTrace(); }
 
         if(id == null) return false;
@@ -78,7 +77,7 @@ public abstract class UserProfileService implements IUserProfileService {
 
         boolean updated = true;
 
-        try { this.storage.delete(id);
+        try { this.storage.deleteFile(id);
         } catch (IOException e) { updated = false; e.printStackTrace(); }
 
         return updated;

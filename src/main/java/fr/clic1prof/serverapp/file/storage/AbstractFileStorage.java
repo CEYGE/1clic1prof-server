@@ -3,13 +3,16 @@ package fr.clic1prof.serverapp.file.storage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -21,8 +24,12 @@ public abstract class AbstractFileStorage implements FileStorage {
     @Value("${file-storage.root-folder}")
     private String root;
 
+    public abstract List<MediaType> getSupportedTypes();
+
     @Override
-    public String store(MultipartFile file) throws IOException {
+    public String storeFile(MultipartFile file) throws IOException {
+
+        if(!this.isSupported(file)) return null;
 
         String id = UUID.randomUUID().toString();
         Path path = this.getPath(id);
@@ -41,13 +48,22 @@ public abstract class AbstractFileStorage implements FileStorage {
     }
 
     @Override
-    public void delete(String id) throws IOException {
+    public void deleteFile(String id) throws IOException {
         Path path = this.getPath(id);
         Files.deleteIfExists(path);
     }
 
     @Override
-    public Resource get(String id) {
+    public boolean isSupported(MultipartFile file) {
+
+        if(!this.checkProvidedType(file)) return false;
+
+        try { return this.checkContentBasedType(file);
+        } catch (IOException e) { e.printStackTrace(); return false; }
+    }
+
+    @Override
+    public Resource getFile(String id) {
 
         Path path = this.getPath(id);
 
@@ -84,5 +100,25 @@ public abstract class AbstractFileStorage implements FileStorage {
         sb.append(id);
 
         return sb.toString();
+    }
+
+    private boolean checkContentBasedType(MultipartFile file) throws IOException {
+
+        String contentBasedType = URLConnection.guessContentTypeFromStream(file.getInputStream());
+
+        if(contentBasedType == null) return false;
+
+        MediaType type = MediaType.parseMediaType(contentBasedType);
+
+        return this.getSupportedTypes().contains(type);
+    }
+
+    private boolean checkProvidedType(MultipartFile file) {
+
+        if(file.getContentType() == null) return false;
+
+        MediaType type = MediaType.parseMediaType(file.getContentType());
+
+        return this.getSupportedTypes().contains(type);
     }
 }

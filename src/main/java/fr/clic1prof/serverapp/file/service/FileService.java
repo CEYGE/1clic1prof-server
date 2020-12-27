@@ -39,7 +39,7 @@ public class FileService implements IFileService {
 
         String id;
 
-        try { id = storage.store(file);
+        try { id = storage.storeFile(file);
         } catch (IOException e) { return false; }
 
         Document document = new Document.Builder(file.getOriginalFilename(), id, owner.getId()).build();
@@ -59,7 +59,7 @@ public class FileService implements IFileService {
         boolean deleted = false;
 
         try {
-            storage.delete(document.getPath());
+            storage.deleteFile(document.getPath());
             deleted = this.dao.deleteDocument(id);
         } catch (IOException e) { e.printStackTrace(); }
 
@@ -72,7 +72,7 @@ public class FileService implements IFileService {
         Document document = this.getDocument(id);
         FileStorage storage = this.getFileStorage(type);
 
-        return storage.get(document.getPath());
+        return storage.getFile(document.getPath());
     }
 
     @Override

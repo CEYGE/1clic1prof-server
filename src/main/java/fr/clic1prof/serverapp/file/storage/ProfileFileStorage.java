@@ -48,33 +48,7 @@ public class ProfileFileStorage extends AbstractFileStorage {
     }
 
     @Override
-    public boolean isSupported(MultipartFile file) {
-        return this.checkContentBasedType(file) && this.checkProvidedType(file);
-    }
-
-    private boolean checkContentBasedType(MultipartFile file) {
-
-        boolean supported = false;
-
-        try {
-
-            String contentBasedType = URLConnection.guessContentTypeFromStream(file.getInputStream());
-
-            if(contentBasedType == null) return false;
-
-            supported = SUPPORTED_TYPES.contains(MediaType.parseMediaType(contentBasedType));
-
-        } catch (IOException e) { e.printStackTrace(); }
-
-        return supported;
-    }
-
-    private boolean checkProvidedType(MultipartFile file) {
-
-        if(file.getContentType() == null) return false;
-
-        MediaType type = MediaType.parseMediaType(file.getContentType());
-
-        return SUPPORTED_TYPES.contains(type);
+    public List<MediaType> getSupportedTypes() {
+        return SUPPORTED_TYPES;
     }
 }
