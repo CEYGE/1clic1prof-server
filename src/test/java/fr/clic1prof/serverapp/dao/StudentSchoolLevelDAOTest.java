@@ -20,7 +20,7 @@ public class StudentSchoolLevelDAOTest {
     private IStudentSchoolLevelDAO schoolLevelDAO;
 
     @Test
-    public void test_schoolLevels() {
+    public void test_getSchoolLevels() {
 
         List<SchoolLevel> levels = this.schoolLevelDAO.getSchoolLevels();
 
@@ -29,5 +29,16 @@ public class StudentSchoolLevelDAOTest {
         Assertions.assertEquals(levels.get(6), new SchoolLevel(7, "5ème"));
         Assertions.assertEquals(levels.get(11), new SchoolLevel(12, "Terminale"));
         Assertions.assertEquals(levels.get(12), new SchoolLevel(13, "Supérieur"));
+    }
+
+    @Test
+    public void test_schoolLevelExists() {
+
+        Assertions.assertTrue(this.schoolLevelDAO.exists(1));
+        Assertions.assertTrue(this.schoolLevelDAO.exists(6));
+        Assertions.assertTrue(this.schoolLevelDAO.exists(13));
+
+        Assertions.assertFalse(this.schoolLevelDAO.exists(-1));
+        Assertions.assertFalse(this.schoolLevelDAO.exists(3000));
     }
 }
