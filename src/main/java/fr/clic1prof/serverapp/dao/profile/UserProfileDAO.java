@@ -86,7 +86,7 @@ public class UserProfileDAO implements IUserProfileDAO {
             String lastName = result.getString("user_last_name");
             String pictureUrl = result.getString("user_picture");
 
-            return new UserProfile(firstName, lastName, pictureUrl);
+            return new UserProfile(id, firstName, lastName, pictureUrl);
         };
         return this.template.queryForObject(query, mapper, id);
     }

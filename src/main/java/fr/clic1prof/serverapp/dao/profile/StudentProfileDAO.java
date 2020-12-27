@@ -32,7 +32,7 @@ public class StudentProfileDAO extends UserProfileDAO implements IStudentProfile
             String pictureUrl = result.getString("user_picture");
             SchoolLevel level = new SchoolLevel(result.getInt("school_level_id"), result.getString("school_level_name"));
 
-            return new StudentProfile(firstName, lastName, pictureUrl, level);
+            return new StudentProfile(id, firstName, lastName, pictureUrl, level);
         };
         return this.template.queryForObject(query, mapper, id);
     }
