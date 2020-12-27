@@ -94,6 +94,8 @@ public class UserControllerTest {
     @Test
     public void test_successRegistration() throws Exception {
 
+        // If this test doesn't work, try to refresh database with the data generation script.
+
         this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@mi6.uk", "JamesBond007**", RegistrationType.STUDENT.name()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
