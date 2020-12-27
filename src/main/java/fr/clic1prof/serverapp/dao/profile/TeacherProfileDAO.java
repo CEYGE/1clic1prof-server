@@ -56,7 +56,7 @@ public class TeacherProfileDAO extends UserProfileDAO implements ITeacherProfile
 
         List<Speciality> specialities = this.specialityDAO.getSpecialities(id);
 
-        String query = "SELECT user_first_name, user_last_name, user_picture, teacher_description, teacher_studies " +
+        String query = "SELECT user_first_name, user_last_name, user_picture, teacher_description, teacher_study_level " +
                 "FROM user JOIN teacher ON user_id = teacher_id " +
                 "WHERE user_id = ?";
 
@@ -66,9 +66,9 @@ public class TeacherProfileDAO extends UserProfileDAO implements ITeacherProfile
             String lastName = result.getString("user_last_name");
             String pictureUrl = result.getString("user_picture");
             String description = result.getString("teacher_description");
-            String studies = result.getString("teacher_studies");
+            String studies = result.getString("teacher_study_level");
 
-            return new TeacherProfile(firstName, lastName, pictureUrl, description, studies, specialities);
+            return new TeacherProfile(id, firstName, lastName, pictureUrl, description, studies, specialities);
         };
         return this.template.queryForObject(query, mapper, id);
     }
