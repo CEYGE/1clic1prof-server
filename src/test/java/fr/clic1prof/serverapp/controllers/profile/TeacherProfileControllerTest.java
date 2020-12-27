@@ -190,6 +190,7 @@ public class TeacherProfileControllerTest {
         Assertions.assertNotNull(profile);
         Assertions.assertEquals("Harry", profile.getFirstName());
         Assertions.assertEquals("Potter", profile.getLastName());
+        Assertions.assertEquals("", profile.getPictureUrl());
         Assertions.assertEquals("Un sorcier puissant.", profile.getDescription());
         Assertions.assertEquals("Poudlard", profile.getStudies());
 
@@ -200,5 +201,27 @@ public class TeacherProfileControllerTest {
 
         Assertions.assertEquals(2, profile.getSpecialities().size());
         Assertions.assertEquals(specialities, profile.getSpecialities());
+    }
+
+    @Test
+    public void test_getProfilePartial() throws Exception {
+
+        String uri = "/teacher/profile";
+        String token = this.controller.login("test14.teacher@test.com", "UnRenard60**");
+
+        MvcResult result = this.mvc.perform(MockMvcRequestBuilders.get(uri)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        TeacherProfile profile = this.mapper.readValue(content, TeacherProfile.class);
+
+        Assertions.assertEquals("Will", profile.getFirstName());
+        Assertions.assertEquals("Smith", profile.getLastName());
+        Assertions.assertEquals("", profile.getPictureUrl());
+        Assertions.assertEquals("", profile.getDescription());
+        Assertions.assertEquals("", profile.getStudies());
+        Assertions.assertEquals(0, profile.getSpecialities().size());
     }
 }
