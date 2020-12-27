@@ -36,7 +36,7 @@ public class StudentContactDAO implements ContactDAO {
             String lastName = result.getString("user_last_name");
             String studyLevel = result.getString("teacher_study_level");
 
-            return new TeacherContact(firstName, lastName, studyLevel);
+            return new TeacherContact(id, firstName, lastName, studyLevel);
         };
         return this.template.query(query, mapper, id);
     }

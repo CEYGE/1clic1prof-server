@@ -8,8 +8,8 @@ public class StudentContact extends Contact {
 
     private SchoolLevel schoolLevel;
 
-    public StudentContact(String firstName, String lastName, SchoolLevel level) {
-        super(firstName, lastName);
+    public StudentContact(int id, String firstName, String lastName, SchoolLevel level) {
+        super(id, firstName, lastName);
         this.schoolLevel = level;
     }
 

@@ -6,8 +6,8 @@ public class TeacherContact extends Contact {
 
     private String studyLevel;
 
-    public TeacherContact(String firstName, String lastName, String studyLevel) {
-        super(firstName, lastName);
+    public TeacherContact(int id, String firstName, String lastName, String studyLevel) {
+        super(id, firstName, lastName);
         this.studyLevel = studyLevel;
     }
 

@@ -2,11 +2,18 @@ package fr.clic1prof.serverapp.model.contacts;
 
 public class Contact implements ContactModel {
 
+    private int id;
     private String firstName, lastName;
 
-    public Contact(String firstName, String lastName) {
+    public Contact(int id, String firstName, String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    @Override
+    public int getId() {
+        return this.id;
     }
 
     @Override

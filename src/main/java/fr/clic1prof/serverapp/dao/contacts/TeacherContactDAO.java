@@ -43,7 +43,7 @@ public class TeacherContactDAO implements ContactDAO {
             if(result.getString("school_level_name") == null) level = null;
             else level = new SchoolLevel(result.getInt("school_level_id"), result.getString("school_level_name"));
 
-            return new StudentContact(firstName, lastName, level);
+            return new StudentContact(id, firstName, lastName, level);
         };
         return this.template.query(query, mapper, id);
     }
