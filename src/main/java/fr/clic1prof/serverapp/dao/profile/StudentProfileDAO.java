@@ -20,9 +20,9 @@ public class StudentProfileDAO extends UserProfileDAO implements IStudentProfile
     @Override
     public Profile getProfile(int id) {
 
-        String query = "SELECT user_first_name, user_last_name, school_level_name, school_level_id " +
+        String query = "SELECT user_first_name, user_last_name, user_picture, school_level_name, school_level_id " +
                 "FROM user JOIN student ON user_id = student_id " +
-                "JOIN school_level ON student_scholar_level_id = school_level_id " +
+                "LEFT OUTER JOIN school_level ON student_scholar_level_id = school_level_id " +
                 "WHERE user_id = ?;";
 
         RowMapper<Profile> mapper = (result, i) -> {
@@ -30,7 +30,10 @@ public class StudentProfileDAO extends UserProfileDAO implements IStudentProfile
             String firstName = result.getString("user_first_name");
             String lastName = result.getString("user_last_name");
             String pictureUrl = result.getString("user_picture");
-            SchoolLevel level = new SchoolLevel(result.getInt("school_level_id"), result.getString("school_level_name"));
+
+            int schoolLevelId = result.getInt("school_level_id");
+
+            SchoolLevel level = schoolLevelId != 0 ? new SchoolLevel(schoolLevelId, result.getString("school_level_name")) : null;
 
             return new StudentProfile(id, firstName, lastName, pictureUrl, level);
         };
