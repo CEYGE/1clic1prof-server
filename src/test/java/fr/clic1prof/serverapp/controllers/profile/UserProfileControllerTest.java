@@ -31,9 +31,7 @@ public class UserProfileControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
-    private String token;
-
-    public void login(String email, String password) throws Exception {
+    public String login(String email, String password) throws Exception {
 
         AuthenticationRequest request = new AuthenticationRequest(email, password);
 
@@ -45,127 +43,131 @@ public class UserProfileControllerTest {
 
         String content = result.getResponse().getContentAsString();
 
-        this.token = this.mapper.readValue(content, AuthenticationResponse.class).getToken();
+        return this.mapper.readValue(content, AuthenticationResponse.class).getToken();
     }
 
-    public void test_updateFirstName(String baseURI) throws Exception {
+    public void test_updateFirstName(String email, String password, String baseURI) throws Exception {
 
         String uri = baseURI + "/first-name";
+        String token = this.login(email, password);
 
-        this.mvc.perform(this.getBuilder(uri, new Name("John")))
+        this.mvc.perform(this.getBuilder(uri, token,  new Name("John")))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
-        this.mvc.perform(this.getBuilder(uri, new Name(null)))
+        this.mvc.perform(this.getBuilder(uri, token, new Name(null)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        this.mvc.perform(this.getBuilder(uri, new Name("")))
+        this.mvc.perform(this.getBuilder(uri, token, new Name("")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        this.mvc.perform(this.getBuilder(uri, new Name("J")))
+        this.mvc.perform(this.getBuilder(uri, token, new Name("J")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        this.mvc.perform(this.getBuilder(uri, new Name("UnPrenomVraimentMaisVraimentMaisVraimentTropLong")))
+        this.mvc.perform(this.getBuilder(uri, token, new Name("UnPrenomVraimentMaisVraimentMaisVraimentTropLong")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-    public void test_updateLastName(String baseURI) throws Exception {
+    public void test_updateLastName(String email, String password, String baseURI) throws Exception {
 
         String uri = baseURI + "/last-name";
+        String token = this.login(email, password);
 
-        this.mvc.perform(this.getBuilder(uri, new Name("Smith")))
+        this.mvc.perform(this.getBuilder(uri, token, new Name("Smith")))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
-        this.mvc.perform(this.getBuilder(uri, new Name(null)))
+        this.mvc.perform(this.getBuilder(uri, token, new Name(null)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        this.mvc.perform(this.getBuilder(uri, new Name("")))
+        this.mvc.perform(this.getBuilder(uri, token, new Name("")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        this.mvc.perform(this.getBuilder(uri, new Name("S")))
+        this.mvc.perform(this.getBuilder(uri, token, new Name("S")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        this.mvc.perform(this.getBuilder(uri, new Name("UnNomVraimentMaisVraimentMaisVraimentTropLong")))
+        this.mvc.perform(this.getBuilder(uri, token, new Name("UnNomVraimentMaisVraimentMaisVraimentTropLong")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-    public void test_updatePassword(String baseURI) throws Exception {
+    public void test_updatePassword(String email, String password, String baseURI) throws Exception {
 
         String uri = baseURI + "/password";
+        String token = this.login(email, password);
 
         ObjectNode node = this.mapper.createObjectNode();
 
         node.put("oldPassword", "UnRenard60**");
         node.put("newPassword", "UnRenard60**");
 
-        this.mvc.perform(this.getBuilder(uri, node))
+        this.mvc.perform(this.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         node = this.mapper.createObjectNode();
         node.put("oldPassword", "UnRenard60");
         node.put("newPassword", "UnRenard60**");
 
-        this.mvc.perform(this.getBuilder(uri, node))
+        this.mvc.perform(this.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
         node = this.mapper.createObjectNode();
         node.put("oldPassword", "UnRenard60**");
         node.put("newPassword", "AnInvalidNewPassword");
 
-        this.mvc.perform(this.getBuilder(uri, node))
+        this.mvc.perform(this.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-    public void test_updatePicture(String baseURI) throws Exception {
+    public void test_updatePicture(String email, String password, String baseURI) throws Exception {
 
         String uri = baseURI + "/picture";
+        String token = this.login(email, password);
 
         // With a png file.
         File png = ResourceUtils.getFile("classpath:tests/cookie_picture.png");
         Resource resourcePng = new FileSystemResource(png);
 
-        this.mvc.perform(this.getFileBuilder(uri, "cookie_picture.png", MediaType.IMAGE_PNG, resourcePng))
+        this.mvc.perform(this.getFileBuilder(uri, token, "cookie_picture.png", MediaType.IMAGE_PNG, resourcePng))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         // With a correct png file but a bad MediaType
-        this.mvc.perform(this.getFileBuilder(uri, "cookie_picture.png", MediaType.TEXT_PLAIN, resourcePng))
+        this.mvc.perform(this.getFileBuilder(uri, token, "cookie_picture.png", MediaType.TEXT_PLAIN, resourcePng))
                 .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
 
         // With a jpeg file.
         File jpg = ResourceUtils.getFile("classpath:tests/cookie_picture.png");
         Resource resourceJpg = new FileSystemResource(jpg);
 
-        this.mvc.perform(this.getFileBuilder(uri, "background_picture.jpg", MediaType.IMAGE_JPEG, resourceJpg))
+        this.mvc.perform(this.getFileBuilder(uri, token, "background_picture.jpg", MediaType.IMAGE_JPEG, resourceJpg))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         // With a text file.
         File txt = ResourceUtils.getFile("classpath:tests/cookie_picture.png");
         Resource resourceTxt = new FileSystemResource(txt);
 
-        this.mvc.perform(this.getFileBuilder(uri, "text.txt", MediaType.TEXT_PLAIN, resourceTxt))
+        this.mvc.perform(this.getFileBuilder(uri, token, "text.txt", MediaType.TEXT_PLAIN, resourceTxt))
                 .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
 
         // With a text file with the png extension.
         File falsePng = ResourceUtils.getFile("classpath:tests/false_picture.png");
         Resource falseResourcePng = new FileSystemResource(falsePng);
 
-        this.mvc.perform(this.getFileBuilder(uri, "false_picture.png", MediaType.IMAGE_PNG, falseResourcePng))
+        this.mvc.perform(this.getFileBuilder(uri, token, "false_picture.png", MediaType.IMAGE_PNG, falseResourcePng))
                 .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
     }
 
-    public MockHttpServletRequestBuilder getFileBuilder(String uri, String file, MediaType type, Resource resource) throws IOException {
+    public MockHttpServletRequestBuilder getFileBuilder(String uri, String token, String file, MediaType type, Resource resource) throws IOException {
 
         MockMultipartFile multipart = new MockMultipartFile("picture", file, String.valueOf(type), resource.getInputStream());
 
         return MockMvcRequestBuilders.multipart(uri)
                 .file(multipart)
-                .header("Authorization", "Bearer " + this.token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.IMAGE_PNG)
                 .with(request -> { request.setMethod("PUT"); return request; });
     }
 
-    public MockHttpServletRequestBuilder getBuilder(String uri, Object object) throws JsonProcessingException {
+    public MockHttpServletRequestBuilder getBuilder(String uri, String token, Object object) throws JsonProcessingException {
         return MockMvcRequestBuilders.put(uri)
-                .header("Authorization", "Bearer " + this.token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(object));
     }
