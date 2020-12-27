@@ -3,9 +3,7 @@ package fr.clic1prof.serverapp.controllers.profile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.clic1prof.serverapp.model.profile.SchoolLevel;
-import fr.clic1prof.serverapp.model.profile.Speciality;
 import fr.clic1prof.serverapp.model.profile.model.StudentProfile;
-import fr.clic1prof.serverapp.model.profile.model.TeacherProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.Arrays;
-import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
