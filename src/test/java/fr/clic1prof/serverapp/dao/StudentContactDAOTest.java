@@ -2,9 +2,7 @@ package fr.clic1prof.serverapp.dao;
 
 import fr.clic1prof.serverapp.dao.contacts.StudentContactDAO;
 import fr.clic1prof.serverapp.model.contacts.ContactModel;
-import fr.clic1prof.serverapp.model.contacts.StudentContact;
 import fr.clic1prof.serverapp.model.contacts.TeacherContact;
-import fr.clic1prof.serverapp.model.profile.SchoolLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
