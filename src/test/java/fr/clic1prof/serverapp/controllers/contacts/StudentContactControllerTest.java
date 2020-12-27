@@ -55,8 +55,8 @@ public class StudentContactControllerTest {
     public void test_teacherContacts() throws Exception {
 
         List<ContactModel> expected = Arrays.asList(
-                new TeacherContact("David", "Willis", ""),
-                new TeacherContact("Bruce", "Davis", "")
+                new TeacherContact(5, "David", "Willis", ""),
+                new TeacherContact(6, "Bruce", "Davis", "")
         );
 
         MvcResult result = this.mvc.perform(MockMvcRequestBuilders.get("/student/contacts")

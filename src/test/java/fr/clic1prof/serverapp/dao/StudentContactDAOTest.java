@@ -28,8 +28,8 @@ public class StudentContactDAOTest {
     public void test_getContactsStudent1() {
 
         List<ContactModel> expected = Arrays.asList(
-                new TeacherContact("David", "Willis", ""),
-                new TeacherContact("Bruce", "Davis", "")
+                new TeacherContact(5, "David", "Willis", ""),
+                new TeacherContact(6, "Bruce", "Davis", "")
         );
 
         Collection<ContactModel> contacts = this.dao.getContacts(1);
@@ -42,8 +42,8 @@ public class StudentContactDAOTest {
     public void test_getContactsStudent2() {
 
         List<ContactModel> expected = Arrays.asList(
-                new TeacherContact("David", "Willis", ""),
-                new TeacherContact("Bruce", "Davis", "")
+                new TeacherContact(5, "David", "Willis", ""),
+                new TeacherContact(6, "Bruce", "Davis", "")
         );
 
         Collection<ContactModel> contacts = this.dao.getContacts(2);
