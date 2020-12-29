@@ -7,6 +7,7 @@ import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.service.profile.IUserProfileService;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<?> getProfile(UserBase base) {
+    public ResponseEntity<Profile> getProfile(UserBase base) {
 
         Profile profile = this.service.getProfile(base);
 
@@ -30,7 +31,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<?> getPicture(UserBase base) {
+    public ResponseEntity<Resource> getPicture(UserBase base) {
 
         FileStored picture;
 
@@ -49,7 +50,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<?> updatePassword(UserBase user, PasswordModifier modifier) {
+    public ResponseEntity<Void> updatePassword(UserBase user, PasswordModifier modifier) {
 
         boolean updated = this.getService().updatePassword(user, modifier);
 
@@ -59,7 +60,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<?> updateFirstName(UserBase user, Name name) {
+    public ResponseEntity<Void> updateFirstName(UserBase user, Name name) {
 
         boolean updated = this.getService().updateFirstName(user, name);
 
@@ -69,7 +70,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<?> updateLastName(UserBase user, Name name) {
+    public ResponseEntity<Void> updateLastName(UserBase user, Name name) {
 
         boolean updated = this.getService().updateLastName(user, name);
 
@@ -79,7 +80,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<?> updatePicture(UserBase base, MultipartFile file) {
+    public ResponseEntity<Void> updatePicture(UserBase base, MultipartFile file) {
 
         boolean updated = this.service.updatePicture(base, file);
 
@@ -89,7 +90,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<?> deletePicture(UserBase base) {
+    public ResponseEntity<Void> deletePicture(UserBase base) {
 
         boolean updated = this.service.deletePicture(base);
 

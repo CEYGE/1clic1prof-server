@@ -13,11 +13,11 @@ import javax.validation.Valid;
 public interface TeacherProfileController extends UserProfileController {
 
     @PutMapping("/description")
-    ResponseEntity<?> updateDescription(UserBase user, @Valid @RequestBody Description description);
+    ResponseEntity<Void> updateDescription(UserBase user, @Valid @RequestBody Description description);
 
     @PutMapping("/speciality")
-    ResponseEntity<?> updateSpeciality(UserBase user, @Valid @RequestBody SpecialityModifier modifier);
+    ResponseEntity<Void> updateSpeciality(UserBase user, @Valid @RequestBody SpecialityModifier modifier);
 
     @PutMapping("/studies")
-    ResponseEntity<?> updateStudies(UserBase user, @Valid @RequestBody Studies studies);
+    ResponseEntity<Void> updateStudies(UserBase user, @Valid @RequestBody Studies studies);
 }

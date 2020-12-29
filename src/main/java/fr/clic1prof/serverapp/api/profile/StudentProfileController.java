@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface StudentProfileController extends UserProfileController {
 
     @PutMapping("/school-level")
-    ResponseEntity<?> updateSchoolLevel(UserBase base, @RequestBody SchoolLevelIdMapper schoolLevelId);
+    ResponseEntity<Void> updateSchoolLevel(UserBase base, @RequestBody SchoolLevelIdMapper schoolLevelId);
 }

@@ -5,6 +5,7 @@ import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.Studies;
 import fr.clic1prof.serverapp.model.profile.SpecialityModifier;
+import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.model.user.UserRole;
 import fr.clic1prof.serverapp.service.profile.ITeacherProfileService;
@@ -31,37 +32,37 @@ public class TeacherProfileControllerImpl extends UserProfileControllerImpl impl
     }
 
     @Override
-    public ResponseEntity<?> getProfile(UserBase base) {
+    public ResponseEntity<Profile> getProfile(UserBase base) {
         return super.getProfile(base);
     }
 
     @Override
-    public ResponseEntity<?> updatePassword(UserBase user, @Valid PasswordModifier modifier) {
+    public ResponseEntity<Void> updatePassword(UserBase user, @Valid PasswordModifier modifier) {
         return super.updatePassword(user, modifier);
     }
 
     @Override
-    public ResponseEntity<?> updateLastName(UserBase user, @Valid Name name) {
+    public ResponseEntity<Void> updateLastName(UserBase user, @Valid Name name) {
         return super.updateLastName(user, name);
     }
 
     @Override
-    public ResponseEntity<?> updateFirstName(UserBase user, @Valid Name name) {
+    public ResponseEntity<Void> updateFirstName(UserBase user, @Valid Name name) {
         return super.updateFirstName(user, name);
     }
 
     @Override
-    public ResponseEntity<?> updatePicture(UserBase base, MultipartFile file) {
+    public ResponseEntity<Void> updatePicture(UserBase base, MultipartFile file) {
         return super.updatePicture(base, file);
     }
 
     @Override
-    public ResponseEntity<?> deletePicture(UserBase base) {
+    public ResponseEntity<Void> deletePicture(UserBase base) {
         return super.deletePicture(base);
     }
 
     @Override
-    public ResponseEntity<?> updateDescription(UserBase user, @Valid Description description) {
+    public ResponseEntity<Void> updateDescription(UserBase user, @Valid Description description) {
 
         boolean updated = this.getService().updateDescription(user, description);
 
@@ -71,7 +72,7 @@ public class TeacherProfileControllerImpl extends UserProfileControllerImpl impl
     }
 
     @Override
-    public ResponseEntity<?> updateSpeciality(UserBase user, @Valid SpecialityModifier modifier) {
+    public ResponseEntity<Void> updateSpeciality(UserBase user, @Valid SpecialityModifier modifier) {
 
         boolean updated = this.getService().updateSpeciality(user, modifier);
 
@@ -81,7 +82,7 @@ public class TeacherProfileControllerImpl extends UserProfileControllerImpl impl
     }
 
     @Override
-    public ResponseEntity<?> updateStudies(UserBase user, @Valid Studies studies) {
+    public ResponseEntity<Void> updateStudies(UserBase user, @Valid Studies studies) {
 
         boolean updated = this.getService().updateStudies(user, studies);
 
