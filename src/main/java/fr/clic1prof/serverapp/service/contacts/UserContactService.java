@@ -5,6 +5,7 @@ import fr.clic1prof.serverapp.model.contacts.ContactModel;
 import fr.clic1prof.serverapp.model.user.UserBase;
 
 import java.util.Collection;
+import java.util.List;
 
 public abstract class UserContactService implements ContactService {
 
@@ -15,7 +16,7 @@ public abstract class UserContactService implements ContactService {
     }
 
     @Override
-    public Collection<ContactModel> getContacts(UserBase base) {
+    public List<ContactModel> getContacts(UserBase base) {
         return this.dao.getContacts(base.getId());
     }
 

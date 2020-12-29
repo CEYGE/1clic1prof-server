@@ -1,11 +1,13 @@
 package fr.clic1prof.serverapp.api.contacts;
 
+import fr.clic1prof.serverapp.model.contacts.Contact;
 import fr.clic1prof.serverapp.model.contacts.ContactModel;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.service.contacts.ContactService;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collection;
+import java.util.List;
 
 public class UserContactController implements ContactController {
 
@@ -16,9 +18,9 @@ public class UserContactController implements ContactController {
     }
 
     @Override
-    public ResponseEntity<?> getContacts(UserBase base) {
+    public ResponseEntity<List<ContactModel>> getContacts(UserBase base) {
 
-        Collection<ContactModel> contacts = this.service.getContacts(base);
+        List<ContactModel> contacts = this.service.getContacts(base);
 
         if(contacts == null) return ResponseEntity.unprocessableEntity().build();
 

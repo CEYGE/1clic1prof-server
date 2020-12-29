@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 
 @Repository("StudentContactDAO")
 public class StudentContactDAO implements ContactDAO {
@@ -23,7 +24,7 @@ public class StudentContactDAO implements ContactDAO {
     }
 
     @Override
-    public Collection<ContactModel> getContacts(int id) {
+    public List<ContactModel> getContacts(int id) {
 
         String query = "SELECT DISTINCT user_first_name, user_last_name, teacher_study_level " +
                 "FROM teaching JOIN user ON teaching_teacher_id = user_id " +
