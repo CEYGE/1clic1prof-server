@@ -1,31 +1,33 @@
 package fr.clic1prof.serverapp.service.profile;
 
 import fr.clic1prof.serverapp.dao.profile.IUserProfileDAO;
-import fr.clic1prof.serverapp.file.storage.FileStorage;
+import fr.clic1prof.serverapp.file.model.Document;
+import fr.clic1prof.serverapp.file.model.DocumentModel;
+import fr.clic1prof.serverapp.file.model.DocumentType;
+import fr.clic1prof.serverapp.file.model.FileStored;
+import fr.clic1prof.serverapp.file.service.DocumentService;
+import fr.clic1prof.serverapp.file.storage.FileStorageHandler;
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 public abstract class UserProfileService implements IUserProfileService {
 
-    private IUserProfileDAO dao;
-    private PasswordEncoder encoder;
+    private final IUserProfileDAO dao;
+    private final PasswordEncoder encoder;
+    private final DocumentService documentService;
 
     @Autowired
-    @Qualifier("ProfileFileStorage")
-    private FileStorage storage;
-
-    @Autowired
-    public UserProfileService(IUserProfileDAO dao, PasswordEncoder encoder) {
+    public UserProfileService(IUserProfileDAO dao, PasswordEncoder encoder, DocumentService documentService) {
         this.dao = dao;
         this.encoder = encoder;
+        this.documentService = documentService;
     }
 
     @Override
@@ -56,38 +58,28 @@ public abstract class UserProfileService implements IUserProfileService {
     @Override
     public boolean updatePicture(UserBase base, MultipartFile file) {
 
-        if(!this.storage.isSupported(file)) return false;
+        DocumentType type = DocumentType.PROFILE_PICTURE;
 
-        String id = null;
+        this.documentService.removeDocument(base.getId(), type);
 
-        try { id = this.storage.storeFile(file);
-        } catch (IOException e) { e.printStackTrace(); }
-
-        if(id == null) return false;
-
-        return this.dao.updatePicture(base.getId(), id);
+        return this.documentService.addDocument(base.getId(), file,type);
     }
 
     @Override
     public boolean deletePicture(UserBase base) {
+        return this.documentService.removeDocument(base.getId(), DocumentType.PROFILE_PICTURE);
+    }
 
-        String id = this.dao.deletePicture(base.getId());
+    @Override
+    public FileStored getPicture(UserBase base) {
 
-        if(id == null) return false;
+        DocumentModel document = this.documentService.getDocument(base.getId(), DocumentType.PROFILE_PICTURE);
 
-        boolean updated = true;
-
-        try { this.storage.deleteFile(id);
-        } catch (IOException e) { updated = false; e.printStackTrace(); }
-
-        return updated;
+        return this.documentService.getFileStored(document.getId());
     }
 
     @Override
     public Profile getProfile(UserBase base) {
-
-        Profile profile = this.dao.getProfile(base.getId());
-
         return this.dao.getProfile(base.getId());
     }
 

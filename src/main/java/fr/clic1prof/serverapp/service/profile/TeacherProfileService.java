@@ -3,6 +3,7 @@ package fr.clic1prof.serverapp.service.profile;
 import fr.clic1prof.serverapp.dao.other.ITeacherSpecialityDAO;
 import fr.clic1prof.serverapp.dao.profile.ITeacherProfileDAO;
 import fr.clic1prof.serverapp.dao.profile.IUserProfileDAO;
+import fr.clic1prof.serverapp.file.service.DocumentService;
 import fr.clic1prof.serverapp.model.profile.Speciality;
 import fr.clic1prof.serverapp.model.profile.Studies;
 import fr.clic1prof.serverapp.model.profile.SpecialityModifier;
@@ -10,6 +11,7 @@ import fr.clic1prof.serverapp.model.profile.Description;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +25,8 @@ public class TeacherProfileService extends UserProfileService implements ITeache
     @Autowired
     public TeacherProfileService(@Qualifier("TeacherProfileDAO") IUserProfileDAO dao,
                                  @Qualifier("TeacherSpecialityDAO") ITeacherSpecialityDAO specialityDAO,
-                                 PasswordEncoder encoder) {
-        super(dao, encoder);
+                                 PasswordEncoder encoder, DocumentService service) {
+        super(dao, encoder, service);
         this.specialityDAO = specialityDAO;
     }
 

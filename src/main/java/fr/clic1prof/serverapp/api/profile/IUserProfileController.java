@@ -30,6 +30,9 @@ public interface IUserProfileController {
     @PutMapping("/picture")
     ResponseEntity<?> updatePicture(UserBase base, @RequestPart("picture") MultipartFile file);
 
+    @GetMapping("/picture")
+    ResponseEntity<?> getPicture(UserBase base);
+
     @DeleteMapping("/picture")
     ResponseEntity<?> deletePicture(UserBase base);
 }
