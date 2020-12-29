@@ -10,16 +10,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 
-import java.util.Collections;
 import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations="classpath:application-test.properties")
-public class UserDAOTest {
+public class UserDAOImplTest {
 
     @Autowired
-    private IUserDAO dao;
+    private UserDAO dao;
 
     @Autowired
     private PasswordEncoder encoder;

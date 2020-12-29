@@ -1,10 +1,9 @@
 package fr.clic1prof.serverapp.service;
 
-import fr.clic1prof.serverapp.dao.IUserDAO;
+import fr.clic1prof.serverapp.dao.UserDAO;
 import fr.clic1prof.serverapp.model.user.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,8 @@ import java.util.Optional;
 public class JwtUserDetailsService implements UserDetailsService {
 
     @Autowired // Let Spring create an instance.
-    @Qualifier("UserDAO")
-    private IUserDAO dao;
+    @Qualifier("UserDAOImpl")
+    private UserDAO dao;
 
     @Override // Spring will call automatically this method to load a user.
     public UserModel loadUserByUsername(String username) throws UsernameNotFoundException {
