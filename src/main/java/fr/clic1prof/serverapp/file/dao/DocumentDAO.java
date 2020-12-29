@@ -1,44 +1,27 @@
 package fr.clic1prof.serverapp.file.dao;
 
-import fr.clic1prof.serverapp.file.model.Document;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import fr.clic1prof.serverapp.file.model.DocumentModel;
+import fr.clic1prof.serverapp.file.model.DocumentType;
 
-import java.util.Collection;
+import java.util.List;
 
-@Repository("DocumentDAO")
-public class DocumentDAO implements IDocumentDAO {
+public interface DocumentDAO {
 
-    private JdbcTemplate template;
+    boolean addDocument(DocumentModel model);
 
-    @Autowired
-    public DocumentDAO(JdbcTemplate template) {
-        this.template = template;
-    }
+    boolean removeDocument(int documentId);
 
-    @Override
-    public boolean addDocument(Document document) {
-        return false;
-    }
+    boolean removeDocument(int ownerId, DocumentType type);
 
-    @Override
-    public boolean deleteDocument(int id) {
-        return false;
-    }
+    boolean exists(int documentId);
 
-    @Override
-    public boolean exists(int id) {
-        return false;
-    }
+    boolean exists(int ownerId, DocumentType type);
 
-    @Override
-    public Document getDocument(int id) {
-        return null;
-    }
+    DocumentModel getDocument(int documentId);
 
-    @Override
-    public Collection<Document> getDocuments(int... ids) {
-        return null;
-    }
+    DocumentModel getDocument(int ownerId, DocumentType type);
+
+    List<DocumentModel> getDocuments(int... documentsIds);
+
+    List<DocumentModel> getDocuments(int ownerId, DocumentType type);
 }

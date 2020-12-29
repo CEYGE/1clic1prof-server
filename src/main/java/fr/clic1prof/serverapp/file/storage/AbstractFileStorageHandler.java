@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.file.storage;
 
+import fr.clic1prof.serverapp.file.util.MediaTypeUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -8,15 +9,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-@Component
-public abstract class AbstractFileStorage implements FileStorage {
+@Component("AbstractFileStorageHandler")
+public abstract class AbstractFileStorageHandler implements FileStorageHandler {
 
     private static final int HEXA_DIGIT_NBR = 2;
     private static final int TREE_LEVEL = 2;
@@ -24,7 +25,7 @@ public abstract class AbstractFileStorage implements FileStorage {
     @Value("${file-storage.root-folder}")
     private String root;
 
-    public abstract List<MediaType> getSupportedTypes();
+    public abstract List<MediaType> getAuthorizedMediaTypes();
 
     @Override
     public String storeFile(MultipartFile file) throws IOException {
@@ -54,12 +55,8 @@ public abstract class AbstractFileStorage implements FileStorage {
     }
 
     @Override
-    public boolean isSupported(MultipartFile file) {
-
-        if(!this.checkProvidedType(file)) return false;
-
-        try { return this.checkContentBasedType(file);
-        } catch (IOException e) { e.printStackTrace(); return false; }
+    public boolean isSupported(MultipartFile file) throws IOException {
+        return this.checkContentBasedType(file) && this.checkProvidedType(file);
     }
 
     @Override
@@ -73,7 +70,7 @@ public abstract class AbstractFileStorage implements FileStorage {
     }
 
     @Override
-    public Path getDirectory() {
+    public Path getStorageDirectory() {
         return Paths.get(this.root);
     }
 
@@ -81,7 +78,7 @@ public abstract class AbstractFileStorage implements FileStorage {
     private Path getPath(String id) {
 
         String path = this.getStringPath(id);
-        Path folder = this.getDirectory();
+        Path folder = this.getStorageDirectory();
 
         return Paths.get(folder.toString(), path);
     }
@@ -102,23 +99,17 @@ public abstract class AbstractFileStorage implements FileStorage {
         return sb.toString();
     }
 
-    private boolean checkContentBasedType(MultipartFile file) throws IOException {
+    private boolean checkContentBasedType(MultipartFile file) {
 
-        String contentBasedType = URLConnection.guessContentTypeFromStream(file.getInputStream());
+        Optional<MediaType> optional = MediaTypeUtils.getProvidedMediaType(file);
 
-        if(contentBasedType == null) return false;
-
-        MediaType type = MediaType.parseMediaType(contentBasedType);
-
-        return this.getSupportedTypes().contains(type);
+        return optional.isPresent() && this.getAuthorizedMediaTypes().contains(optional.get());
     }
 
     private boolean checkProvidedType(MultipartFile file) {
 
-        if(file.getContentType() == null) return false;
+        Optional<MediaType> optional = MediaTypeUtils.guessMediaType(file);
 
-        MediaType type = MediaType.parseMediaType(file.getContentType());
-
-        return this.getSupportedTypes().contains(type);
+        return optional.isPresent() && this.getAuthorizedMediaTypes().contains(optional.get());
     }
 }
