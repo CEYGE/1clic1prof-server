@@ -11,10 +11,7 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
 
 public abstract class UserProfileController implements IUserProfileController {
 
@@ -52,7 +49,7 @@ public abstract class UserProfileController implements IUserProfileController {
     }
 
     @Override
-    public ResponseEntity<?> updatePassword(UserBase user, @Valid @RequestBody PasswordModifier modifier) {
+    public ResponseEntity<?> updatePassword(UserBase user, PasswordModifier modifier) {
 
         boolean updated = this.getService().updatePassword(user, modifier);
 
@@ -62,7 +59,7 @@ public abstract class UserProfileController implements IUserProfileController {
     }
 
     @Override
-    public ResponseEntity<?> updateFirstName(UserBase user, @Valid @RequestBody Name name) {
+    public ResponseEntity<?> updateFirstName(UserBase user, Name name) {
 
         boolean updated = this.getService().updateFirstName(user, name);
 
@@ -72,7 +69,7 @@ public abstract class UserProfileController implements IUserProfileController {
     }
 
     @Override
-    public ResponseEntity<?> updateLastName(UserBase user, @Valid @RequestBody Name name) {
+    public ResponseEntity<?> updateLastName(UserBase user, Name name) {
 
         boolean updated = this.getService().updateLastName(user, name);
 
