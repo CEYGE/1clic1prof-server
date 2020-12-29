@@ -1,6 +1,7 @@
 package fr.clic1prof.serverapp.service.profile;
 
 import fr.clic1prof.serverapp.dao.profile.IUserProfileDAO;
+import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.model.Document;
 import fr.clic1prof.serverapp.file.model.DocumentModel;
 import fr.clic1prof.serverapp.file.model.DocumentType;
@@ -71,7 +72,7 @@ public abstract class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public FileStored getPicture(UserBase base) {
+    public FileStored getPicture(UserBase base) throws FileNotFoundException {
 
         DocumentModel document = this.documentService.getDocument(base.getId(), DocumentType.PROFILE_PICTURE);
 

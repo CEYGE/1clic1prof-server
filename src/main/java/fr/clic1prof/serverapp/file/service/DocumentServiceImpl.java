@@ -1,6 +1,7 @@
 package fr.clic1prof.serverapp.file.service;
 
 import fr.clic1prof.serverapp.file.dao.DocumentDAO;
+import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.MediaTypeNotFoundException;
 import fr.clic1prof.serverapp.file.model.Document;
 import fr.clic1prof.serverapp.file.model.DocumentModel;
@@ -103,7 +104,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public FileStored getFileStored(int documentId) {
+    public FileStored getFileStored(int documentId) throws FileNotFoundException {
 
         DocumentModel document = this.getDocument(documentId);
         Resource resource = this.storageService.getResource(document.getFileId(), document.getType());
@@ -112,7 +113,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public FileStored getFileStored(int ownerId, DocumentType type) {
+    public FileStored getFileStored(int ownerId, DocumentType type) throws FileNotFoundException {
 
         DocumentModel document = this.getDocument(ownerId, type);
         Resource resource = this.storageService.getResource(document.getFileId(), document.getType());

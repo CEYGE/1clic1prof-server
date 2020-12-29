@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.file.storage;
 
+import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.util.MediaTypeUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -60,13 +61,14 @@ public abstract class AbstractFileStorageHandler implements FileStorageHandler {
     }
 
     @Override
-    public Resource getFile(String id) {
+    public Resource getFile(String id) throws FileNotFoundException {
 
         Path path = this.getPath(id);
 
-        FileSystemResource resource = new FileSystemResource(path);
+        if(!Files.exists(path))
+            throw new FileNotFoundException(String.format("No file with id '%s' found.", id));
 
-        return resource.exists() ? resource : null;
+        return new FileSystemResource(path);
     }
 
     @Override

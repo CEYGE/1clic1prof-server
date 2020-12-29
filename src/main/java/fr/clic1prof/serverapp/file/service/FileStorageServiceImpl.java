@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.file.service;
 
+import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.FileStorageException;
 import fr.clic1prof.serverapp.file.model.DocumentType;
 import fr.clic1prof.serverapp.file.storage.FileStorageHandler;
@@ -60,7 +61,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public Resource getResource(String fileId, DocumentType type) {
+    public Resource getResource(String fileId, DocumentType type) throws FileNotFoundException {
 
         Optional<FileStorageHandler> optional = this.findStorageHandler(type);
 

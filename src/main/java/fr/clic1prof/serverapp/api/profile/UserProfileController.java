@@ -1,26 +1,24 @@
 package fr.clic1prof.serverapp.api.profile;
 
+import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.model.FileStored;
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.service.profile.IUserProfileService;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 public abstract class UserProfileController implements IUserProfileController {
 
-    private IUserProfileService service;
+    private final IUserProfileService service;
 
     public UserProfileController(IUserProfileService service) {
         this.service = service;
@@ -37,7 +35,10 @@ public abstract class UserProfileController implements IUserProfileController {
     @Override
     public ResponseEntity<?> getPicture(UserBase base) {
 
-        FileStored picture = this.service.getPicture(base);
+        FileStored picture;
+
+        try { picture = this.service.getPicture(base);
+        } catch (FileNotFoundException e) { return ResponseEntity.unprocessableEntity().build(); }
 
         ContentDisposition disposition = ContentDisposition.builder("attachment")
                 .filename(picture.getName())

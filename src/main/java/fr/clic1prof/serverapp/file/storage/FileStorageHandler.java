@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.file.storage;
 
+import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.model.DocumentType;
 import fr.clic1prof.serverapp.file.validation.FileValidator;
 import org.springframework.core.io.Resource;
@@ -17,7 +18,7 @@ public interface FileStorageHandler {
 
     boolean isSupported(MultipartFile file) throws IOException;
 
-    Resource getFile(String id);
+    Resource getFile(String id) throws FileNotFoundException;
 
     FileValidator getFileValidator();
 

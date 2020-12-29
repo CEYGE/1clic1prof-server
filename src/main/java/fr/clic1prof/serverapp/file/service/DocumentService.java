@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.file.service;
 
+import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.model.DocumentModel;
 import fr.clic1prof.serverapp.file.model.DocumentType;
 import fr.clic1prof.serverapp.file.model.FileStored;
@@ -27,7 +28,7 @@ public interface DocumentService {
 
     List<DocumentModel> getDocuments(int ownerId, DocumentType type);
 
-    FileStored getFileStored(int id);
+    FileStored getFileStored(int id) throws FileNotFoundException;
 
-    FileStored getFileStored(int ownerId, DocumentType type);
+    FileStored getFileStored(int ownerId, DocumentType type) throws FileNotFoundException;
 }
