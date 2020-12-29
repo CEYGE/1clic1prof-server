@@ -8,8 +8,8 @@ import fr.clic1prof.serverapp.model.profile.SpecialityModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.model.user.UserRole;
-import fr.clic1prof.serverapp.service.profile.ITeacherProfileService;
-import fr.clic1prof.serverapp.service.profile.IUserProfileService;
+import fr.clic1prof.serverapp.service.profile.TeacherProfileService;
+import fr.clic1prof.serverapp.service.profile.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ import javax.validation.Valid;
 public class TeacherProfileControllerImpl extends UserProfileControllerImpl implements TeacherProfileController {
 
     @Autowired
-    public TeacherProfileControllerImpl(@Qualifier("TeacherProfileService") IUserProfileService service) {
+    public TeacherProfileControllerImpl(@Qualifier("TeacherProfileServiceImpl") UserProfileService service) {
         super(service);
     }
 
@@ -92,7 +92,7 @@ public class TeacherProfileControllerImpl extends UserProfileControllerImpl impl
     }
 
     @Override
-    public ITeacherProfileService getService() {
-        return (ITeacherProfileService) super.getService();
+    public TeacherProfileService getService() {
+        return (TeacherProfileService) super.getService();
     }
 }

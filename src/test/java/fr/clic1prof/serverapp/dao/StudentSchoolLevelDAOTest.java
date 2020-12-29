@@ -1,6 +1,6 @@
 package fr.clic1prof.serverapp.dao;
 
-import fr.clic1prof.serverapp.dao.other.IStudentSchoolLevelDAO;
+import fr.clic1prof.serverapp.dao.other.StudentSchoolLevelDAO;
 import fr.clic1prof.serverapp.model.profile.SchoolLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import java.util.List;
 public class StudentSchoolLevelDAOTest {
 
     @Autowired
-    private IStudentSchoolLevelDAO schoolLevelDAO;
+    private StudentSchoolLevelDAO schoolLevelDAO;
 
     @Test
     public void test_getSchoolLevels() {

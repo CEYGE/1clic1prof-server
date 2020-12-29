@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository("TeacherContactDAO")
-
 public class TeacherContactDAO implements ContactDAO {
 
     // This class manage all the contacts of a teacher.

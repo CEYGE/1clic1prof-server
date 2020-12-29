@@ -6,7 +6,7 @@ import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
-import fr.clic1prof.serverapp.service.profile.IUserProfileService;
+import fr.clic1prof.serverapp.service.profile.UserProfileService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -16,9 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public abstract class UserProfileControllerImpl implements UserProfileController {
 
-    private final IUserProfileService service;
+    private final UserProfileService service;
 
-    public UserProfileControllerImpl(IUserProfileService service) {
+    public UserProfileControllerImpl(UserProfileService service) {
         this.service = service;
     }
 
@@ -99,7 +99,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
         return ResponseEntity.status(status).build();
     }
 
-    public IUserProfileService getService() {
+    public UserProfileService getService() {
         return this.service;
     }
 }

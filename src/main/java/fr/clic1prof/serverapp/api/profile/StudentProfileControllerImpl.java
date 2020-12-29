@@ -6,8 +6,8 @@ import fr.clic1prof.serverapp.model.profile.SchoolLevelIdMapper;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import fr.clic1prof.serverapp.model.user.UserRole;
-import fr.clic1prof.serverapp.service.profile.IUserProfileService;
-import fr.clic1prof.serverapp.service.profile.StudentProfileService;
+import fr.clic1prof.serverapp.service.profile.UserProfileService;
+import fr.clic1prof.serverapp.service.profile.StudentProfileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ import javax.validation.Valid;
 public class StudentProfileControllerImpl extends UserProfileControllerImpl implements StudentProfileController {
 
     @Autowired
-    public StudentProfileControllerImpl(@Qualifier("StudentProfileService") IUserProfileService service) {
+    public StudentProfileControllerImpl(@Qualifier("StudentProfileServiceImpl") UserProfileService service) {
         super(service);
     }
 
@@ -70,7 +70,7 @@ public class StudentProfileControllerImpl extends UserProfileControllerImpl impl
     }
 
     @Override
-    public StudentProfileService getService() {
-        return (StudentProfileService) super.getService();
+    public StudentProfileServiceImpl getService() {
+        return (StudentProfileServiceImpl) super.getService();
     }
 }

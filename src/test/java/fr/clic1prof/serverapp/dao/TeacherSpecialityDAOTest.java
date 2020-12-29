@@ -1,6 +1,6 @@
 package fr.clic1prof.serverapp.dao;
 
-import fr.clic1prof.serverapp.dao.other.ITeacherSpecialityDAO;
+import fr.clic1prof.serverapp.dao.other.TeacherSpecialityDAO;
 import fr.clic1prof.serverapp.model.profile.Speciality;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import java.util.List;
 public class TeacherSpecialityDAOTest {
 
     @Autowired
-    private ITeacherSpecialityDAO dao;
+    private TeacherSpecialityDAO dao;
 
     @Test
     public void test_getSpecialities() {
