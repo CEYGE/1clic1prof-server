@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.file.service;
 
+import fr.clic1prof.serverapp.exceptions.DocumentNotFoundException;
 import fr.clic1prof.serverapp.file.dao.DocumentDAO;
 import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.MediaTypeNotFoundException;
@@ -56,6 +57,9 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public boolean removeDocument(int documentId) {
 
+        if(!this.exists(documentId))
+            throw new DocumentNotFoundException("No document found.");
+
         DocumentModel document = this.documentDAO.getDocument(documentId);
 
         this.storageService.removeResource(document.getFileId(), document.getType());
@@ -65,6 +69,9 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public boolean removeDocument(int ownerId, DocumentType type) {
+
+        if(!this.exists(ownerId, type))
+            throw new DocumentNotFoundException("No document found.");
 
         DocumentModel document = this.documentDAO.getDocument(ownerId, type);
 
@@ -85,11 +92,19 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public DocumentModel getDocument(int documentId) {
+
+        if(!this.exists(documentId))
+            throw new DocumentNotFoundException("No document found.");
+
         return this.documentDAO.getDocument(documentId);
     }
 
     @Override
     public DocumentModel getDocument(int ownerId, DocumentType type) {
+
+        if(!this.exists(ownerId, type))
+            throw new DocumentNotFoundException("No document found.");
+
         return this.documentDAO.getDocument(ownerId, type);
     }
 
@@ -106,6 +121,9 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public FileStored getFileStored(int documentId) throws FileNotFoundException {
 
+        if(!this.exists(documentId))
+            throw new DocumentNotFoundException("No document found.");
+
         DocumentModel document = this.getDocument(documentId);
         Resource resource = this.storageService.getResource(document.getFileId(), document.getType());
 
@@ -114,6 +132,9 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public FileStored getFileStored(int ownerId, DocumentType type) throws FileNotFoundException {
+
+        if(!this.exists(ownerId, type))
+            throw new DocumentNotFoundException("No document found.");
 
         DocumentModel document = this.getDocument(ownerId, type);
         Resource resource = this.storageService.getResource(document.getFileId(), document.getType());
