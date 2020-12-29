@@ -15,7 +15,7 @@ import java.util.Optional;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations="classpath:application-test.properties")
-public class UserDAOImplTest {
+public class UserDAOTest {
 
     @Autowired
     private UserDAO dao;
