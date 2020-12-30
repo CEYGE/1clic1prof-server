@@ -52,13 +52,13 @@ public class TeacherProfileControllerImpl extends UserProfileControllerImpl impl
     }
 
     @Override
-    public ResponseEntity<Void> updatePicture(UserBase base, MultipartFile file) {
-        return super.updatePicture(base, file);
+    public ResponseEntity<Void> updatePicture(UserBase user, MultipartFile file) {
+        return super.updatePicture(user, file);
     }
 
     @Override
-    public ResponseEntity<Void> deletePicture(UserBase base) {
-        return super.deletePicture(base);
+    public ResponseEntity<Void> deletePicture(UserBase user) {
+        return super.deletePicture(user);
     }
 
     @Override

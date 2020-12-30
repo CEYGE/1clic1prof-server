@@ -30,11 +30,11 @@ public interface UserProfileController {
     ResponseEntity<Void> updateLastName(UserBase user, @Valid @RequestBody Name name);
 
     @PutMapping("/picture")
-    ResponseEntity<Void> updatePicture(UserBase base, @RequestPart("picture") MultipartFile file);
+    ResponseEntity<Void> updatePicture(UserBase user, @RequestPart("picture") MultipartFile file);
 
     @GetMapping("/picture")
-    ResponseEntity<Resource> getPicture(UserBase base);
+    ResponseEntity<Resource> getPicture(UserBase user);
 
     @DeleteMapping("/picture")
-    ResponseEntity<Void> deletePicture(UserBase base);
+    ResponseEntity<Void> deletePicture(UserBase user);
 }

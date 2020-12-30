@@ -24,7 +24,7 @@ public class TeacherContactController extends UserContactController {
     }
 
     @Override
-    public ResponseEntity<List<ContactModel>> getContacts(UserBase base) {
-        return super.getContacts(base);
+    public ResponseEntity<List<ContactModel>> getContacts(UserBase user) {
+        return super.getContacts(user);
     }
 }

@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface TeacherAgendaController {
 
     @PostMapping("/agenda/event")
-    ResponseEntity<Event> createEvent(UserBase base, @RequestBody TeacherEvent event);
+    ResponseEntity<Event> createEvent(UserBase user, @RequestBody TeacherEvent event);
 
     @PutMapping("/agenda/event/{id}")
-    ResponseEntity<Event> updateEvent(UserBase base, @RequestBody TeacherEvent event, @RequestParam("id") int id);
+    ResponseEntity<Event> updateEvent(UserBase user, @RequestBody TeacherEvent event, @RequestParam("id") int id);
 
     @DeleteMapping("/agenda/event/{id}")
-    ResponseEntity<Void> deleteEvent(UserBase base, @RequestParam("id") int id);
+    ResponseEntity<Void> deleteEvent(UserBase user, @RequestParam("id") int id);
 }

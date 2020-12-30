@@ -10,5 +10,5 @@ import java.util.List;
 public interface ContactController {
 
     @GetMapping("/contacts")
-    ResponseEntity<List<ContactModel>> getContacts(UserBase base);
+    ResponseEntity<List<ContactModel>> getContacts(UserBase user);
 }

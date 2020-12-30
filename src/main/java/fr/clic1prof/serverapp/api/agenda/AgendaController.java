@@ -12,7 +12,7 @@ import java.util.List;
 public interface AgendaController {
 
     @GetMapping("/agenda")
-    ResponseEntity<List<Event>> getAgenda(UserBase base,
+    ResponseEntity<List<Event>> getAgenda(UserBase user,
                                           @Range(min = 1, max = 12) @RequestParam("month") int month,
                                           @Range(min = 2020) @RequestParam("year") int year);
 }

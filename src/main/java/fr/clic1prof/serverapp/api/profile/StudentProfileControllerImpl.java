@@ -50,19 +50,19 @@ public class StudentProfileControllerImpl extends UserProfileControllerImpl impl
     }
 
     @Override
-    public ResponseEntity<Void> updatePicture(UserBase base, MultipartFile file) {
-        return super.updatePicture(base, file);
+    public ResponseEntity<Void> updatePicture(UserBase user, MultipartFile file) {
+        return super.updatePicture(user, file);
     }
 
     @Override
-    public ResponseEntity<Void> deletePicture(UserBase base) {
-        return super.deletePicture(base);
+    public ResponseEntity<Void> deletePicture(UserBase user) {
+        return super.deletePicture(user);
     }
 
     @Override
-    public ResponseEntity<Void> updateSchoolLevel(UserBase base, SchoolLevelIdMapper mapper) {
+    public ResponseEntity<Void> updateSchoolLevel(UserBase user, SchoolLevelIdMapper mapper) {
 
-        boolean updated = this.getService().updateSchoolLevel(base.getId(), mapper);
+        boolean updated = this.getService().updateSchoolLevel(user.getId(), mapper);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 

@@ -31,11 +31,11 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<Resource> getPicture(UserBase base) {
+    public ResponseEntity<Resource> getPicture(UserBase user) {
 
         FileStored picture;
 
-        try { picture = this.service.getPicture(base.getId());
+        try { picture = this.service.getPicture(user.getId());
         } catch (FileNotFoundException e) { return ResponseEntity.unprocessableEntity().build(); }
 
         ContentDisposition disposition = ContentDisposition.builder("attachment")
@@ -80,9 +80,9 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<Void> updatePicture(UserBase base, MultipartFile file) {
+    public ResponseEntity<Void> updatePicture(UserBase user, MultipartFile file) {
 
-        boolean updated = this.service.updatePicture(base.getId(), file);
+        boolean updated = this.service.updatePicture(user.getId(), file);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -90,9 +90,9 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<Void> deletePicture(UserBase base) {
+    public ResponseEntity<Void> deletePicture(UserBase user) {
 
-        boolean updated = this.service.deletePicture(base.getId());
+        boolean updated = this.service.deletePicture(user.getId());
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 
