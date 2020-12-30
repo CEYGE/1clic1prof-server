@@ -2,6 +2,7 @@ package fr.clic1prof.serverapp.file.service;
 
 import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.FileStorageException;
+import fr.clic1prof.serverapp.file.exceptions.FileStorageNotFoundException;
 import fr.clic1prof.serverapp.file.model.DocumentType;
 import fr.clic1prof.serverapp.file.storage.FileStorageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public String saveResource(MultipartFile file, DocumentType type) {
 
-        Optional<FileStorageHandler> optional = this.findStorageHandler(type);
-
-        if(!optional.isPresent())
-            throw new FileStorageException(String.format("No storage found for type %s.", type.name()));
-
-        FileStorageHandler storage = optional.get();
+        FileStorageHandler storage = this.getFileStorageHandler(type);
 
         String id;
 
@@ -46,12 +42,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public void removeResource(String fileId, DocumentType type) {
 
-        Optional<FileStorageHandler> optional = this.findStorageHandler(type);
-
-        if(!optional.isPresent())
-            throw new FileStorageException(String.format("No storage found for type %s.", type.name()));
-
-        FileStorageHandler storage = optional.get();
+        FileStorageHandler storage = this.getFileStorageHandler(type);
 
         try {
             storage.deleteFile(fileId);
@@ -63,14 +54,19 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public Resource getResource(String fileId, DocumentType type) throws FileNotFoundException {
 
+        FileStorageHandler storage = this.getFileStorageHandler(type);
+
+        return storage.getFile(fileId);
+    }
+
+    private FileStorageHandler getFileStorageHandler(DocumentType type) {
+
         Optional<FileStorageHandler> optional = this.findStorageHandler(type);
 
         if(!optional.isPresent())
-            throw new FileStorageException(String.format("No storage found for type %s.", type.name()));
+            throw new FileStorageNotFoundException(String.format("No storage found for type %s.", type.name()), type);
 
-        FileStorageHandler storage = optional.get();
-
-        return storage.getFile(fileId);
+        return optional.get();
     }
 
     private Optional<FileStorageHandler> findStorageHandler(DocumentType type) {
