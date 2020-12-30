@@ -29,7 +29,7 @@ public interface DocumentService {
 
     List<DocumentModel> getDocuments(int ownerId, DocumentType type);
 
-    Optional<FileStored> getFileStored(int id) throws FileNotFoundException;
+    Optional<FileStored> getFileStored(int documentId) throws FileNotFoundException;
 
     Optional<FileStored> getFileStored(int ownerId, DocumentType type) throws FileNotFoundException;
 }
