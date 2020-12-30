@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.api.profile;
 
+import fr.clic1prof.serverapp.exceptions.DocumentNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.model.FileStored;
 import fr.clic1prof.serverapp.model.profile.Name;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 public abstract class UserProfileControllerImpl implements UserProfileController {
 
@@ -33,10 +36,15 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     @Override
     public ResponseEntity<Resource> getPicture(UserBase user) {
 
-        FileStored picture;
+        Optional<FileStored> optional;
 
-        try { picture = this.service.getPicture(user.getId());
+        try { optional = this.service.getPicture(user.getId());
         } catch (FileNotFoundException e) { return ResponseEntity.unprocessableEntity().build(); }
+
+        if(!optional.isPresent())
+            throw new DocumentNotFoundException(String.format("No profile picture found for %d.", user.getId()));
+
+        FileStored picture = optional.get();
 
         ContentDisposition disposition = ContentDisposition.builder("attachment")
                 .filename(picture.getName())

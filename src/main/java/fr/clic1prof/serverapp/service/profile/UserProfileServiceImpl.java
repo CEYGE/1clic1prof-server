@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 public abstract class UserProfileServiceImpl implements UserProfileService {
 
     private final UserProfileDAO dao;
@@ -68,11 +70,8 @@ public abstract class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public FileStored getPicture(int userId) throws FileNotFoundException {
-
-        DocumentModel document = this.documentService.getDocument(userId, DocumentType.PROFILE_PICTURE);
-
-        return this.documentService.getFileStored(document.getId());
+    public Optional<FileStored> getPicture(int userId) throws FileNotFoundException {
+        return this.documentService.getFileStored(userId, DocumentType.PROFILE_PICTURE);
     }
 
     @Override

@@ -91,21 +91,23 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public DocumentModel getDocument(int documentId) {
+    public Optional<DocumentModel> getDocument(int documentId) {
 
-        if(!this.exists(documentId))
-            throw new DocumentNotFoundException("No document found.");
+        if(!this.exists(documentId)) return Optional.empty();
 
-        return this.documentDAO.getDocument(documentId);
+        DocumentModel document = this.documentDAO.getDocument(documentId);
+
+        return Optional.of(document);
     }
 
     @Override
-    public DocumentModel getDocument(int ownerId, DocumentType type) {
+    public Optional<DocumentModel> getDocument(int ownerId, DocumentType type) {
 
-        if(!this.exists(ownerId, type))
-            throw new DocumentNotFoundException("No document found.");
+        if(!this.exists(ownerId, type)) return Optional.empty();
 
-        return this.documentDAO.getDocument(ownerId, type);
+        DocumentModel document = this.documentDAO.getDocument(ownerId, type);
+
+        return Optional.of(document);
     }
 
     @Override
@@ -119,27 +121,33 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public FileStored getFileStored(int documentId) throws FileNotFoundException {
+    public Optional<FileStored> getFileStored(int documentId) throws FileNotFoundException {
 
-        if(!this.exists(documentId))
-            throw new DocumentNotFoundException("No document found.");
+        Optional<DocumentModel> optional = this.getDocument(documentId);
 
-        DocumentModel document = this.getDocument(documentId);
+        if(!optional.isPresent()) return Optional.empty();
+
+        DocumentModel document = optional.get();
+
         Resource resource = this.storageService.getResource(document.getFileId(), document.getType());
+        FileStored file = this.getFileStored(document, resource);
 
-        return this.getFileStored(document, resource);
+        return Optional.of(file);
     }
 
     @Override
-    public FileStored getFileStored(int ownerId, DocumentType type) throws FileNotFoundException {
+    public Optional<FileStored> getFileStored(int ownerId, DocumentType type) throws FileNotFoundException {
 
-        if(!this.exists(ownerId, type))
-            throw new DocumentNotFoundException("No document found.");
+        Optional<DocumentModel> optional = this.getDocument(ownerId, type);
 
-        DocumentModel document = this.getDocument(ownerId, type);
+        if(!optional.isPresent()) return Optional.empty();
+
+        DocumentModel document = optional.get();
+
         Resource resource = this.storageService.getResource(document.getFileId(), document.getType());
+        FileStored file = this.getFileStored(document, resource);
 
-        return this.getFileStored(document, resource);
+        return Optional.of(file);
     }
 
     private FileStored getFileStored(DocumentModel document, Resource resource) {

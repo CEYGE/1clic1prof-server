@@ -7,6 +7,8 @@ import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 public interface UserProfileService {
 
     boolean updatePassword(int userId, PasswordModifier modifier);
@@ -21,5 +23,5 @@ public interface UserProfileService {
 
     Profile getProfile(int userId);
 
-    FileStored getPicture(int userId) throws FileNotFoundException;
+    Optional<FileStored> getPicture(int userId) throws FileNotFoundException;
 }

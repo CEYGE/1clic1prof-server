@@ -7,6 +7,7 @@ import fr.clic1prof.serverapp.file.model.FileStored;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DocumentService {
 
@@ -20,15 +21,15 @@ public interface DocumentService {
 
     boolean exists(int ownerId, DocumentType type);
 
-    DocumentModel getDocument(int documentId);
+    Optional<DocumentModel> getDocument(int documentId);
 
-    DocumentModel getDocument(int ownerId, DocumentType type);
+    Optional<DocumentModel> getDocument(int ownerId, DocumentType type);
 
     List<DocumentModel> getDocuments(int... documentsIds);
 
     List<DocumentModel> getDocuments(int ownerId, DocumentType type);
 
-    FileStored getFileStored(int id) throws FileNotFoundException;
+    Optional<FileStored> getFileStored(int id) throws FileNotFoundException;
 
-    FileStored getFileStored(int ownerId, DocumentType type) throws FileNotFoundException;
+    Optional<FileStored> getFileStored(int ownerId, DocumentType type) throws FileNotFoundException;
 }
