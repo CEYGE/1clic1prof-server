@@ -101,7 +101,6 @@ public class StudentProfileControllerTest {
         Assertions.assertNotNull(profile);
         Assertions.assertEquals("Leonardo", profile.getFirstName());
         Assertions.assertEquals("Davinci", profile.getLastName());
-        Assertions.assertEquals("", profile.getPictureUrl());
         Assertions.assertEquals(new SchoolLevel(12, "Terminale"), profile.getLevel());
     }
 
@@ -122,7 +121,6 @@ public class StudentProfileControllerTest {
         Assertions.assertNotNull(profile);
         Assertions.assertEquals("Asuna", profile.getFirstName());
         Assertions.assertEquals("Yuki", profile.getLastName());
-        Assertions.assertEquals("", profile.getPictureUrl());
         Assertions.assertNull(profile.getLevel());
     }
 }

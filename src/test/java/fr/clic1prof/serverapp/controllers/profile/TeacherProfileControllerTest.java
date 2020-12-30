@@ -190,7 +190,6 @@ public class TeacherProfileControllerTest {
         Assertions.assertNotNull(profile);
         Assertions.assertEquals("Harry", profile.getFirstName());
         Assertions.assertEquals("Potter", profile.getLastName());
-        Assertions.assertEquals("", profile.getPictureUrl());
         Assertions.assertEquals("Un sorcier puissant.", profile.getDescription());
         Assertions.assertEquals("Poudlard", profile.getStudies());
 
@@ -219,7 +218,6 @@ public class TeacherProfileControllerTest {
 
         Assertions.assertEquals("Will", profile.getFirstName());
         Assertions.assertEquals("Smith", profile.getLastName());
-        Assertions.assertEquals("", profile.getPictureUrl());
         Assertions.assertEquals("", profile.getDescription());
         Assertions.assertEquals("", profile.getStudies());
         Assertions.assertEquals(0, profile.getSpecialities().size());
