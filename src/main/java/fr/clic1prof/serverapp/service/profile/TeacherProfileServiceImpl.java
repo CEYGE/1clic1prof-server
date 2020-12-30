@@ -3,6 +3,7 @@ package fr.clic1prof.serverapp.service.profile;
 import fr.clic1prof.serverapp.dao.other.TeacherSpecialityDAO;
 import fr.clic1prof.serverapp.dao.profile.TeacherProfileDAO;
 import fr.clic1prof.serverapp.dao.profile.UserProfileDAO;
+import fr.clic1prof.serverapp.exceptions.InvalidSpecialityException;
 import fr.clic1prof.serverapp.file.service.DocumentService;
 import fr.clic1prof.serverapp.model.profile.Speciality;
 import fr.clic1prof.serverapp.model.profile.Studies;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service("TeacherProfileServiceImpl")
 public class TeacherProfileServiceImpl extends UserProfileServiceImpl implements TeacherProfileService {
@@ -37,7 +39,7 @@ public class TeacherProfileServiceImpl extends UserProfileServiceImpl implements
     @Override
     public boolean updateSpeciality(int userId, SpecialityModifier modifier) {
 
-        if(!this.isValid(userId, modifier)) return false;
+        this.checkSpecialities(userId, modifier);
 
         return this.getUserDAO().updateSpeciality(userId, modifier);
     }
@@ -52,23 +54,29 @@ public class TeacherProfileServiceImpl extends UserProfileServiceImpl implements
         return (TeacherProfileDAO) super.getUserDAO();
     }
 
-    private boolean isValid(int userId, SpecialityModifier modifier) {
+    private void checkSpecialities(int userId, SpecialityModifier modifier) {
 
-        Collection<Speciality> owned = this.specialityDAO.getSpecialities(userId);
+        List<Speciality> owned = this.specialityDAO.getSpecialities(userId);
+
+        final int toReplace = modifier.getToReplace();
+        final int replaceWith = modifier.getReplaceWith();
 
         // Checking that the user own the speciality he wants to replace.
         boolean isReplaceWithOwned = owned.stream()
-                .anyMatch(speciality -> speciality.getId() == modifier.getToReplace());
+                .anyMatch(speciality -> speciality.getId() == toReplace);
 
-        if(!isReplaceWithOwned) return false;
+        if(!isReplaceWithOwned)
+            throw new InvalidSpecialityException("Trying to change a speciality not owned.", toReplace);
 
         // Checking that the user doesn't own the speciality he wants to replace with.
         boolean isToReplaceValid = owned.stream()
-                .noneMatch(speciality -> speciality.getId() == modifier.getReplaceWith());
+                .noneMatch(speciality -> speciality.getId() == replaceWith);
 
-        if(!isToReplaceValid) return false;
+        if(!isToReplaceValid)
+            throw new InvalidSpecialityException("Trying to change a speciality by another one which is already owned.", replaceWith);
 
         // Checking that the speciality he wants to replace with exists.
-        return this.specialityDAO.exists(modifier.getReplaceWith());
+        if(!this.specialityDAO.exists(modifier.getReplaceWith()))
+            throw new InvalidSpecialityException(String.format("No speciality with the id %d found.", modifier.getReplaceWith()), replaceWith);
     }
 }
