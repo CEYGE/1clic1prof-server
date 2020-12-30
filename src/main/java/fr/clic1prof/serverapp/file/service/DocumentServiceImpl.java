@@ -1,6 +1,6 @@
 package fr.clic1prof.serverapp.file.service;
 
-import fr.clic1prof.serverapp.exceptions.DocumentNotFoundException;
+import fr.clic1prof.serverapp.file.exceptions.DocumentNotFoundException;
 import fr.clic1prof.serverapp.file.dao.DocumentDAO;
 import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.MediaTypeNotFoundException;
