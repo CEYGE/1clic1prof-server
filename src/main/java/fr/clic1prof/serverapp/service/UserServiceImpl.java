@@ -1,6 +1,7 @@
 package fr.clic1prof.serverapp.service;
 
 import fr.clic1prof.serverapp.dao.UserDAO;
+import fr.clic1prof.serverapp.exceptions.UserAlreadyExistsException;
 import fr.clic1prof.serverapp.model.registration.Registration;
 import fr.clic1prof.serverapp.model.profile.Email;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class UserServiceImpl implements UserService {
     public boolean register(Registration registration) {
 
         // An account with the specified email already exists.
-        if(this.isRegistered(registration.getEmail())) return false;
+        if(this.isRegistered(registration.getEmail()))
+            throw new UserAlreadyExistsException("A user with this email already exists.");
 
         String password = registration.getPassword().getPassword();
         String encoded = this.encoder.encode(password);

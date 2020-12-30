@@ -1,6 +1,7 @@
 package fr.clic1prof.serverapp.service.profile;
 
 import fr.clic1prof.serverapp.dao.profile.UserProfileDAO;
+import fr.clic1prof.serverapp.exceptions.PasswordModificationException;
 import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.model.DocumentModel;
 import fr.clic1prof.serverapp.file.model.DocumentType;
@@ -36,7 +37,8 @@ public abstract class UserProfileServiceImpl implements UserProfileService {
         String rawOldPassword = modifier.getOldPassword().getPassword();
 
         // Passwords are different.
-        if(!this.encoder.matches(rawOldPassword, encodedOldPassword)) return false;
+        if(!this.encoder.matches(rawOldPassword, encodedOldPassword))
+            throw new PasswordModificationException("The current password doesn't match with the provided password.");
 
         String newPassword = modifier.getNewPassword().getPassword();
         String encodedNewPassword = this.encoder.encode(newPassword);
@@ -61,7 +63,7 @@ public abstract class UserProfileServiceImpl implements UserProfileService {
 
         this.documentService.removeDocument(userId, type);
 
-        return this.documentService.addDocument(userId, file,type);
+        return this.documentService.addDocument(userId, file, type);
     }
 
     @Override
