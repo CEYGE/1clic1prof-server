@@ -34,7 +34,7 @@ public class DocumentDAOImpl implements DocumentDAO {
                 document.getName(),
                 document.getMediaType(),
                 document.getSize(),
-                document.getType());
+                document.getType().name());
 
         return rows > 0;
     }
