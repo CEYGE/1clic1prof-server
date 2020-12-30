@@ -36,4 +36,8 @@ public class MediaTypeUtils {
 
         return Optional.ofNullable(mediaType);
     }
+
+    public static String getMediaTypeAsString(MediaType type) {
+        return type.getType() + "/" + type.getSubtype();
+    }
 }
