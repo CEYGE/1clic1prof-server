@@ -95,9 +95,12 @@ public class UserControllerImplTest {
     public void test_successRegistration() throws Exception {
 
         // If this test doesn't work, try to refresh database with the data generation script.
-
         this.mvc.perform(this.getRegistrationBuilder("James", "Bond", "james.bond@mi6.uk", "JamesBond007**", RegistrationType.STUDENT.name()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // Trying to register another user with the same email than the previous one.
+        this.mvc.perform(this.getRegistrationBuilder("Helene", "Smith", "james.bond@mi6.uk", "HeleneSmith1234**", RegistrationType.STUDENT.name()))
+                .andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
     @Test
