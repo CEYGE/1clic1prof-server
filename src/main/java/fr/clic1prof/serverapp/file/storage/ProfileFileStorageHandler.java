@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.nio.file.Path;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@Repository("ProfileFileStorageHandler")
+@Component("ProfileFileStorageHandler")
 public class ProfileFileStorageHandler extends AbstractFileStorageHandler {
 
     private static final List<MediaType> SUPPORTED_TYPES = Arrays.asList(MediaType.IMAGE_PNG, MediaType.IMAGE_JPEG);

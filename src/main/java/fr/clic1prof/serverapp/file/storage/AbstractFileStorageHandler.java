@@ -56,7 +56,7 @@ public abstract class AbstractFileStorageHandler implements FileStorageHandler {
     }
 
     @Override
-    public boolean isSupported(MultipartFile file) throws IOException {
+    public boolean isSupported(MultipartFile file) {
         return this.checkContentBasedType(file) && this.checkProvidedType(file);
     }
 

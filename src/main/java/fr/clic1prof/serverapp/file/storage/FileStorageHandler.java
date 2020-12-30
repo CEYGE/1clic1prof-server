@@ -16,7 +16,7 @@ public interface FileStorageHandler {
 
     void deleteFile(String id) throws IOException;
 
-    boolean isSupported(MultipartFile file) throws IOException;
+    boolean isSupported(MultipartFile file);
 
     Resource getFile(String id) throws FileNotFoundException;
 

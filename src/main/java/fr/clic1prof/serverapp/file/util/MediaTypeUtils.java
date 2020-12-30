@@ -1,7 +1,7 @@
 package fr.clic1prof.serverapp.file.util;
 
+import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
-import org.springframework.util.InvalidMimeTypeException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class MediaTypeUtils {
         MediaType mediaType = null;
 
         try { mediaType = MediaType.parseMediaType(typeAsString);
-        } catch (InvalidMimeTypeException ignored) {}
+        } catch (InvalidMediaTypeException ignored) {}
 
         return Optional.ofNullable(mediaType);
     }

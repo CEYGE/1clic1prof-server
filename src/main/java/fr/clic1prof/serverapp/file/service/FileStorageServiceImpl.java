@@ -29,6 +29,9 @@ public class FileStorageServiceImpl implements FileStorageService {
 
         FileStorageHandler storage = this.getFileStorageHandler(type);
 
+        if(!storage.isSupported(file))
+            throw new FileStorageException("File not supported.");
+
         if(!storage.getFileValidator().validate(file))
             throw new FileStorageException("Invalid file. Check that name, media type and size are correct.");
 

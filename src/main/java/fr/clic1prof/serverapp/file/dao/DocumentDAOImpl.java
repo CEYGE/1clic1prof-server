@@ -113,11 +113,12 @@ public class DocumentDAOImpl implements DocumentDAO {
             String fileId = result.getString("doc_file_id");
             String name = result.getString("doc_name");
             String mediaType = result.getString("doc_media_type");
+            String docType = result.getString("doc_type");
 
             Date creationDate = result.getDate("doc_creation_date");
             Date modificationDate = result.getDate("doc_modification_date");
 
-            DocumentType type = DocumentType.getTypeByName(name).orElse(DocumentType.UNKNOWN);
+            DocumentType type = DocumentType.getTypeByName(docType).orElse(DocumentType.UNKNOWN);
 
             return new Document.Builder()
                     .withId(id)

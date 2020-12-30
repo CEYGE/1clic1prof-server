@@ -150,8 +150,9 @@ public class UserProfileControllerTest {
         File falsePng = ResourceUtils.getFile("classpath:tests/false_picture.png");
         Resource falseResourcePng = new FileSystemResource(falsePng);
 
+        // Cannot guess file MediaType according to its content so that is why the 415 status code is returned.
         this.mvc.perform(this.getFileBuilder(uri, token, "false_picture.png", MediaType.IMAGE_PNG, falseResourcePng))
-                .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+                .andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType());
     }
 
     public MockHttpServletRequestBuilder getFileBuilder(String uri, String token, String file, MediaType type, Resource resource) throws IOException {
