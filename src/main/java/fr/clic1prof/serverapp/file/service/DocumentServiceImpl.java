@@ -1,7 +1,7 @@
 package fr.clic1prof.serverapp.file.service;
 
-import fr.clic1prof.serverapp.file.exceptions.DocumentNotFoundException;
 import fr.clic1prof.serverapp.file.dao.DocumentDAO;
+import fr.clic1prof.serverapp.file.exceptions.DocumentNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.MediaTypeNotFoundException;
 import fr.clic1prof.serverapp.file.model.Document;
@@ -34,20 +34,31 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public boolean addDocument(int ownerId, MultipartFile file, DocumentType type) {
+        return this.addDocument(ownerId, file, type, file.getOriginalFilename());
+    }
 
-        String fileId = this.storageService.saveResource(file, type);
+    @Override
+    public boolean addDocument(int ownerId, MultipartFile file, DocumentType type, String fileName) {
 
         Optional<MediaType> optional = MediaTypeUtils.guessMediaType(file);
 
         if(!optional.isPresent())
             throw new MediaTypeNotFoundException("No valid MediaType found.");
 
+        MediaType mediaType = optional.get();
+
+        // Saving resource after guessing MediaType. Indeed, if an exception
+        // is thrown, the file will not be saved and the document will not be
+        // added to the database.
+        String fileId = this.storageService.saveResource(file, type);
+
+        // Building a DocumentModel instance.
         DocumentModel document = new Document.Builder()
                 .withOwnerId(ownerId)
-                .withName(file.getOriginalFilename())
+                .withName(fileName)
                 .withFileId(fileId)
                 .withSize(file.getSize())
-                .withExtension(file.getContentType())
+                .withExtension(MediaTypeUtils.getMediaTypeAsString(mediaType))
                 .withType(type)
                 .build();
 
