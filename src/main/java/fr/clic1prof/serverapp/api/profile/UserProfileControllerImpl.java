@@ -1,6 +1,6 @@
 package fr.clic1prof.serverapp.api.profile;
 
-import fr.clic1prof.serverapp.exceptions.DocumentNotFoundException;
+import fr.clic1prof.serverapp.file.exceptions.DocumentNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.model.FileStored;
 import fr.clic1prof.serverapp.model.profile.Name;
