@@ -82,10 +82,11 @@ public abstract class UserProfileServiceImpl implements UserProfileService {
 
         // If you read this code, please try to think to a better solution than mine.
         // Casts must be avoided in code when possible.
-        UserProfile profile = (UserProfile) this.dao.getProfile(userId);
 
-        Optional<DocumentModel> optional = this.documentService.getDocument(userId, DocumentType.PROFILE_PICTURE);
-        optional.ifPresent(document -> profile.setPictureId(document.getId()));
+        // UserProfile profile = (UserProfile) this.dao.getProfile(userId);
+
+        // Optional<DocumentModel> optional = this.documentService.getDocument(userId, DocumentType.PROFILE_PICTURE);
+        // optional.ifPresent(document -> profile.setPictureId(document.getId()));
 
         return this.dao.getProfile(userId);
     }

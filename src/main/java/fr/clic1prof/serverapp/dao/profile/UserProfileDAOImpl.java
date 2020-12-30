@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.dao.profile;
 
+import fr.clic1prof.serverapp.file.model.DocumentType;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.profile.model.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,15 +50,18 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @Override
     public Profile getProfile(int id) {
 
-        String query = "SELECT user_first_name, user_last_name FROM user WHERE user_id = ?";
+        String query = "SELECT user_first_name, user_last_name, doc_id FROM user " +
+                "LEFT OUTER JOIN document ON doc_owner_id = user_id" +
+                "WHERE user_id = ? AND doc_type = ?;";
 
         RowMapper<Profile> mapper = (result, i) -> {
 
             String firstName = result.getString("user_first_name");
             String lastName = result.getString("user_last_name");
+            int pictureId = result.getInt("doc_id");
 
-            return new UserProfile(id, firstName, lastName, -1);
+            return new UserProfile(id, firstName, lastName, pictureId);
         };
-        return this.template.queryForObject(query, mapper, id);
+        return this.template.queryForObject(query, mapper, id, DocumentType.PROFILE_PICTURE.name());
     }
 }

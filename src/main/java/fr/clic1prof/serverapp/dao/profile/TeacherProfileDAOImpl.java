@@ -1,6 +1,7 @@
 package fr.clic1prof.serverapp.dao.profile;
 
 import fr.clic1prof.serverapp.dao.other.TeacherSpecialityDAO;
+import fr.clic1prof.serverapp.file.model.DocumentType;
 import fr.clic1prof.serverapp.model.profile.Speciality;
 import fr.clic1prof.serverapp.model.profile.SpecialityModifier;
 import fr.clic1prof.serverapp.model.profile.Description;
@@ -56,18 +57,19 @@ public class TeacherProfileDAOImpl extends UserProfileDAOImpl implements Teacher
 
         String query = "SELECT user_first_name, user_last_name, user_picture, teacher_description, teacher_study_level " +
                 "FROM user JOIN teacher ON user_id = teacher_id " +
-                "WHERE user_id = ?";
+                "LEFT OUTER JOIN document ON doc_owner_id = user_id " +
+                "WHERE user_id = ? AND doc_type = ?;";
 
         RowMapper<Profile> mapper = (result, i) -> {
 
             String firstName = result.getString("user_first_name");
             String lastName = result.getString("user_last_name");
-            String pictureUrl = result.getString("user_picture");
+            int pictureId = result.getInt("doc_id");
             String description = result.getString("teacher_description");
             String studies = result.getString("teacher_study_level");
 
-            return new TeacherProfile(id, firstName, lastName, -1, description, studies, specialities);
+            return new TeacherProfile(id, firstName, lastName, pictureId, description, studies, specialities);
         };
-        return this.template.queryForObject(query, mapper, id);
+        return this.template.queryForObject(query, mapper, id, DocumentType.PROFILE_PICTURE.name());
     }
 }
