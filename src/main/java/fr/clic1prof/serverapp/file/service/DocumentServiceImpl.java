@@ -75,6 +75,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         DocumentModel document = this.documentDAO.getDocument(documentId);
 
+        this.documentDAO.removeDocument(documentId);
         this.storageService.removeResource(document.getFileId(), document.getType());
     }
 
@@ -85,6 +86,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         DocumentModel document = this.documentDAO.getDocument(ownerId, type);
 
+        this.documentDAO.removeDocument(ownerId, type);
         this.storageService.removeResource(document.getFileId(), document.getType());
     }
 
