@@ -40,6 +40,9 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public boolean addDocument(int ownerId, MultipartFile file, DocumentType type, String fileName) {
 
+        if(fileName == null || fileName.isEmpty())
+            throw new IllegalArgumentException("File cannot be null or blank.");
+
         Optional<MediaType> optional = MediaTypeUtils.guessMediaType(file);
 
         if(!optional.isPresent())
