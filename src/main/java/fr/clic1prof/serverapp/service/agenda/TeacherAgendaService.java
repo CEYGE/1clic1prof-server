@@ -5,9 +5,9 @@ import fr.clic1prof.serverapp.model.user.UserBase;
 
 public interface TeacherAgendaService extends AgendaService {
 
-    boolean createEvent(UserBase base, Event event);
+    boolean createEvent(int userId, Event event);
 
-    boolean updateEvent(UserBase base, Event event, int id);
+    boolean updateEvent(int userId, Event event, int id);
 
-    boolean deleteEvent(UserBase base, int id);
+    boolean deleteEvent(int userId, int id);
 }

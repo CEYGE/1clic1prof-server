@@ -25,7 +25,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     @Override
     public ResponseEntity<Profile> getProfile(UserBase base) {
 
-        Profile profile = this.service.getProfile(base);
+        Profile profile = this.service.getProfile(base.getId());
 
         return profile == null ? ResponseEntity.unprocessableEntity().build() : ResponseEntity.ok(profile);
     }
@@ -35,7 +35,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
 
         FileStored picture;
 
-        try { picture = this.service.getPicture(base);
+        try { picture = this.service.getPicture(base.getId());
         } catch (FileNotFoundException e) { return ResponseEntity.unprocessableEntity().build(); }
 
         ContentDisposition disposition = ContentDisposition.builder("attachment")
@@ -52,7 +52,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     @Override
     public ResponseEntity<Void> updatePassword(UserBase user, PasswordModifier modifier) {
 
-        boolean updated = this.getService().updatePassword(user, modifier);
+        boolean updated = this.getService().updatePassword(user.getId(), modifier);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -62,7 +62,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     @Override
     public ResponseEntity<Void> updateFirstName(UserBase user, Name name) {
 
-        boolean updated = this.getService().updateFirstName(user, name);
+        boolean updated = this.getService().updateFirstName(user.getId(), name);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -72,7 +72,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     @Override
     public ResponseEntity<Void> updateLastName(UserBase user, Name name) {
 
-        boolean updated = this.getService().updateLastName(user, name);
+        boolean updated = this.getService().updateLastName(user.getId(), name);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -82,7 +82,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     @Override
     public ResponseEntity<Void> updatePicture(UserBase base, MultipartFile file) {
 
-        boolean updated = this.service.updatePicture(base, file);
+        boolean updated = this.service.updatePicture(base.getId(), file);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -92,7 +92,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     @Override
     public ResponseEntity<Void> deletePicture(UserBase base) {
 
-        boolean updated = this.service.deletePicture(base);
+        boolean updated = this.service.deletePicture(base.getId());
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 

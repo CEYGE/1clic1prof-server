@@ -5,22 +5,21 @@ import fr.clic1prof.serverapp.file.model.FileStored;
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
-import fr.clic1prof.serverapp.model.user.UserBase;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UserProfileService {
 
-    boolean updatePassword(UserBase user, PasswordModifier modifier);
+    boolean updatePassword(int userId, PasswordModifier modifier);
 
-    boolean updateFirstName(UserBase user, Name firstName);
+    boolean updateFirstName(int userId, Name firstName);
 
-    boolean updateLastName(UserBase user, Name lastName);
+    boolean updateLastName(int userId, Name lastName);
 
-    boolean updatePicture(UserBase base, MultipartFile file);
+    boolean updatePicture(int userId, MultipartFile file);
 
-    boolean deletePicture(UserBase base);
+    boolean deletePicture(int userId);
 
-    Profile getProfile(UserBase base);
+    Profile getProfile(int userId);
 
-    FileStored getPicture(UserBase base) throws FileNotFoundException;
+    FileStored getPicture(int userId) throws FileNotFoundException;
 }

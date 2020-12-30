@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ContactService {
 
-    List<ContactModel> getContacts(UserBase base);
+    List<ContactModel> getContacts(int userId);
 }

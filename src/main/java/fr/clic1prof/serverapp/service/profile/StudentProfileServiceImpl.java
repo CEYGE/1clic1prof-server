@@ -24,11 +24,11 @@ public class StudentProfileServiceImpl extends UserProfileServiceImpl implements
     }
 
     @Override
-    public boolean updateSchoolLevel(UserBase base, SchoolLevelIdMapper mapper) {
+    public boolean updateSchoolLevel(int userId, SchoolLevelIdMapper mapper) {
 
         if(!this.dao.exists(mapper.getId())) return false;
 
-        return this.getUserDAO().updateSchoolLevel(base.getId(), mapper.getId());
+        return this.getUserDAO().updateSchoolLevel(userId, mapper.getId());
     }
 
     @Override

@@ -28,9 +28,9 @@ public abstract class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public boolean updatePassword(UserBase user, PasswordModifier modifier) {
+    public boolean updatePassword(int userId, PasswordModifier modifier) {
 
-        String encodedOldPassword = this.dao.getPassword(user.getId());
+        String encodedOldPassword = this.dao.getPassword(userId);
         String rawOldPassword = modifier.getOldPassword().getPassword();
 
         // Passwords are different.
@@ -39,45 +39,45 @@ public abstract class UserProfileServiceImpl implements UserProfileService {
         String newPassword = modifier.getNewPassword().getPassword();
         String encodedNewPassword = this.encoder.encode(newPassword);
 
-        return this.getUserDAO().updatePassword(user.getId(), encodedNewPassword);
+        return this.getUserDAO().updatePassword(userId, encodedNewPassword);
     }
 
     @Override
-    public boolean updateFirstName(UserBase user, Name firstName) {
-        return this.getUserDAO().updateFirstName(user.getId(), firstName.getName());
+    public boolean updateFirstName(int userId, Name firstName) {
+        return this.getUserDAO().updateFirstName(userId, firstName.getName());
     }
 
     @Override
-    public boolean updateLastName(UserBase user, Name lastName) {
-        return this.getUserDAO().updateLastName(user.getId(), lastName.getName());
+    public boolean updateLastName(int userId, Name lastName) {
+        return this.getUserDAO().updateLastName(userId, lastName.getName());
     }
 
     @Override
-    public boolean updatePicture(UserBase base, MultipartFile file) {
+    public boolean updatePicture(int userId, MultipartFile file) {
 
         DocumentType type = DocumentType.PROFILE_PICTURE;
 
-        this.documentService.removeDocument(base.getId(), type);
+        this.documentService.removeDocument(userId, type);
 
-        return this.documentService.addDocument(base.getId(), file,type);
+        return this.documentService.addDocument(userId, file,type);
     }
 
     @Override
-    public boolean deletePicture(UserBase base) {
-        return this.documentService.removeDocument(base.getId(), DocumentType.PROFILE_PICTURE);
+    public boolean deletePicture(int userId) {
+        return this.documentService.removeDocument(userId, DocumentType.PROFILE_PICTURE);
     }
 
     @Override
-    public FileStored getPicture(UserBase base) throws FileNotFoundException {
+    public FileStored getPicture(int userId) throws FileNotFoundException {
 
-        DocumentModel document = this.documentService.getDocument(base.getId(), DocumentType.PROFILE_PICTURE);
+        DocumentModel document = this.documentService.getDocument(userId, DocumentType.PROFILE_PICTURE);
 
         return this.documentService.getFileStored(document.getId());
     }
 
     @Override
-    public Profile getProfile(UserBase base) {
-        return this.dao.getProfile(base.getId());
+    public Profile getProfile(int userId) {
+        return this.dao.getProfile(userId);
     }
 
     public UserProfileDAO getUserDAO() {

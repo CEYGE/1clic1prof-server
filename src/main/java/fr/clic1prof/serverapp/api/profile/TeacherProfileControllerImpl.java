@@ -64,7 +64,7 @@ public class TeacherProfileControllerImpl extends UserProfileControllerImpl impl
     @Override
     public ResponseEntity<Void> updateDescription(UserBase user, @Valid Description description) {
 
-        boolean updated = this.getService().updateDescription(user, description);
+        boolean updated = this.getService().updateDescription(user.getId(), description);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -74,7 +74,7 @@ public class TeacherProfileControllerImpl extends UserProfileControllerImpl impl
     @Override
     public ResponseEntity<Void> updateSpeciality(UserBase user, @Valid SpecialityModifier modifier) {
 
-        boolean updated = this.getService().updateSpeciality(user, modifier);
+        boolean updated = this.getService().updateSpeciality(user.getId(), modifier);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -84,7 +84,7 @@ public class TeacherProfileControllerImpl extends UserProfileControllerImpl impl
     @Override
     public ResponseEntity<Void> updateStudies(UserBase user, @Valid Studies studies) {
 
-        boolean updated = this.getService().updateStudies(user, studies);
+        boolean updated = this.getService().updateStudies(user.getId(), studies);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 

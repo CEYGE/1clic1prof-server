@@ -8,17 +8,17 @@ import java.util.List;
 public class TeacherAgendaServiceImpl extends AgendaServiceImpl implements TeacherAgendaService {
 
     @Override
-    public boolean createEvent(UserBase base, Event event) {
+    public boolean createEvent(int userId, Event event) {
         return false;
     }
 
     @Override
-    public boolean updateEvent(UserBase base, Event event, int id) {
+    public boolean updateEvent(int userId, Event event, int id) {
         return false;
     }
 
     @Override
-    public boolean deleteEvent(UserBase base, int id) {
+    public boolean deleteEvent(int userId, int id) {
         return false;
     }
 

@@ -62,7 +62,7 @@ public class StudentProfileControllerImpl extends UserProfileControllerImpl impl
     @Override
     public ResponseEntity<Void> updateSchoolLevel(UserBase base, SchoolLevelIdMapper mapper) {
 
-        boolean updated = this.getService().updateSchoolLevel(base, mapper);
+        boolean updated = this.getService().updateSchoolLevel(base.getId(), mapper);
 
         HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
 

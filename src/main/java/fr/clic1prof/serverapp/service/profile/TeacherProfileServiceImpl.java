@@ -30,21 +30,21 @@ public class TeacherProfileServiceImpl extends UserProfileServiceImpl implements
     }
 
     @Override
-    public boolean updateDescription(UserBase user, Description description) {
-        return this.getUserDAO().updateDescription(user.getId(), description);
+    public boolean updateDescription(int userId, Description description) {
+        return this.getUserDAO().updateDescription(userId, description);
     }
 
     @Override
-    public boolean updateSpeciality(UserBase user, SpecialityModifier modifier) {
+    public boolean updateSpeciality(int userId, SpecialityModifier modifier) {
 
-        if(!this.isValid(user, modifier)) return false;
+        if(!this.isValid(userId, modifier)) return false;
 
-        return this.getUserDAO().updateSpeciality(user.getId(), modifier);
+        return this.getUserDAO().updateSpeciality(userId, modifier);
     }
 
     @Override
-    public boolean updateStudies(UserBase user, Studies studies) {
-        return this.getUserDAO().updateStudies(user.getId(), studies);
+    public boolean updateStudies(int userId, Studies studies) {
+        return this.getUserDAO().updateStudies(userId, studies);
     }
 
     @Override
@@ -52,9 +52,9 @@ public class TeacherProfileServiceImpl extends UserProfileServiceImpl implements
         return (TeacherProfileDAO) super.getUserDAO();
     }
 
-    private boolean isValid(UserBase base, SpecialityModifier modifier) {
+    private boolean isValid(int userId, SpecialityModifier modifier) {
 
-        Collection<Speciality> owned = this.specialityDAO.getSpecialities(base.getId());
+        Collection<Speciality> owned = this.specialityDAO.getSpecialities(userId);
 
         // Checking that the user own the speciality he wants to replace.
         boolean isReplaceWithOwned = owned.stream()

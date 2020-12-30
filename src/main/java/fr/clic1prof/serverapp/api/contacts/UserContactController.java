@@ -20,7 +20,7 @@ public class UserContactController implements ContactController {
     @Override
     public ResponseEntity<List<ContactModel>> getContacts(UserBase base) {
 
-        List<ContactModel> contacts = this.service.getContacts(base);
+        List<ContactModel> contacts = this.service.getContacts(base.getId());
 
         if(contacts == null) return ResponseEntity.unprocessableEntity().build();
 

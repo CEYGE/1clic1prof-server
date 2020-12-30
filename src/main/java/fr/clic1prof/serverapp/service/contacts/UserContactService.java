@@ -16,8 +16,8 @@ public abstract class UserContactService implements ContactService {
     }
 
     @Override
-    public List<ContactModel> getContacts(UserBase base) {
-        return this.dao.getContacts(base.getId());
+    public List<ContactModel> getContacts(int userId) {
+        return this.dao.getContacts(userId);
     }
 
     public ContactDAO getContactDAO() {

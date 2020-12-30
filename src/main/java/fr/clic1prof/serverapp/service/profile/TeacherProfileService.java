@@ -7,9 +7,9 @@ import fr.clic1prof.serverapp.model.user.UserBase;
 
 public interface TeacherProfileService extends UserProfileService {
 
-    boolean updateDescription(UserBase user, Description description);
+    boolean updateDescription(int userId, Description description);
 
-    boolean updateSpeciality(UserBase user, SpecialityModifier modifier);
+    boolean updateSpeciality(int userId, SpecialityModifier modifier);
 
-    boolean updateStudies(UserBase user, Studies studies);
+    boolean updateStudies(int userId, Studies studies);
 }

@@ -5,5 +5,5 @@ import fr.clic1prof.serverapp.model.user.UserBase;
 
 public interface StudentProfileService extends UserProfileService {
 
-    boolean updateSchoolLevel(UserBase base, SchoolLevelIdMapper mapper);
+    boolean updateSchoolLevel(int userId, SchoolLevelIdMapper mapper);
 }
