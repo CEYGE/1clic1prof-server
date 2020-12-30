@@ -146,7 +146,7 @@ public class TeacherProfileControllerTest {
         node.put("replaceWith", 1);
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
-                .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
         // Want to replace an invalid speciality.
         node = this.mapper.createObjectNode();
@@ -154,7 +154,7 @@ public class TeacherProfileControllerTest {
         node.put("replaceWith", 1);
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
-                .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
         // Want to replace with an invalid speciality.
         node = this.mapper.createObjectNode();
@@ -162,7 +162,7 @@ public class TeacherProfileControllerTest {
         node.put("replaceWith", 3000);
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
-                .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
         // Want to replace with a speciality already owned.
         node = this.mapper.createObjectNode();
@@ -170,7 +170,7 @@ public class TeacherProfileControllerTest {
         node.put("replaceWith", 4);
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
-                .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test

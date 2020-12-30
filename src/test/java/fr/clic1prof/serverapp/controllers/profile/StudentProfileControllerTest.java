@@ -74,14 +74,14 @@ public class StudentProfileControllerTest {
         node.put("id", 3000);
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
-                .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
         // With an invalid negative id.
         node = this.mapper.createObjectNode();
         node.put("id", -1);
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
-                .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
