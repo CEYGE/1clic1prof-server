@@ -51,8 +51,8 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     public Profile getProfile(int id) {
 
         String query = "SELECT user_first_name, user_last_name, doc_id FROM user " +
-                "LEFT OUTER JOIN document ON doc_owner_id = user_id" +
-                "WHERE user_id = ? AND doc_type = ?;";
+                "LEFT OUTER JOIN document ON doc_owner_id = user_id AND doc_type = ?" +
+                "WHERE user_id = ?;";
 
         RowMapper<Profile> mapper = (result, i) -> {
 
@@ -62,6 +62,6 @@ public class UserProfileDAOImpl implements UserProfileDAO {
 
             return new UserProfile(id, firstName, lastName, pictureId);
         };
-        return this.template.queryForObject(query, mapper, id, DocumentType.PROFILE_PICTURE.name());
+        return this.template.queryForObject(query, mapper, DocumentType.PROFILE_PICTURE.name(), id);
     }
 }

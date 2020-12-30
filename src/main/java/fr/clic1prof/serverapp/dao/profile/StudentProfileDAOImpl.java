@@ -21,17 +21,17 @@ public class StudentProfileDAOImpl extends UserProfileDAOImpl implements Student
     @Override
     public Profile getProfile(int id) {
 
-        String query = "SELECT user_first_name, user_last_name, user_picture, school_level_name, school_level_id " +
+        String query = "SELECT user_first_name, user_last_name, school_level_name, school_level_id, doc_id " +
                 "FROM user JOIN student ON user_id = student_id " +
                 "LEFT OUTER JOIN school_level ON student_scholar_level_id = school_level_id " +
-                "LEFT OUTER JOIN document ON doc_owner_id = user_id " +
-                "WHERE user_id = ? AND doc_type = ?;";
+                "LEFT OUTER JOIN document ON doc_owner_id = user_id AND doc_type = ?" +
+                "WHERE user_id = ?;";
 
         RowMapper<Profile> mapper = (result, i) -> {
 
             String firstName = result.getString("user_first_name");
             String lastName = result.getString("user_last_name");
-            int pictureId = result.getInt("picture_id");
+            int pictureId = result.getInt("doc_id");
 
             int schoolLevelId = result.getInt("school_level_id");
 
@@ -39,6 +39,6 @@ public class StudentProfileDAOImpl extends UserProfileDAOImpl implements Student
 
             return new StudentProfile(id, firstName, lastName, pictureId, level);
         };
-        return this.template.queryForObject(query, mapper, id, DocumentType.PROFILE_PICTURE.name());
+        return this.template.queryForObject(query, mapper, DocumentType.PROFILE_PICTURE.name(), id);
     }
 }

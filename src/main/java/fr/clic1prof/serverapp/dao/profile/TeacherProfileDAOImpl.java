@@ -55,10 +55,10 @@ public class TeacherProfileDAOImpl extends UserProfileDAOImpl implements Teacher
 
         List<Speciality> specialities = this.specialityDAO.getSpecialities(id);
 
-        String query = "SELECT user_first_name, user_last_name, user_picture, teacher_description, teacher_study_level " +
+        String query = "SELECT user_first_name, user_last_name, teacher_description, teacher_study_level, doc_id " +
                 "FROM user JOIN teacher ON user_id = teacher_id " +
-                "LEFT OUTER JOIN document ON doc_owner_id = user_id " +
-                "WHERE user_id = ? AND doc_type = ?;";
+                "LEFT OUTER JOIN document ON doc_owner_id = user_id AND doc_type = ?" +
+                "WHERE user_id = ?;";
 
         RowMapper<Profile> mapper = (result, i) -> {
 
@@ -70,6 +70,6 @@ public class TeacherProfileDAOImpl extends UserProfileDAOImpl implements Teacher
 
             return new TeacherProfile(id, firstName, lastName, pictureId, description, studies, specialities);
         };
-        return this.template.queryForObject(query, mapper, id, DocumentType.PROFILE_PICTURE.name());
+        return this.template.queryForObject(query, mapper, DocumentType.PROFILE_PICTURE.name(), id);
     }
 }
