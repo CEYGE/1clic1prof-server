@@ -26,7 +26,7 @@ public class DocumentDAOImpl implements DocumentDAO {
 
         String query = "INSERT INTO document (" +
                 "doc_owner_id, doc_file_id, doc_name, doc_media_type, doc_size, doc_type" +
-                ") VALUES (?, ?, ?, ?, ?);";
+                ") VALUES (?, ?, ?, ?, ?, ?);";
 
         int rows = this.template.update(query,
                 document.getOwnerId(),
