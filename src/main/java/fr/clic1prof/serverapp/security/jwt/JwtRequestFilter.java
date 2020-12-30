@@ -48,7 +48,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         Optional<Token> optional = Optional.empty();
 
         // Avoid exception when token is malformed or expired.
-        // If there is a problem, the user will simply not authenticated.
+        // If there is a problem, the user will simply not be authenticated.
         try { optional = this.provider.parseToken(authorization);
         } catch (JwtException ignored) {}
 
