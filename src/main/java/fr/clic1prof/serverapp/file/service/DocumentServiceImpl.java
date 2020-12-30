@@ -69,29 +69,23 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public boolean removeDocument(int documentId) {
+    public void removeDocument(int documentId) {
 
-        if(!this.exists(documentId))
-            throw new DocumentNotFoundException("No document found.");
+        if(!this.exists(documentId)) return;
 
         DocumentModel document = this.documentDAO.getDocument(documentId);
 
         this.storageService.removeResource(document.getFileId(), document.getType());
-
-        return true;
     }
 
     @Override
-    public boolean removeDocument(int ownerId, DocumentType type) {
+    public void removeDocument(int ownerId, DocumentType type) {
 
-        if(!this.exists(ownerId, type))
-            throw new DocumentNotFoundException("No document found.");
+        if(!this.exists(ownerId, type)) return;
 
         DocumentModel document = this.documentDAO.getDocument(ownerId, type);
 
         this.storageService.removeResource(document.getFileId(), document.getType());
-
-        return true;
     }
 
     @Override

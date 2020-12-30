@@ -6,8 +6,8 @@ public class StudentProfile extends UserProfile {
 
     private SchoolLevel level;
 
-    public StudentProfile(int id, String firstName, String lastName, String pictureUrl, SchoolLevel level) {
-        super(id, firstName, lastName, pictureUrl);
+    public StudentProfile(int id, String firstName, String lastName, int pictureId, SchoolLevel level) {
+        super(id, firstName, lastName, pictureId);
         this.level = level;
     }
 

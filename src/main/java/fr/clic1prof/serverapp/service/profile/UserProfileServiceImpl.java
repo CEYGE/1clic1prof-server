@@ -10,6 +10,7 @@ import fr.clic1prof.serverapp.file.service.DocumentService;
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
+import fr.clic1prof.serverapp.model.profile.model.UserProfile;
 import fr.clic1prof.serverapp.model.user.UserBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -67,8 +68,8 @@ public abstract class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public boolean deletePicture(int userId) {
-        return this.documentService.removeDocument(userId, DocumentType.PROFILE_PICTURE);
+    public void deletePicture(int userId) {
+        this.documentService.removeDocument(userId, DocumentType.PROFILE_PICTURE);
     }
 
     @Override
@@ -78,6 +79,14 @@ public abstract class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public Profile getProfile(int userId) {
+
+        // If you read this code, please try to think to a better solution than mine.
+        // Casts must be avoided in code when possible.
+        UserProfile profile = (UserProfile) this.dao.getProfile(userId);
+
+        Optional<DocumentModel> optional = this.documentService.getDocument(userId, DocumentType.PROFILE_PICTURE);
+        optional.ifPresent(document -> profile.setPictureId(document.getId()));
+
         return this.dao.getProfile(userId);
     }
 

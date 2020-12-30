@@ -4,13 +4,13 @@ public class UserProfile implements Profile {
 
     private int id;
     private String firstName, lastName;
-    private String pictureUrl;
+    private int pictureId;
 
-    public UserProfile(int id, String firstName, String lastName, String pictureUrl) {
+    public UserProfile(int id, String firstName, String lastName, int pictureId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.pictureUrl = pictureUrl;
+        this.pictureId = pictureId;
     }
 
     @Override
@@ -29,7 +29,11 @@ public class UserProfile implements Profile {
     }
 
     @Override
-    public String getPictureUrl() {
-        return this.pictureUrl;
+    public int getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(int pictureId) {
+        this.pictureId = pictureId;
     }
 }

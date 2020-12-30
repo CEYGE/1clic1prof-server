@@ -15,9 +15,9 @@ public interface DocumentService {
 
     boolean addDocument(int ownerId, MultipartFile file, DocumentType type, String fileName);
 
-    boolean removeDocument(int documentId);
+    void removeDocument(int documentId);
 
-    boolean removeDocument(int ownerId, DocumentType type);
+    void removeDocument(int ownerId, DocumentType type);
 
     boolean exists(int documentId);
 

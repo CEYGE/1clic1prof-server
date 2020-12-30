@@ -39,31 +39,6 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     }
 
     @Override
-    public boolean updatePicture(int id, String pictureId) {
-
-        String query = "UPDATE user SET user_picture = ? WHERE user_id = ?;";
-
-        return this.template.update(query, pictureId, id) > 0;
-    }
-
-    @Override
-    @Transactional
-    public String deletePicture(int id) {
-
-        String select = "SELECT user_picture FROM user WHERE user_id = ?;";
-
-        String uuid = this.template.queryForObject(select, String.class, id);
-
-        if(uuid == null) return null;
-
-        String delete = "UPDATE user SET user_picture = null WHERE user_id = ?;";
-
-        boolean deleted = this.template.update(delete, id) > 0;
-
-        return deleted ? uuid : null;
-    }
-
-    @Override
     public String getPassword(int id) {
 
         String query = "SELECT password FROM auth_user WHERE id = ?;";
@@ -74,15 +49,14 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @Override
     public Profile getProfile(int id) {
 
-        String query = "SELECT user_first_name, user_last_name, user_picture FROM user WHERE user_id = ?";
+        String query = "SELECT user_first_name, user_last_name FROM user WHERE user_id = ?";
 
         RowMapper<Profile> mapper = (result, i) -> {
 
             String firstName = result.getString("user_first_name");
             String lastName = result.getString("user_last_name");
-            String pictureUrl = result.getString("user_picture");
 
-            return new UserProfile(id, firstName, lastName, pictureUrl);
+            return new UserProfile(id, firstName, lastName, -1);
         };
         return this.template.queryForObject(query, mapper, id);
     }

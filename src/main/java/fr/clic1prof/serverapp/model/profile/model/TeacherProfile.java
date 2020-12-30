@@ -10,8 +10,8 @@ public class TeacherProfile extends UserProfile {
     private String description, studies;
     private List<Speciality> specialities;
 
-    public TeacherProfile(int id, String firstName, String lastName, String pictureUrl, String description, String studies, List<Speciality> specialities) {
-        super(id, firstName, lastName, pictureUrl);
+    public TeacherProfile(int id, String firstName, String lastName, int pictureId, String description, String studies, List<Speciality> specialities) {
+        super(id, firstName, lastName, pictureId);
         this.description = description;
         this.studies = studies;
         this.specialities = specialities;

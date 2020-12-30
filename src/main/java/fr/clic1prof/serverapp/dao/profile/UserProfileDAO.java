@@ -12,10 +12,6 @@ public interface UserProfileDAO {
 
     boolean updateLastName(int id, String lastName);
 
-    boolean updatePicture(int id, String pictureId);
-
-    String deletePicture(int id);
-
     String getPassword(int id);
 
     Profile getProfile(int id);

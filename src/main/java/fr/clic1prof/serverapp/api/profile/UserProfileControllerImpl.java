@@ -100,11 +100,9 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     @Override
     public ResponseEntity<Void> deletePicture(UserBase user) {
 
-        boolean updated = this.service.deletePicture(user.getId());
+        this.service.deletePicture(user.getId());
 
-        HttpStatus status = updated ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
-
-        return ResponseEntity.status(status).build();
+        return ResponseEntity.noContent().build();
     }
 
     public UserProfileService getService() {

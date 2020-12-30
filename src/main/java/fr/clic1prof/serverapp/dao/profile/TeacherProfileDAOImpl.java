@@ -66,7 +66,7 @@ public class TeacherProfileDAOImpl extends UserProfileDAOImpl implements Teacher
             String description = result.getString("teacher_description");
             String studies = result.getString("teacher_study_level");
 
-            return new TeacherProfile(id, firstName, lastName, pictureUrl, description, studies, specialities);
+            return new TeacherProfile(id, firstName, lastName, -1, description, studies, specialities);
         };
         return this.template.queryForObject(query, mapper, id);
     }

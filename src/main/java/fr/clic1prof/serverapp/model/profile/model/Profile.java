@@ -8,5 +8,5 @@ public interface Profile {
 
     String getLastName();
 
-    String getPictureUrl();
+    int getPictureId();
 }

@@ -19,7 +19,7 @@ public interface UserProfileService {
 
     boolean updatePicture(int userId, MultipartFile file);
 
-    boolean deletePicture(int userId);
+    void deletePicture(int userId);
 
     Profile getProfile(int userId);
 

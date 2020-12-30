@@ -35,7 +35,7 @@ public class StudentProfileDAOImpl extends UserProfileDAOImpl implements Student
 
             SchoolLevel level = schoolLevelId != 0 ? new SchoolLevel(schoolLevelId, result.getString("school_level_name")) : null;
 
-            return new StudentProfile(id, firstName, lastName, pictureUrl, level);
+            return new StudentProfile(id, firstName, lastName, -1, level);
         };
         return this.template.queryForObject(query, mapper, id);
     }
