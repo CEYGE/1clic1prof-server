@@ -125,22 +125,6 @@ public class DocumentServiceImpl implements DocumentService {
         return this.documentDAO.addDocument(document);
     }
 
-    private void checkFileName(String fileName) {
-
-        if(fileName == null || fileName.isEmpty())
-            throw new IllegalArgumentException("File cannot be null or blank.");
-    }
-
-    private MediaType getMediaType(MultipartFile file) {
-
-        Optional<MediaType> optional = MediaTypeUtils.guessMediaType(file);
-
-        if(!optional.isPresent())
-            throw new MediaTypeNotFoundException("No valid MediaType found.");
-
-        return optional.get();
-    }
-
     @Override
     public boolean exists(int documentId) {
         return this.documentDAO.exists(documentId);
@@ -219,5 +203,21 @@ public class DocumentServiceImpl implements DocumentService {
             throw new MediaTypeNotFoundException("Invalid MediaType.");
 
         return new FileStored(resource, document.getName(), optional.get(), document.getSize());
+    }
+
+    private void checkFileName(String fileName) {
+
+        if(fileName == null || fileName.isEmpty())
+            throw new IllegalArgumentException("File cannot be null or blank.");
+    }
+
+    private MediaType getMediaType(MultipartFile file) {
+
+        Optional<MediaType> optional = MediaTypeUtils.guessMediaType(file);
+
+        if(!optional.isPresent())
+            throw new MediaTypeNotFoundException("No valid MediaType found.");
+
+        return optional.get();
     }
 }
