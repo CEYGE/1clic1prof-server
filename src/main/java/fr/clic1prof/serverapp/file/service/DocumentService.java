@@ -11,13 +11,15 @@ import java.util.Optional;
 
 public interface DocumentService {
 
-    boolean addDocument(int ownerId, MultipartFile file, DocumentType type);
+    int addDocument(int ownerId, MultipartFile file, DocumentType type);
 
-    boolean addDocument(int ownerId, MultipartFile file, DocumentType type, String fileName);
+    int addDocument(int ownerId, MultipartFile file, DocumentType type, String fileName);
 
     void removeDocument(int documentId);
 
     void removeDocument(int ownerId, DocumentType type);
+
+    int updateDocument(int documentId, MultipartFile file, String fileName);
 
     boolean exists(int documentId);
 

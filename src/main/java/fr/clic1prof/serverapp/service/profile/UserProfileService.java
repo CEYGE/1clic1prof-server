@@ -17,7 +17,7 @@ public interface UserProfileService {
 
     boolean updateLastName(int userId, Name lastName);
 
-    boolean updatePicture(int userId, MultipartFile file);
+    int updatePicture(int userId, MultipartFile file);
 
     void deletePicture(int userId);
 

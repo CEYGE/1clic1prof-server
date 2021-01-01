@@ -3,6 +3,7 @@ package fr.clic1prof.serverapp.file.service;
 import fr.clic1prof.serverapp.file.dao.DocumentDAO;
 import fr.clic1prof.serverapp.file.exceptions.DocumentNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
+import fr.clic1prof.serverapp.file.exceptions.FileStorageException;
 import fr.clic1prof.serverapp.file.exceptions.MediaTypeNotFoundException;
 import fr.clic1prof.serverapp.file.model.Document;
 import fr.clic1prof.serverapp.file.model.DocumentModel;
@@ -33,22 +34,18 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public boolean addDocument(int ownerId, MultipartFile file, DocumentType type) {
+    public int addDocument(int ownerId, MultipartFile file, DocumentType type) {
         return this.addDocument(ownerId, file, type, file.getOriginalFilename());
     }
 
     @Override
-    public boolean addDocument(int ownerId, MultipartFile file, DocumentType type, String fileName) {
+    public int addDocument(int ownerId, MultipartFile file, DocumentType type, String fileName) {
 
-        if(fileName == null || fileName.isEmpty())
-            throw new IllegalArgumentException("File cannot be null or blank.");
+        // Implicit check here.
+        this.checkFileName(fileName);
 
-        Optional<MediaType> optional = MediaTypeUtils.guessMediaType(file);
-
-        if(!optional.isPresent())
-            throw new MediaTypeNotFoundException("No valid MediaType found.");
-
-        MediaType mediaType = optional.get();
+        // Implicit check here.
+        MediaType mediaType = this.getMediaType(file);
 
         // Saving resource after guessing MediaType. Indeed, if an exception
         // is thrown, the file will not be saved and the document will not be
@@ -88,6 +85,59 @@ public class DocumentServiceImpl implements DocumentService {
 
         this.documentDAO.removeDocument(ownerId, type);
         this.storageService.removeResource(document.getFileId(), document.getType());
+    }
+
+    @Override
+    public int updateDocument(int documentId, MultipartFile file, String fileName) {
+
+        Optional<DocumentModel> optional = this.getDocument(documentId);
+
+        if(!optional.isPresent())
+            throw new DocumentNotFoundException("No existing document found. Please, use add method.");
+
+        DocumentModel oldDocument = optional.get();
+
+        if(!this.storageService.isStorable(file, oldDocument.getType()))
+            throw new FileStorageException("Document not storable.");
+
+        // Checks should be performed here.
+        this.checkFileName(fileName);
+
+        // Implicit checks here.
+        MediaType type = this.getMediaType(file);
+        String fileId = this.storageService.saveResource(file, oldDocument.getType());
+
+        // Removing existing document. Operation can be performed first because
+        // the old document has been retrieved into a variable.
+        this.removeDocument(documentId);
+
+        // Building a DocumentModel instance.
+        DocumentModel document = new Document.Builder()
+                .withOwnerId(oldDocument.getOwnerId())
+                .withName(fileName)
+                .withFileId(fileId)
+                .withSize(file.getSize())
+                .withExtension(MediaTypeUtils.getMediaTypeAsString(type))
+                .withType(oldDocument.getType())
+                .build();
+
+        return this.documentDAO.addDocument(document);
+    }
+
+    private void checkFileName(String fileName) {
+
+        if(fileName == null || fileName.isEmpty())
+            throw new IllegalArgumentException("File cannot be null or blank.");
+    }
+
+    private MediaType getMediaType(MultipartFile file) {
+
+        Optional<MediaType> optional = MediaTypeUtils.guessMediaType(file);
+
+        if(!optional.isPresent())
+            throw new MediaTypeNotFoundException("No valid MediaType found.");
+
+        return optional.get();
     }
 
     @Override

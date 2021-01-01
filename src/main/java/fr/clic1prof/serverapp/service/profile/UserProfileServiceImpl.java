@@ -58,13 +58,15 @@ public abstract class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public boolean updatePicture(int userId, MultipartFile file) {
+    public int updatePicture(int userId, MultipartFile file) {
 
         DocumentType type = DocumentType.PROFILE_PICTURE;
 
-        this.documentService.removeDocument(userId, type);
+        Optional<DocumentModel> optional = this.documentService.getDocument(userId, type);
 
-        return this.documentService.addDocument(userId, file, type);
+        return optional.map(model -> this.documentService.updateDocument(model.getId(), file, "profile_picture"))
+                .orElseGet(() -> this.documentService.addDocument(userId, file, type, "profile_picture"));
+
     }
 
     @Override
@@ -79,15 +81,6 @@ public abstract class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public Profile getProfile(int userId) {
-
-        // If you read this code, please try to think to a better solution than mine.
-        // Casts must be avoided in code when possible.
-
-        // UserProfile profile = (UserProfile) this.dao.getProfile(userId);
-
-        // Optional<DocumentModel> optional = this.documentService.getDocument(userId, DocumentType.PROFILE_PICTURE);
-        // optional.ifPresent(document -> profile.setPictureId(document.getId()));
-
         return this.dao.getProfile(userId);
     }
 

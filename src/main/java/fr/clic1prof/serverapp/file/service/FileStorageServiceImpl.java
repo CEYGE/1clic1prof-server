@@ -65,6 +65,14 @@ public class FileStorageServiceImpl implements FileStorageService {
         return storage.getFile(fileId);
     }
 
+    @Override
+    public boolean isStorable(MultipartFile file, DocumentType type) {
+
+        FileStorageHandler storage = this.getFileStorageHandler(type);
+
+        return storage.isSupported(file) && storage.getFileValidator().validate(file);
+    }
+
     private FileStorageHandler getFileStorageHandler(DocumentType type) {
 
         Optional<FileStorageHandler> optional = this.findStorageHandler(type);

@@ -12,4 +12,6 @@ public interface FileStorageService {
     void removeResource(String fileId, DocumentType type);
 
     Resource getResource(String fileId, DocumentType type) throws FileNotFoundException;
+
+    boolean isStorable(MultipartFile file, DocumentType type);
 }

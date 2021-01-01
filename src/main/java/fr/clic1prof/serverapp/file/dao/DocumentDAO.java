@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DocumentDAO {
 
-    boolean addDocument(DocumentModel model);
+    int addDocument(DocumentModel model);
 
     boolean removeDocument(int documentId);
 

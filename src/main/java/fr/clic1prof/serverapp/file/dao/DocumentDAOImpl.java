@@ -5,11 +5,18 @@ import fr.clic1prof.serverapp.file.model.DocumentModel;
 import fr.clic1prof.serverapp.file.model.DocumentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository("DocumentDAOImpl")
 public class DocumentDAOImpl implements DocumentDAO {
@@ -22,12 +29,25 @@ public class DocumentDAOImpl implements DocumentDAO {
     }
 
     @Override
-    public boolean addDocument(DocumentModel document) {
+    public int addDocument(DocumentModel document) {
 
         String query = "INSERT INTO document (" +
                 "doc_owner_id, doc_file_id, doc_name, doc_media_type, doc_size, doc_type" +
                 ") VALUES (?, ?, ?, ?, ?, ?);";
 
+        SimpleJdbcInsert insert = new SimpleJdbcInsert(this.template);
+        insert.withTableName("document").usingGeneratedKeyColumns("doc_id");
+
+        Map<String, Object> parameters = new HashMap<>();
+
+        parameters.put("doc_owner_id", document.getOwnerId());
+        parameters.put("doc_file_id", document.getFileId());
+        parameters.put("doc_name", document.getName());
+        parameters.put("doc_media_type", document.getMediaType());
+        parameters.put("doc_size", document.getSize());
+        parameters.put("doc_type", document.getType().name());
+
+        /*
         int rows = this.template.update(query,
                 document.getOwnerId(),
                 document.getFileId(),
@@ -35,8 +55,8 @@ public class DocumentDAOImpl implements DocumentDAO {
                 document.getMediaType(),
                 document.getSize(),
                 document.getType().name());
-
-        return rows > 0;
+         */
+        return insert.executeAndReturnKey(parameters).intValue();
     }
 
     @Override
@@ -49,6 +69,8 @@ public class DocumentDAOImpl implements DocumentDAO {
 
     @Override
     public boolean removeDocument(int ownerId, DocumentType type) {
+
+        System.out.println("Je remove (DAO).");
 
         String query = "DELETE FROM document WHERE doc_owner_id = ? AND doc_type = ?;";
 
