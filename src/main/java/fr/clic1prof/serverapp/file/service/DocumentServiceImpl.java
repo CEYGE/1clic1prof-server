@@ -41,11 +41,12 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public int addDocument(int ownerId, MultipartFile file, DocumentType type, String fileName) {
 
-        // Implicit check here.
+        // Implicit checks here.
         this.checkFileName(fileName);
-
-        // Implicit check here.
         MediaType mediaType = this.getMediaType(file);
+
+        if(!this.storageService.isStorable(file, type))
+            throw new FileStorageException("Document not storable.");
 
         // Saving resource after guessing MediaType. Indeed, if an exception
         // is thrown, the file will not be saved and the document will not be
@@ -97,15 +98,15 @@ public class DocumentServiceImpl implements DocumentService {
 
         DocumentModel oldDocument = optional.get();
 
-        if(!this.storageService.isStorable(file, oldDocument.getType()))
-            throw new FileStorageException("Document not storable.");
-
         // Checks should be performed here.
         this.checkFileName(fileName);
 
         // Implicit checks here.
         MediaType type = this.getMediaType(file);
         String fileId = this.storageService.saveResource(file, oldDocument.getType());
+
+        if(!this.storageService.isStorable(file, oldDocument.getType()))
+            throw new FileStorageException("Document not storable.");
 
         // Removing existing document. Operation can be performed first because
         // the old document has been retrieved into a variable.
