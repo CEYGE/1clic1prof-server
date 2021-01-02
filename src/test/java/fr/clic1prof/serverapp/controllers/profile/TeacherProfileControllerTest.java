@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -83,12 +82,32 @@ public class TeacherProfileControllerTest {
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
+        // Checking that the description has been updated.
+        String profileAsString = this.mvc.perform(MockMvcRequestBuilders.get("/teacher/profile")
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        TeacherProfile profile = this.mapper.readValue(profileAsString, TeacherProfile.class);
+
+        Assertions.assertEquals("This is my new description.", profile.getDescription());
+
         // With an empty description.
         node = this.mapper.createObjectNode();
         node.put("description", "");
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // Checking that the description has been updated.
+        profileAsString = this.mvc.perform(MockMvcRequestBuilders.get("/teacher/profile")
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        profile = this.mapper.readValue(profileAsString, TeacherProfile.class);
+
+        Assertions.assertEquals("", profile.getDescription());
 
         // Without description.
         this.mvc.perform(this.controller.getBuilder(uri, token, null))
@@ -117,12 +136,24 @@ public class TeacherProfileControllerTest {
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
+        // Checking that the studies has been updated.
+        String profileAsString = this.mvc.perform(MockMvcRequestBuilders.get("/teacher/profile")
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        TeacherProfile profile = this.mapper.readValue(profileAsString, TeacherProfile.class);
+
+        Assertions.assertEquals("Engineer in computer science", profile.getStudies());
+
         // With an empty description.
         node = this.mapper.createObjectNode();
         node.put("studies", "");
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        Assertions.assertEquals("", profile.getStudies());
 
         // Without description.
         this.mvc.perform(this.controller.getBuilder(uri, token, null))
@@ -149,6 +180,16 @@ public class TeacherProfileControllerTest {
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // Checking that the speciality has been updated.
+        String profileAsString = this.mvc.perform(MockMvcRequestBuilders.get("/teacher/profile")
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        TeacherProfile profile = this.mapper.readValue(profileAsString, TeacherProfile.class);
+
+        Assertions.assertTrue(profile.getSpecialities().contains(new Speciality(7, "Anglais")));
 
         // Want to replace a speciality that he doesn't own.
         node = this.mapper.createObjectNode();
