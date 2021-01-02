@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.clic1prof.serverapp.model.profile.SchoolLevel;
 import fr.clic1prof.serverapp.model.profile.model.StudentProfile;
+import fr.clic1prof.serverapp.model.profile.model.TeacherProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,16 @@ public class StudentProfileControllerTest {
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // Checking that the description has been updated.
+        String profileAsString = this.mvc.perform(MockMvcRequestBuilders.get("/student/profile")
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        StudentProfile profile = this.mapper.readValue(profileAsString, StudentProfile.class);
+
+        Assertions.assertEquals(new SchoolLevel(1, "CP"), profile.getLevel());
 
         // With an invalid positive id.
         node = this.mapper.createObjectNode();
