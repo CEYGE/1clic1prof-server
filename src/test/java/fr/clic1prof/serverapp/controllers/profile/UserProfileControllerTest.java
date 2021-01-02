@@ -116,6 +116,56 @@ public class UserProfileControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    public void test_getPicture(String email, String password, String baseURI) throws Exception {
+
+        String uri = baseURI + "/picture";
+        String token = this.login(email, password);
+
+        // Adding profile picture.
+        File png = ResourceUtils.getFile("classpath:tests/cookie_picture.png");
+        Resource resourcePng = new FileSystemResource(png);
+
+        this.mvc.perform(this.getFileBuilder(uri, token, "cookie_picture.png", MediaType.IMAGE_PNG, resourcePng))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // Retrieving profile picture.
+        this.mvc.perform(MockMvcRequestBuilders.get(uri)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        // Trying to retrieve a profile picture that doesn't exist.
+        this.mvc.perform(MockMvcRequestBuilders.delete(uri)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        this.mvc.perform(MockMvcRequestBuilders.get(uri)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    public void test_deletePicture(String email, String password, String baseURI) throws Exception {
+
+        String uri = baseURI + "/picture";
+        String token = this.login(email, password);
+
+        // Adding profile picture.
+        File png = ResourceUtils.getFile("classpath:tests/cookie_picture.png");
+        Resource resourcePng = new FileSystemResource(png);
+
+        this.mvc.perform(this.getFileBuilder(uri, token, "cookie_picture.png", MediaType.IMAGE_PNG, resourcePng))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // Removing profile picture.
+        this.mvc.perform(MockMvcRequestBuilders.delete(uri)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // Trying to remove a profile picture that doesn't exist.
+        this.mvc.perform(MockMvcRequestBuilders.delete(uri)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
     public void test_updatePicture(String email, String password, String baseURI) throws Exception {
 
         String uri = baseURI + "/picture";

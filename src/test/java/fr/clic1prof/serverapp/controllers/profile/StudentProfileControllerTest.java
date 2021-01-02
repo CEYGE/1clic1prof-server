@@ -52,6 +52,16 @@ public class StudentProfileControllerTest {
     }
 
     @Test
+    public void test_getPicture() throws Exception {
+        this.controller.test_getPicture("test9.student@test.com", "UnRenard60**", "/student/profile");
+    }
+
+    @Test
+    public void test_deletePicture() throws Exception {
+        this.controller.test_deletePicture("test9.student@test.com", "UnRenard60**", "/student/profile");
+    }
+
+    @Test
     public void test_updatePicture() throws Exception {
         this.controller.test_updatePicture("test9.student@test.com", "UnRenard60**", "/student/profile");
     }
