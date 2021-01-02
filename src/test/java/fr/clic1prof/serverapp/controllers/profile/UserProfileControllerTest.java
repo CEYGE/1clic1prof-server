@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.clic1prof.serverapp.model.profile.Name;
+import fr.clic1prof.serverapp.model.profile.model.Profile;
+import fr.clic1prof.serverapp.model.profile.model.UserProfile;
 import fr.clic1prof.serverapp.security.jwt.authentication.AuthenticationRequest;
 import fr.clic1prof.serverapp.security.jwt.authentication.AuthenticationResponse;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -46,12 +49,12 @@ public class UserProfileControllerTest {
         return this.mapper.readValue(content, AuthenticationResponse.class).getToken();
     }
 
-    public void test_updateFirstName(String email, String password, String baseURI) throws Exception {
+    public void test_updateFirstName(String email, String password, String baseURI, String firstName) throws Exception {
 
         String uri = baseURI + "/first-name";
         String token = this.login(email, password);
 
-        this.mvc.perform(this.getBuilder(uri, token,  new Name("John")))
+        this.mvc.perform(this.getBuilder(uri, token,  new Name(firstName)))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         this.mvc.perform(this.getBuilder(uri, token, new Name(null)))
@@ -65,14 +68,24 @@ public class UserProfileControllerTest {
 
         this.mvc.perform(this.getBuilder(uri, token, new Name("UnPrenomVraimentMaisVraimentMaisVraimentTropLong")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        // Checking that the first name has been updated.
+        String profileAsString = this.mvc.perform(MockMvcRequestBuilders.get(baseURI)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Profile profile = this.mapper.readValue(profileAsString, UserProfile.class);
+
+        Assertions.assertEquals(firstName, profile.getFirstName());
     }
 
-    public void test_updateLastName(String email, String password, String baseURI) throws Exception {
+    public void test_updateLastName(String email, String password, String baseURI, String lastName) throws Exception {
 
         String uri = baseURI + "/last-name";
         String token = this.login(email, password);
 
-        this.mvc.perform(this.getBuilder(uri, token, new Name("Smith")))
+        this.mvc.perform(this.getBuilder(uri, token, new Name(lastName)))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         this.mvc.perform(this.getBuilder(uri, token, new Name(null)))
@@ -86,6 +99,16 @@ public class UserProfileControllerTest {
 
         this.mvc.perform(this.getBuilder(uri, token, new Name("UnNomVraimentMaisVraimentMaisVraimentTropLong")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        // Checking that the last name has been updated.
+        String profileAsString = this.mvc.perform(MockMvcRequestBuilders.get(baseURI)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Profile profile = this.mapper.readValue(profileAsString, UserProfile.class);
+
+        Assertions.assertEquals(lastName, profile.getLastName());
     }
 
     public void test_updatePassword(String email, String password, String baseURI) throws Exception {
@@ -164,6 +187,11 @@ public class UserProfileControllerTest {
         this.mvc.perform(MockMvcRequestBuilders.delete(uri)
                 .header("Authorization", "Bearer " + token))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // Checking that the picture has been deleted.
+        this.mvc.perform(MockMvcRequestBuilders.get(uri)
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     public void test_updatePicture(String email, String password, String baseURI) throws Exception {

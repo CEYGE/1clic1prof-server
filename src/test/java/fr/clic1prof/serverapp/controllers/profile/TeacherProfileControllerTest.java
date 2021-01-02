@@ -42,12 +42,12 @@ public class TeacherProfileControllerTest {
 
     @Test
     public void test_updateFirstName() throws Exception {
-        this.controller.test_updateFirstName("test10.teacher@test.com", "UnRenard60**", "/teacher/profile");
+        this.controller.test_updateFirstName("test10.teacher@test.com", "UnRenard60**", "/teacher/profile", "John");
     }
 
     @Test
     public void test_updateLastName() throws Exception {
-        this.controller.test_updateLastName("test10.teacher@test.com", "UnRenard60**", "/teacher/profile");
+        this.controller.test_updateLastName("test10.teacher@test.com", "UnRenard60**", "/teacher/profile", "Smith");
     }
 
     @Test
