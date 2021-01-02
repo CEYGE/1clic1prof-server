@@ -153,6 +153,14 @@ public class TeacherProfileControllerTest {
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
+        // Checking that the studies has been updated.
+        profileAsString = this.mvc.perform(MockMvcRequestBuilders.get("/teacher/profile")
+                .header("Authorization", "Bearer " + token))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        profile = this.mapper.readValue(profileAsString, TeacherProfile.class);
+
         Assertions.assertEquals("", profile.getStudies());
 
         // Without description.
@@ -180,16 +188,6 @@ public class TeacherProfileControllerTest {
 
         this.mvc.perform(this.controller.getBuilder(uri, token, node))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
-
-        // Checking that the speciality has been updated.
-        String profileAsString = this.mvc.perform(MockMvcRequestBuilders.get("/teacher/profile")
-                .header("Authorization", "Bearer " + token))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andReturn().getResponse().getContentAsString();
-
-        TeacherProfile profile = this.mapper.readValue(profileAsString, TeacherProfile.class);
-
-        Assertions.assertTrue(profile.getSpecialities().contains(new Speciality(7, "Anglais")));
 
         // Want to replace a speciality that he doesn't own.
         node = this.mapper.createObjectNode();
