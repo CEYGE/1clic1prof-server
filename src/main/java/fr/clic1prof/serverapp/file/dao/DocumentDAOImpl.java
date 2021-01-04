@@ -31,12 +31,8 @@ public class DocumentDAOImpl implements DocumentDAO {
     @Override
     public int addDocument(DocumentModel document) {
 
-        String query = "INSERT INTO document (" +
-                "doc_owner_id, doc_file_id, doc_name, doc_media_type, doc_size, doc_type" +
-                ") VALUES (?, ?, ?, ?, ?, ?);";
-
         SimpleJdbcInsert insert = new SimpleJdbcInsert(this.template);
-        insert.withTableName("document").usingGeneratedKeyColumns("doc_id");
+        insert.withTableName("document").usingGeneratedKeyColumns("doc_id", "doc_modification_date", "doc_creation_date");
 
         Map<String, Object> parameters = new HashMap<>();
 
@@ -47,15 +43,6 @@ public class DocumentDAOImpl implements DocumentDAO {
         parameters.put("doc_size", document.getSize());
         parameters.put("doc_type", document.getType().name());
 
-        /*
-        int rows = this.template.update(query,
-                document.getOwnerId(),
-                document.getFileId(),
-                document.getName(),
-                document.getMediaType(),
-                document.getSize(),
-                document.getType().name());
-         */
         return insert.executeAndReturnKey(parameters).intValue();
     }
 
@@ -69,8 +56,6 @@ public class DocumentDAOImpl implements DocumentDAO {
 
     @Override
     public boolean removeDocument(int ownerId, DocumentType type) {
-
-        System.out.println("Je remove (DAO).");
 
         String query = "DELETE FROM document WHERE doc_owner_id = ? AND doc_type = ?;";
 
