@@ -8,8 +8,11 @@ import fr.clic1prof.serverapp.file.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("StudentInvoiceServiceImpl")
 public class StudentInvoiceServiceImpl implements StudentInvoiceService {
@@ -23,7 +26,16 @@ public class StudentInvoiceServiceImpl implements StudentInvoiceService {
 
     @Override
     public List<DocumentModel> getInvoices(int userId) {
-        return this.documentService.getDocuments(userId, DocumentType.INVOICE);
+
+        List<DocumentModel> invoices = this.documentService.getDocuments(userId, DocumentType.INVOICE);
+
+        // Get all the invoices which are less 1 year old.
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -1);
+
+        return invoices.stream()
+                .filter(payslip -> payslip.getCreationDate().after(Date.from(calendar.toInstant())))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -8,8 +8,11 @@ import fr.clic1prof.serverapp.file.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("TeacherPayslipServiceImpl")
 public class TeacherPayslipServiceImpl implements TeacherPayslipService {
@@ -23,7 +26,16 @@ public class TeacherPayslipServiceImpl implements TeacherPayslipService {
 
     @Override
     public List<DocumentModel> getPayslips(int userId) {
-        return this.documentService.getDocuments(userId, DocumentType.PAYSLIP);
+
+        List<DocumentModel> payslips = this.documentService.getDocuments(userId, DocumentType.PAYSLIP);
+
+        // Get all the payslips which are less 1 year old.
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -1);
+
+        return payslips.stream()
+                .filter(payslip -> payslip.getCreationDate().after(Date.from(calendar.toInstant())))
+                .collect(Collectors.toList());
     }
 
     @Override
