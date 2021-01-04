@@ -104,10 +104,12 @@ public class DocumentDAOImpl implements DocumentDAO {
         return null;
     }
 
-    // TODO
     @Override
     public List<DocumentModel> getDocuments(int ownerId, DocumentType type) {
-        return null;
+
+        String query = "SELECT * FROM document WHERE doc_owner_id = ? AND doc_type = ?;";
+
+        return this.template.query(query, this.getDocumentMapper(), ownerId, type.name());
     }
 
     private RowMapper<DocumentModel> getDocumentMapper() {
