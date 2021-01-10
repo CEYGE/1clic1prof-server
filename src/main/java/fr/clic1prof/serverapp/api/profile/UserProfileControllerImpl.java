@@ -90,11 +90,13 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     @Override
     public ResponseEntity<Void> updatePicture(UserBase user, MultipartFile file) {
 
-        int updated = this.service.updatePicture(user.getId(), file);
+        int pictureId = this.service.updatePicture(user.getId(), file);
 
-        HttpStatus status = updated != 0 ? HttpStatus.NO_CONTENT : HttpStatus.UNPROCESSABLE_ENTITY;
+        if(pictureId <= 0)
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 
-        return ResponseEntity.status(status).build();
+        // Return picture id here.
+        return ResponseEntity.ok().build();
     }
 
     @Override
