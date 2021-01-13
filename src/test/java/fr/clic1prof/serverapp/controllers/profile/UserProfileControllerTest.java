@@ -149,7 +149,7 @@ public class UserProfileControllerTest {
         Resource resourcePng = new FileSystemResource(png);
 
         this.mvc.perform(this.getFileBuilder(uri, token, "cookie_picture.png", MediaType.IMAGE_PNG, resourcePng))
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
         // Retrieving profile picture.
         this.mvc.perform(MockMvcRequestBuilders.get(uri)
@@ -176,7 +176,7 @@ public class UserProfileControllerTest {
         Resource resourcePng = new FileSystemResource(png);
 
         this.mvc.perform(this.getFileBuilder(uri, token, "cookie_picture.png", MediaType.IMAGE_PNG, resourcePng))
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
         // Removing profile picture.
         this.mvc.perform(MockMvcRequestBuilders.delete(uri)
@@ -204,7 +204,7 @@ public class UserProfileControllerTest {
         Resource resourcePng = new FileSystemResource(png);
 
         this.mvc.perform(this.getFileBuilder(uri, token, "cookie_picture.png", MediaType.IMAGE_PNG, resourcePng))
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
         // With a correct png file but a bad MediaType
         this.mvc.perform(this.getFileBuilder(uri, token, "cookie_picture.png", MediaType.TEXT_PLAIN, resourcePng))
@@ -215,7 +215,7 @@ public class UserProfileControllerTest {
         Resource resourceJpg = new FileSystemResource(jpg);
 
         this.mvc.perform(this.getFileBuilder(uri, token, "background_picture.jpg", MediaType.IMAGE_JPEG, resourceJpg))
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
         // With a text file.
         File txt = ResourceUtils.getFile("classpath:tests/cookie_picture.png");

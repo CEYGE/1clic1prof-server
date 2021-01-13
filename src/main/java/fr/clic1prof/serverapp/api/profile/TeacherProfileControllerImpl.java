@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.api.profile;
 
+import fr.clic1prof.serverapp.model.Mapper;
 import fr.clic1prof.serverapp.model.profile.Description;
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
@@ -52,7 +53,7 @@ public class TeacherProfileControllerImpl extends UserProfileControllerImpl impl
     }
 
     @Override
-    public ResponseEntity<Void> updatePicture(UserBase user, MultipartFile file) {
+    public ResponseEntity<Mapper<Integer>> updatePicture(UserBase user, MultipartFile file) {
         return super.updatePicture(user, file);
     }
 

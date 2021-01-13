@@ -1,5 +1,6 @@
 package fr.clic1prof.serverapp.api.profile;
 
+import fr.clic1prof.serverapp.model.Mapper;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
 import fr.clic1prof.serverapp.model.user.UserBase;
@@ -30,7 +31,7 @@ public interface UserProfileController {
     ResponseEntity<Void> updateLastName(UserBase user, @Valid @RequestBody Name name);
 
     @PutMapping("/picture")
-    ResponseEntity<Void> updatePicture(UserBase user, @RequestPart("picture") MultipartFile file);
+    ResponseEntity<Mapper<Integer>> updatePicture(UserBase user, @RequestPart("picture") MultipartFile file);
 
     @GetMapping("/picture")
     ResponseEntity<Resource> getPicture(UserBase user);

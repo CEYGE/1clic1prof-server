@@ -3,6 +3,7 @@ package fr.clic1prof.serverapp.api.profile;
 import fr.clic1prof.serverapp.file.exceptions.DocumentNotFoundException;
 import fr.clic1prof.serverapp.file.exceptions.FileNotFoundException;
 import fr.clic1prof.serverapp.file.model.FileStored;
+import fr.clic1prof.serverapp.model.Mapper;
 import fr.clic1prof.serverapp.model.profile.Name;
 import fr.clic1prof.serverapp.model.profile.PasswordModifier;
 import fr.clic1prof.serverapp.model.profile.model.Profile;
@@ -88,7 +89,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
     }
 
     @Override
-    public ResponseEntity<Void> updatePicture(UserBase user, MultipartFile file) {
+    public ResponseEntity<Mapper<Integer>> updatePicture(UserBase user, MultipartFile file) {
 
         int pictureId = this.service.updatePicture(user.getId(), file);
 
@@ -96,7 +97,7 @@ public abstract class UserProfileControllerImpl implements UserProfileController
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 
         // Return picture id here.
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new Mapper<>("pictureId", pictureId));
     }
 
     @Override
